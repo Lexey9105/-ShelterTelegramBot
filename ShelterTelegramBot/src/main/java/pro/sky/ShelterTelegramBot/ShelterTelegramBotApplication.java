@@ -10,4 +10,6 @@ public class ShelterTelegramBotApplication {
 		SpringApplication.run(ShelterTelegramBotApplication.class, args);
 	}
 
+
+
 }
