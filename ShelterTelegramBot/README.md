@@ -4,7 +4,7 @@
 
 ## Technology stack
 
-Java 17, Maven, Spring 3 (Boot, MVC, Data, Security), Hibernate, Postgresql, Freemarker, HTML, Telegram Bots
+Java 17, Maven, Spring 4 (Boot, MVC, Data, Security), Hibernate, Postgresql, Telegram Bots
 
 ## Над проектом работали
 Алексей Павликов
