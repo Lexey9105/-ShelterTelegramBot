@@ -22,9 +22,10 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
     private TelegramBot telegramBot;
 
-    public TelegramBotUpdatesListener(TelegramBot telegramBot){
-        this.telegramBot=telegramBot;
+    public TelegramBotUpdatesListener(TelegramBot telegramBot) {
+        this.telegramBot = telegramBot;
     }
+
     @PostConstruct
     public void init() {
         telegramBot.setUpdatesListener(this);
@@ -33,16 +34,16 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     @Override
     public int process(List<Update> updates) {
 
-            updates.forEach(update -> {
-                logger.info("Processing update: {}", update);
-                if (update.message().text().equals("/start")) {
-                    SendMessage message = new SendMessage
-                            (update.message().chat().id(), welcomeMessage);
-                    SendResponse response = telegramBot.execute(message);
-                } else {
+        updates.forEach(update -> {
+            logger.info("Processing update: {}", update);
+            if (update.message().text().equals("/start")) {
+                SendMessage message = new SendMessage
+                        (update.message().chat().id(), welcomeMessage);
+                SendResponse response = telegramBot.execute(message);
+            } else {
 
-                }
-            });
+            }
+        });
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
 }

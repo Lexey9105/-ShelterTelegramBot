@@ -1,7 +1,6 @@
 package pro.sky.ShelterTelegramBot.controller;
 
 
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -22,11 +21,11 @@ import java.util.Collection;
 @RequestMapping("/client")
 public class ClientController {
 
-private final ClientService clientService;
+    private final ClientService clientService;
 
-public ClientController (ClientService clientService){
-    this.clientService=clientService;
-}
+    public ClientController(ClientService clientService) {
+        this.clientService = clientService;
+    }
 
 
     @Operation(
@@ -52,15 +51,14 @@ public ClientController (ClientService clientService){
                     )
             }
     )
-@PostMapping()
+    @PostMapping()
     public ResponseEntity<Client> createClient(@RequestBody Client client) {
-        Client client1 =clientService.create(client);
+        Client client1 = clientService.create(client);
         if (client1 == null) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(client1);
     }
-
 
 
     @Operation(
@@ -70,9 +68,9 @@ public ClientController (ClientService clientService){
                             responseCode = "200",
                             description = "Данные удаляемого клиента питомника.",
                             content = @Content(
-                            mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = Client.class)
-                    )
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    schema = @Schema(implementation = Client.class)
+                            )
                     )
             }
     )
@@ -115,7 +113,6 @@ public ClientController (ClientService clientService){
         }
         return ResponseEntity.ok(clientService.get(id));
     }
-
 
 
     @Operation(
