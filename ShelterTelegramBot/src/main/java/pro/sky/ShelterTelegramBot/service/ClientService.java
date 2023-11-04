@@ -9,6 +9,5 @@ public interface ClientService {
     Client delete (Long id);
     Client get (Long id);
     Collection<Client> findAll();
-    Object getClientsById();
 
 }

@@ -4,6 +4,13 @@ import jakarta.persistence.*;
 
 import java.util.Objects;
 
+
+/**
+ *  Хранение целочисленных данных по пропускам ещеждевного отчета в период 30 дней
+ *  totalPassesAttach и totalPassesQuest - общее колличество дней с отсуствующим отчетом
+ *  repoAttachDay-1,2,3 и repoQuestDay-1,2,3 -переменные для фиксации отсуствия отчета несколько дней подряд
+ *  attachDayRow и questDayRow - счетчики для фиксации отсуствия отчета несколько дней подряд
+ */
 @Entity
 public class Report {
 @Id
@@ -18,7 +25,7 @@ public class Report {
     private int repoQuestDay1=0;
     private int repoQuestDay2=0;
     private int repoQuestDay3=0;
-    private int QuestDayRow=0;
+    private int questDayRow =0;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy="report")
     private Client client;
@@ -106,11 +113,11 @@ public class Report {
     }
 
     public int getQuestDayRow() {
-        return QuestDayRow;
+        return questDayRow;
     }
 
     public void setQuestDayRow(int questDayRow) {
-        QuestDayRow = questDayRow;
+        this.questDayRow = questDayRow;
     }
 
     @Override
@@ -126,7 +133,7 @@ public class Report {
                 ", repoQuestDay1=" + repoQuestDay1 +
                 ", repoQuestDay2=" + repoQuestDay2 +
                 ", repoQuestDay3=" + repoQuestDay3 +
-                ", QuestDayRow=" + QuestDayRow +
+                ", QuestDayRow=" + questDayRow +
                 '}';
     }
 
@@ -135,11 +142,11 @@ public class Report {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Report report = (Report) o;
-        return totalPassesAttach == report.totalPassesAttach && totalPassesQuest == report.totalPassesQuest && repoAttachDay1 == report.repoAttachDay1 && repoAttachDay2 == report.repoAttachDay2 && repoAttachDay3 == report.repoAttachDay3 && attachDayRow == report.attachDayRow && repoQuestDay1 == report.repoQuestDay1 && repoQuestDay2 == report.repoQuestDay2 && repoQuestDay3 == report.repoQuestDay3 && QuestDayRow == report.QuestDayRow && Objects.equals(id, report.id);
+        return totalPassesAttach == report.totalPassesAttach && totalPassesQuest == report.totalPassesQuest && repoAttachDay1 == report.repoAttachDay1 && repoAttachDay2 == report.repoAttachDay2 && repoAttachDay3 == report.repoAttachDay3 && attachDayRow == report.attachDayRow && repoQuestDay1 == report.repoQuestDay1 && repoQuestDay2 == report.repoQuestDay2 && repoQuestDay3 == report.repoQuestDay3 && questDayRow == report.questDayRow && Objects.equals(id, report.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, totalPassesAttach, totalPassesQuest, repoAttachDay1, repoAttachDay2, repoAttachDay3, attachDayRow, repoQuestDay1, repoQuestDay2, repoQuestDay3, QuestDayRow);
+        return Objects.hash(id, totalPassesAttach, totalPassesQuest, repoAttachDay1, repoAttachDay2, repoAttachDay3, attachDayRow, repoQuestDay1, repoQuestDay2, repoQuestDay3, questDayRow);
     }
 }
