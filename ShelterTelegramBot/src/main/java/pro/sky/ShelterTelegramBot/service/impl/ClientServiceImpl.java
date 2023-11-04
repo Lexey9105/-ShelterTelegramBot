@@ -21,12 +21,22 @@ public ClientServiceImpl(ClientRepository clientRepository){
 }
 
 
+    /**
+     * Создание нового клиента
+     *
+     * @return созданный клиент
+     */
     @Override
     public Client create(Client client) {
         logger.info("createClient method has been invoked");
     return clientRepository.save(client);
     }
 
+    /**
+     * удаление клиента кота по id
+     * Используется метод репозитория {@link ClientRepository#deleteById(Object)}
+     * @param id идентификатор клиента
+     */
     @Override
     public Client delete(Long id) {
         logger.info("deleteClient method has been invoked");
@@ -41,6 +51,8 @@ public ClientServiceImpl(ClientRepository clientRepository){
         }
     }
 
+
+
     @Override
     public Client get(Long id) {
         logger.info("deleteClient method has been invoked");
@@ -54,15 +66,14 @@ public ClientServiceImpl(ClientRepository clientRepository){
         }
     }
 
+    /**
+     * получение списка клиентов котов
+     * Используется метод репозитория {@link ClientRepository#findAll()}
+     * @return список клиентов
+     */
     @Override
     public Collection<Client> findAll() {
         logger.info("findAllClient method has been invoked");
     return clientRepository.findAll();
-    }
-
-    @Override
-    public Object getClientsById() {
-        logger.info("getClientsByIdClient method has been invoked");
-        return clientRepository.getTotalClientsById();
     }
 }
