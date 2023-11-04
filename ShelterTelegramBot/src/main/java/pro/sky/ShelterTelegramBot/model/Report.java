@@ -6,31 +6,34 @@ import java.util.Objects;
 
 
 /**
- *  Хранение целочисленных данных по пропускам ещеждевного отчета в период 30 дней
- *  totalPassesAttach и totalPassesQuest - общее колличество дней с отсуствующим отчетом
- *  repoAttachDay-1,2,3 и repoQuestDay-1,2,3 -переменные для фиксации отсуствия отчета несколько дней подряд
- *  attachDayRow и questDayRow - счетчики для фиксации отсуствия отчета несколько дней подряд
+ * Хранение целочисленных данных по пропускам ещеждевного отчета в период 30 дней
+ * totalPassesAttach и totalPassesQuest - общее колличество дней с отсуствующим отчетом
+ * repoAttachDay-1,2,3 и repoQuestDay-1,2,3 -переменные для фиксации отсуствия отчета несколько дней подряд
+ * attachDayRow и questDayRow - счетчики для фиксации отсуствия отчета несколько дней подряд
  */
 @Entity
 public class Report {
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private int totalPassesAttach=0;
-    private int totalPassesQuest=0;
-    private int repoAttachDay1=0;
-    private int repoAttachDay2=0;
-    private int repoAttachDay3=0;
-    private int attachDayRow=0;
-    private int repoQuestDay1=0;
-    private int repoQuestDay2=0;
-    private int repoQuestDay3=0;
-    private int questDayRow =0;
+    private int totalPassesAttach = 0;
+    private int totalPassesQuest = 0;
+    private int repoAttachDay1 = 0;
+    private int repoAttachDay2 = 0;
+    private int repoAttachDay3 = 0;
+    private int attachDayRow = 0;
+    private int repoQuestDay1 = 0;
+    private int repoQuestDay2 = 0;
+    private int repoQuestDay3 = 0;
+    private int questDayRow = 0;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy="report")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "report")
     private Client client;
 
-    public Report(){};
+    public Report() {
+    }
+
+    ;
 
     public Long getId() {
         return id;

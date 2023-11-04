@@ -3,6 +3,7 @@ package pro.sky.ShelterTelegramBot.model;
 import jakarta.persistence.*;
 
 import java.util.Objects;
+
 @Entity
 public class Quest {
     @Id
@@ -16,13 +17,19 @@ public class Quest {
     @ManyToOne
     private Client client;
 
-    public Quest(){};
-    public Quest(String quest1,String quest2,String quest3,String quest4){
-        this.quest1=quest1;
-        this.quest2=quest2;
-        this.quest3=quest3;
-        this.quest4=quest4;
-    };
+    public Quest() {
+    }
+
+    ;
+
+    public Quest(String quest1, String quest2, String quest3, String quest4) {
+        this.quest1 = quest1;
+        this.quest2 = quest2;
+        this.quest3 = quest3;
+        this.quest4 = quest4;
+    }
+
+    ;
 
     public Long getId() {
         return id;

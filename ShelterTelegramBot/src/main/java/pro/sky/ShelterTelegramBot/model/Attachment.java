@@ -22,12 +22,16 @@ public class Attachment {
     @ManyToOne
     private Client client;
 
-    public Attachment(){};
-    public Attachment(String attachTitle,LocalDate uploadDate,String extension,String downloadLink){
-        this.attachTitle=attachTitle;
-        this.uploadDate=uploadDate;
-        this.extension=extension;
-        this.downloadLink=downloadLink;
+    public Attachment() {
+    }
+
+    ;
+
+    public Attachment(String attachTitle, LocalDate uploadDate, String extension, String downloadLink) {
+        this.attachTitle = attachTitle;
+        this.uploadDate = uploadDate;
+        this.extension = extension;
+        this.downloadLink = downloadLink;
     }
 
     public Long getAttachId() {

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+
 @Entity
 public class Client {
     @Id
@@ -26,20 +27,24 @@ public class Client {
             inverseJoinColumns = {@JoinColumn(name = "attachment_id")}
     )
     private List<Attachment> attachments;
-@OneToMany
-@JoinTable(name="client_quests",
-joinColumns={@JoinColumn(name= "client_id")},
-inverseJoinColumns={@JoinColumn(name="quest_id")})
+    @OneToMany
+    @JoinTable(name = "client_quests",
+            joinColumns = {@JoinColumn(name = "client_id")},
+            inverseJoinColumns = {@JoinColumn(name = "quest_id")})
     private List<Quest> quests;
 
-    public Client(){};
-    public Client(String fullName,int age,int telephone,String address,String pet,Long chatId){
-        this.fullName=fullName;
-        this.age=age;
-        this.telephone=telephone;
-        this.address=address;
-        this.pet=pet;
-        this.chatId=chatId;
+    public Client() {
+    }
+
+    ;
+
+    public Client(String fullName, int age, int telephone, String address, String pet, Long chatId) {
+        this.fullName = fullName;
+        this.age = age;
+        this.telephone = telephone;
+        this.address = address;
+        this.pet = pet;
+        this.chatId = chatId;
     }
 
     public Long getId() {
