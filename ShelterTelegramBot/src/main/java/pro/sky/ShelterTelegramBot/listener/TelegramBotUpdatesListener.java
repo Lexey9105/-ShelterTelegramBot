@@ -89,8 +89,8 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
      */
     private String handleCommand(String command) {
         return switch (command) {
-            case START_COMMAND -> constants.SAY_HELLO();
-            case HELP_COMMAND -> constants.ASK_HELP();
+            case START_COMMAND -> constants.SAY_HELLO;
+            case HELP_COMMAND -> constants.ASK_HELP;
             default -> "Передаю вопрос волонтерам";
         };
     }

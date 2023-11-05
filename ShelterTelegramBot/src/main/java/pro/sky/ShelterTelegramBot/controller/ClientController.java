@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pro.sky.ShelterTelegramBot.model.Client;
 import pro.sky.ShelterTelegramBot.service.ClientService;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 
 import java.util.Collection;
@@ -30,7 +31,7 @@ public class ClientController {
 
     @Operation(
             summary = "Создание клиента питомника",
-            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+            requestBody = @RequestBody(
                     description = "Данные создаваемого  клиента питомника." +
                             "id переданный в теле будет игнорироваться, будет присвоен следующий id из БД. " +
                             "Все поля кроме id обязательны.",
