@@ -14,7 +14,7 @@ import java.util.Optional;
 @Service
 public class ClientServiceImpl implements ClientService {
 
-    Logger logger = LoggerFactory.getLogger(ClientService.class);
+    private Logger logger = LoggerFactory.getLogger(ClientService.class);
     private final ClientRepository clientRepository;
 
     public ClientServiceImpl(ClientRepository clientRepository) {
