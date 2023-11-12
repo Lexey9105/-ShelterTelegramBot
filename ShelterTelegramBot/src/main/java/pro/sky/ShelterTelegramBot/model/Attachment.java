@@ -6,19 +6,23 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
+@Table(name="RecordStorage")
 public class Attachment {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name="ATTACHMENT_ID")
     private Long attachId;
-
+    @Column(name="ATTACH_TITLE")
     private String attachTitle;
 
-    @Column(nullable = false, updatable = false)
+    @Column(name="UPLOAD_DATE",nullable = false, updatable = false)
     private LocalDate uploadDate;
-
+    @Column(name="EXTENSION_FILE")
     private String extension;
-
+    @Column(name="DOWNLOAD_LINK")
     private String downloadLink;
+    @Column(name="QUEST",nullable = false)
+    private String quest;
     @ManyToOne
     private Client client;
 

@@ -5,13 +5,14 @@ import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.response.SendResponse;
-import pro.sky.ShelterTelegramBot.configuration.TelegramBotConfig;
-import pro.sky.ShelterTelegramBot.constants.Constants;
+
+
 import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import pro.sky.ShelterTelegramBot.constants.Constants;
 
 import java.util.List;
 
@@ -19,17 +20,20 @@ import java.util.List;
  * Сервис отвечает за обработку и отправку сообщений в Telegram бота
  */
 @Service
-@RequiredArgsConstructor
 public class TelegramBotUpdatesListener implements UpdatesListener {
 
     private Logger logger = LoggerFactory.getLogger(TelegramBotUpdatesListener.class);
 
     private final TelegramBot telegramBot;
-    private final TelegramBotConfig config;
     private final Constants constants;
 
     private static final String START_COMMAND = "/start";
     private static final String HELP_COMMAND = "/help";
+
+    public TelegramBotUpdatesListener (TelegramBot telegramBot,Constants constants){
+        this.telegramBot=telegramBot;
+        this.constants=constants;
+    }
 
     @PostConstruct
     public void init() {

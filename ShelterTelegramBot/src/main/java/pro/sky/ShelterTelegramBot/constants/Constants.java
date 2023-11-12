@@ -1,10 +1,12 @@
 package pro.sky.ShelterTelegramBot.constants;
 
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 /**
  * Константы
  */
+@Service
 public class Constants {
 
     public static final String SAY_HELLO = "Привет! Я бот для работы с приютами для собак и кошек. " +
