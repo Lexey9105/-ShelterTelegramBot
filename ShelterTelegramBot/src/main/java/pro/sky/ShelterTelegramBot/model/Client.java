@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Table(name="CLIENT")
 public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,8 +20,7 @@ public class Client {
     @OneToOne
     @JoinColumn(name = "report_id")
     private Report report;
-    @OneToMany
-    @JoinColumn(name = "attach_id")
+    @OneToMany(mappedBy = "client")
     private List<Attachment> attachments;
 
     public Client() {
