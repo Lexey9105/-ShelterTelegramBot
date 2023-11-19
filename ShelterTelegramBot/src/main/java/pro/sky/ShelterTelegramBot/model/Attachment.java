@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
-@Table(name="RecordStorage")
+@Table(name="Attachment")
 public class Attachment {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -23,7 +23,8 @@ public class Attachment {
     private String downloadLink;
     @Column(name="QUEST",nullable = false)
     private String quest;
-    @ManyToOne
+    @ManyToOne()
+    @JoinColumn(name = "client_id")
     private Client client;
 
     public Attachment() {
