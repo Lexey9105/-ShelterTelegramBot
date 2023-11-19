@@ -29,7 +29,6 @@ public class Attachment {
     public Attachment() {
     }
 
-    ;
 
     public Attachment(String attachTitle, LocalDate uploadDate, String extension, String downloadLink) {
         this.attachTitle = attachTitle;

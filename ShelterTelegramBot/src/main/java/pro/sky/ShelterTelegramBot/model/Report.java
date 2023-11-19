@@ -33,7 +33,6 @@ public class Report {
     public Report() {
     }
 
-    ;
 
     public Long getId() {
         return id;
