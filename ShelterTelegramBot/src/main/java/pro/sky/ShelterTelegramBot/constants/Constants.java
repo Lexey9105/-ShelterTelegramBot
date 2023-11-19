@@ -17,6 +17,8 @@ public class Constants {
 
     public static final String ASK_HELP = "Зовем волонтера";
 
+    public static final String SHELTER_TYPE_SELECT_MSG_TEXT = "Выберите приют";
+
 
     public static final String ERROR = "Возникла ошибка, попробуйте еще раз";
 

@@ -5,7 +5,7 @@ import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 
 public class Button {
 
-    public InlineKeyboardMarkup animalSelectionButtons() {
+    public static InlineKeyboardMarkup animalSelectionButtons() {
 
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
 
