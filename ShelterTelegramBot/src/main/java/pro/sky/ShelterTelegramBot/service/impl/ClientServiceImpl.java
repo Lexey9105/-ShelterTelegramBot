@@ -1,6 +1,8 @@
 package pro.sky.ShelterTelegramBot.service.impl;
 
 import jakarta.persistence.EntityNotFoundException;
+
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -10,6 +12,8 @@ import pro.sky.ShelterTelegramBot.service.ClientService;
 
 import java.util.Collection;
 import java.util.Optional;
+
+
 
 @Service
 public class ClientServiceImpl implements ClientService {

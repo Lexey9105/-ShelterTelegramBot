@@ -21,7 +21,7 @@ public class Attachment {
     private String extension;
     @Column(name="DOWNLOAD_LINK")
     private String downloadLink;
-    @Column(name="QUEST",nullable = false)
+    @Column(name="QUEST",nullable = true)
     private String quest;
     @ManyToOne()
     @JoinColumn(name = "client_id")
