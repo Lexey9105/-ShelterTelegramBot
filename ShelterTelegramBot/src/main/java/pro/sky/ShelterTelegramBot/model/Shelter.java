@@ -19,6 +19,8 @@ public class Shelter {
 
     @OneToMany(mappedBy = "shelter")
     private List<Pet> pets;
+@OneToMany(mappedBy = "shelter")
+    private List<Client> clients;
 
 
 }

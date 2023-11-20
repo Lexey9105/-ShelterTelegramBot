@@ -30,6 +30,20 @@ public class Constants {
 
     //2-й уровень кнопок
 
+    public final static String CALL_ID_SHELTER_INFORMATION_CAT_MENU="021";
+    public final static String CALL_ID_SHELTER_INFORMATION_DOG_MENU="022";
+
+    public final static String DOWNLOAD_LINK="Для скачивания файла перейдите по ссылке - http://localhost:8080/attachments/get/";
+    public final static String WORK_SCHEDULE_CAT="Для получения информации по расположению и режиму работы перейдите по ссылке - https://yandex.ru/maps/org/murkosha/1807729764/?ll=37.151500%2C55.881819&source=serp_navig&z=9";
+    public final static String REGISTRATION_CAR_CAT="Контакты охранника";
+    public final static String WORK_SCHEDULE_DOG="Для получения информации по расположению и режиму работы перейдите по ссылке -https://yandex.ru/maps/org/iskra/58489882123/?ll=37.503295%2C55.863665&source=serp_navig&z=10.8";
+    public final static String REGISTRATION_CAR_DOG="Контакты охранника";
+
+    public final static String CREATE="Для регистрации в нашем приюте отправте контактые данные строго в формате:@Иван Иванов,21,89990001111,Москва Название улицы 9";
+    public final static String CALLBACK="Наш волотер скоро с вами свяжется";
+
+
+
     public final static String BUTTON_INFO_TEXT = "Узнать информацию о приюте";
     public final static String BUTTON_HOW_TO_PICK_UP_TEXT = "Как взять питомца из приюта";
     public final static String BUTTON_SEND_REPORT_TEXT = "Прислать отчет о питомце";

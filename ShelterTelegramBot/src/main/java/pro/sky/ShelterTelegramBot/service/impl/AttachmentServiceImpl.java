@@ -4,6 +4,7 @@ package pro.sky.ShelterTelegramBot.service.impl;
 
 import org.springframework.beans.factory.annotation.Value;
 
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -50,10 +51,10 @@ public class AttachmentServiceImpl implements AttachmentService {
         int dotIndex = fileExtension.lastIndexOf(".");
         // Создаем уникальное название для файла и загружаем файл
         String fileName =
-                "attach_" + curDate + "_" + file.getOriginalFilename().toLowerCase().replaceAll(" ", "-");
+                "attach_"  + "_" + file.getOriginalFilename().toLowerCase().replaceAll(" ", "-");
         file.transferTo(new File(uploadDir + "/" + fileName));
         Attachment attachment = new Attachment
-                (fileName,LocalDate.now(),fileExtension.substring(dotIndex),"/attachments/get/" + Year.now() + "/" + fileName);
+                (fileName,LocalDate.now(),fileExtension.substring(dotIndex),"/attachments" + Year.now() + "/" + fileName);
 
         attachmentRepository.save(attachment);
         return attachment;

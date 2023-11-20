@@ -1,6 +1,6 @@
 package pro.sky.ShelterTelegramBot.constants;
 
-public enum Sex {
+public enum Gender {
     MALE,
     FEMALE
 }
