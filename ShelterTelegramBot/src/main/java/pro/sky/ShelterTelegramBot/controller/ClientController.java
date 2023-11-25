@@ -60,26 +60,13 @@ public class ClientController {
 
 
     @Operation(
-            summary = "Удаление клиента питомника по id.",
-            responses = {
-                    @ApiResponse(
-                            responseCode = "200",
-                            description = "Данные удаляемого клиента питомника.",
-                            content = @Content(
-                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = Client.class)
-                            )
-                    )
-            }
+            summary = "Удаление клиента питомника по id."
     )
     @DeleteMapping("{id}")
     public ResponseEntity<Client> deleteClient(
             @Parameter(description = "id удаляемого клиента питомника")
             @PathVariable Long id) {
-        Client client = clientService.get(id);
-        if (client == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+
         return ResponseEntity.ok(clientService.delete(id));
     }
 
@@ -94,21 +81,14 @@ public class ClientController {
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema = @Schema(implementation = Client.class)
                             )
-                    ),
-                    @ApiResponse(
-                            responseCode = "400",
-                            description = "клиент с данным id не найден."
                     )
             }
     )
     @GetMapping("{id}")
     public ResponseEntity<Client> getClient(
-            @Parameter(description = "Идентификатор клиента", example = "1")
+            //@Parameter(description = "Идентификатор клиента", example = "1")
             @PathVariable Long id) {
-        Client client = clientService.get(id);
-        if (client == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
+
         return ResponseEntity.ok(clientService.get(id));
     }
 

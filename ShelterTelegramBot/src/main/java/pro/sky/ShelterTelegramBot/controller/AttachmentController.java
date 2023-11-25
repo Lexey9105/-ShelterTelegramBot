@@ -1,21 +1,28 @@
 package pro.sky.ShelterTelegramBot.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pro.sky.ShelterTelegramBot.model.Attachment;
+
 import pro.sky.ShelterTelegramBot.service.AttachmentService;
-import pro.sky.ShelterTelegramBot.service.ClientService;
-import pro.sky.ShelterTelegramBot.service.impl.AttachmentServiceImpl;
+
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+
+
+
 
 @Controller
 @RequestMapping("/attachments")
@@ -28,26 +35,36 @@ public class AttachmentController {
     }
 
 
-    @PostMapping(value = "/add", produces = "application/json")
+    @Operation(
+            summary = "Загрузка файла в приложение",
+            requestBody = @RequestBody(
+                    description = "Файл для загрузки",
+                    content = @Content(
+                            mediaType = "MediaType.MULTIPART_FORM_DATA",
+                            schema = @Schema(implementation = MultipartFile.class)
+                    )
+            )
+    )
+    @PostMapping(value = "/add")
     @ResponseBody
-    public ResponseEntity<Map<String, String>> uploadAttachment(
+    public ResponseEntity<HttpStatus> uploadAttachment(
             @RequestPart(value = "file") MultipartFile file)
             throws IOException {
         Attachment attachment = attachmentService.addAttachment(file);
-        Map<String, String> attachmentStatus = new HashMap<>();
-        attachmentStatus.put("status", "ok");
-        attachmentStatus.put("attachId", attachment.getAttachId().toString());
-        return ResponseEntity.ok(attachmentStatus);
+
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    /**
-     * Получить ссылку на скачивание загруженного файла
-     *
-     * @param filename
-     * @param request
-     * @return
-     * @throws IOException
-     */
+    @Operation(
+            summary = "Передача файла по ссылке",
+            requestBody = @RequestBody(
+                    description = "Ссылка для загрузки",
+                    content = @Content(
+                            mediaType ="HttpServletRequest request",
+                            schema = @Schema(implementation = HttpServletRequest.class)
+                    )
+            )
+    )
     @GetMapping("/get/{filename:.+}")
     public ResponseEntity<Resource> serveFile(
             @PathVariable String filename, HttpServletRequest request)
@@ -58,6 +75,7 @@ public class AttachmentController {
         if (contentType == null) {
             contentType = "application/octet-stream";
         }
+        System.out.println(contentType);
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(contentType))
                 .header(

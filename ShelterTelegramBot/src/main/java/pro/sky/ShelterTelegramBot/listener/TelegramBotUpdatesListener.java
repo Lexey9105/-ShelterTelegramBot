@@ -10,7 +10,7 @@ import com.pengrad.telegrambot.response.SendResponse;
 
 import jakarta.annotation.PostConstruct;
 
-import org.apache.tomcat.util.net.NioEndpoint;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -51,8 +51,8 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     }
 
     /**
-     * Получает список обновлений от бота, отфильтровывает только текстовые сообщения
-     * и обрабатывает методом {@code processUpdate(Update update)}
+     * Получает список обновлений от бота, разделяет update по блокам  processUpdate(обработка сообщений от пользователя)
+     * и  responseButton(update) обработка клавиатуры
      *
      * @param updates - сообщения
      * @return
@@ -86,18 +86,20 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
         Long chatId = update.message().chat().id();
         String text = update.message().text();
-        if(text.substring(0,1).equals("@")){
-            saveClient(update);}
-        else{
-        String returnText = handleCommand(update, text);
-        SendMessage sendMessage = new SendMessage(chatId, returnText);
-        sendMessage(sendMessage);}
+        if (text.substring(0, 1).equals("@")) {
+            saveClient(update);
+        } else {
+            String returnText = handleCommand(update, text);
+            SendMessage sendMessage = new SendMessage(chatId, returnText);
+            sendMessage(sendMessage);
+        }
     }
 
     /**
      * Отправляет полученное сообщение обратно в чат
+     * <p>
+     * //     * @param chatId
      *
-//     * @param chatId
      * @param message
      */
     private void sendMessage(SendMessage message) {
@@ -116,37 +118,48 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private String handleCommand(Update update, String command) {
 
         switch (command) {
-             case START_COMMAND:
-                 sendShelterTypeSelectMessage(update);
-                 return SAY_HELLO;
-             case HELP_COMMAND:
-                 return ASK_HELP;
-             default:
-                 return "Передаю вопрос волонтерам";
+            case START_COMMAND:
+                sendShelterTypeSelectMessage(update);
+                return SAY_HELLO;
+            case HELP_COMMAND:
+                return ASK_HELP;
+            default:
+                return "Передаю вопрос волонтерам";
         }
     }
 
+    /**
+     * Метод обрабатывает сообщения от клавиатуры replyMarkup.Точка входа в InfoShelterCallbackQuery.Класс обработки кнопок клавиатуры
+     *
+     * @param update
+     * @return
+     */
     private void responseButton(Update update) {
         CallbackQuery callbackQuery = update.callbackQuery();
         long chatId = callbackQuery.message().chat().id();
-            switch (callbackQuery.data()) {
-                case "DOG_SHELTER_CALLBACK":
-                    // Dog shelter selected
-                    System.out.println(callbackQuery.data());
-                    SendMessage message1=new SendMessage(chatId,DOG_SHELTER_CALLBACK);
-                    sendMessage(message1.replyMarkup(infoShelterDogButtons()));
-                    break;
-                case "CAT_SHELTER_CALLBACK":
-                    // Cat shelter selected
-                    SendMessage message2=new SendMessage(chatId,CAT_SHELTER_CALLBACK);
-                    sendMessage(message2.replyMarkup(infoShelterCatButtons()));
+        switch (callbackQuery.data()) {
+            case "DOG_SHELTER_CALLBACK":
+                // Dog shelter selected
+                SendMessage message1 = new SendMessage(chatId, DOG_SHELTER_CALLBACK);
+                sendMessage(message1.replyMarkup(infoShelterDogButtons()));
+                break;
+            case "CAT_SHELTER_CALLBACK":
+                // Cat shelter selected
+                SendMessage message2 = new SendMessage(chatId, CAT_SHELTER_CALLBACK);
+                sendMessage(message2.replyMarkup(infoShelterCatButtons()));
 
-                    break;
-                default:
-                    infoShelterCallbackQuery.handlerSubMenuButton(update);
-            }
+                break;
+            default:
+                infoShelterCallbackQuery.handlerSubMenuButton(update);
+        }
     }
 
+    /**
+     * Метод для создания  клавиатуры  replyMarkup первого уровня с выбором питомника
+     *
+     * @param update
+     * @return
+     */
     private void sendShelterTypeSelectMessage(Update update) {
         Long chatId = update.message().chat().id();
         SendMessage message = new SendMessage(chatId, SHELTER_TYPE_SELECT_MSG_TEXT);
@@ -154,39 +167,25 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         sendMessage(message.replyMarkup(animalSelectionButtons()));
     }
 
-    private void sendButtonClickMessage(long chatId, String message) {
-        SendMessage messageGo=new SendMessage(chatId,message);
-        if(message.equals(CAT_SHELTER_CALLBACK)){
-            sendMessage(messageGo.replyMarkup(infoShelterCatButtons()));};
-        if(message.equals(DOG_SHELTER_CALLBACK)){
-            sendMessage(messageGo.replyMarkup(infoShelterDogButtons()));};
 
-    }
-
-    private void saveClient(Update update){
+    /**
+     * Метод для создания Client из сообщения update
+     *
+     * @param update
+     * @return
+     */
+    private void saveClient(Update update) {
         long chatId = update.message().chat().id();
         String text = update.message().text();
         String[] parts = text.split(",");
-        Client client=new Client(parts[0].substring(1),Integer.parseInt(parts[1]),Long.parseLong(parts[2]),parts[3]);
+        Client client = new Client(parts[0].substring(1), Integer.parseInt(parts[1]), Long.parseLong(parts[2]), parts[3]);
         clientService.create(client);
-        String test="контактные данные успешно полученны";
-        SendMessage sendMessage=new SendMessage(update.message().chat().id(),test);
+        String test = "контактные данные успешно полученны";
+        SendMessage sendMessage = new SendMessage(update.message().chat().id(), test);
         sendMessage(sendMessage);
-        }
+    }
 
-    //private void processStartCommand(Update update) {
-       // long chatId = update.message().chat().id();
-       // switch (shelterType) {
-           // case DOG:
-              //  sendStage0Message(chatId, DOG_SHELTER_WELCOME_MSG_TEXT);
-              //  break;
-          // case CAT:
-              //  sendStage0Message(chatId, CAT_SHELTER_WELCOME_MSG_TEXT);
-               // break;
-           // default:
-                //sendShelterTypeSelectMessage(chatId);
-        //}
-    //}
+
 }
 
 
