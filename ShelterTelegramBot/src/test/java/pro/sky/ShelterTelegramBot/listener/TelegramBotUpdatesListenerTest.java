@@ -19,7 +19,7 @@ import java.util.stream.Stream;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static pro.sky.ShelterTelegramBot.constants.Constants.DOWNLOAD_LINK;
+import static pro.sky.ShelterTelegramBot.constants.Constants.*;
 import static pro.sky.ShelterTelegramBot.constants.ConstantsTest.*;
 
 @SpringBootTest
@@ -33,18 +33,7 @@ public class TelegramBotUpdatesListenerTest {
 @Autowired
     private TelegramBotUpdatesListener telegramBotUpdatesListener;
 
-    static String DOG_SHELTER_CALLBACK="DOG_SHELTER_CALLBACK";
-    static String CAT_SHELTER_CALLBACK="CAT_SHELTER_CALLBACK";
-   static String WORK_SCHEDULE="021_WORK_SCHEDULE";
-    static String REGISTRATION_CARCat="021_REGISTRATION_CAR";
-    static String SAFETYCat="021_SAFETY";
-    static String CREATECat="021_CREATE";
-    static String CALLCat="021_CALL";
-    static String WORK_SCHEDULEDog="022_WORK_SCHEDULE";
-    static String REGISTRATION_CARDog="022_REGISTRATION_CAR";
-    static String SAFETYDog="022_SAFETY";
-    static String CREATEDog="022_CREATE";
-    static String CALLDog="022_CALL";
+
     public static Stream<Arguments> paramsForTest2() {
         return Stream.of(
                 Arguments.of(DOG_SHELTER_CALLBACK,DOG_SHELTER_CALLBACK),

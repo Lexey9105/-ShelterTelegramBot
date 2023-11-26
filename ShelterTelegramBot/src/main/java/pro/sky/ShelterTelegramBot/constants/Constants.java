@@ -1,8 +1,9 @@
 package pro.sky.ShelterTelegramBot.constants;
 
+import com.pengrad.telegrambot.model.Update;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
+
 import pro.sky.ShelterTelegramBot.model.Shelter;
 
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA;
@@ -12,7 +13,7 @@ import static pro.sky.ShelterTelegramBot.constants.ShelterType.DOG_SHELTER;
 /**
  * Константы
  */
-@Service
+
 public class Constants {
 
     public static final String SAY_HELLO = "Привет! Я бот для работы с приютами для собак и кошек. " +
@@ -29,8 +30,7 @@ public class Constants {
     public static final String ERROR = "Возникла ошибка, попробуйте еще раз";
 
     //1-й уровень кнопок
-    public final static String CAT_SHELTER_CALLBACK = "Приют для кошек";
-    public final static String DOG_SHELTER_CALLBACK = "Приют для собак";
+
     public final static String DOG_SHELTER_WELCOME_MSG_TEXT = "Вас приветствует приют для собак. Чем я могу Вам помочь?";
     public final static String CAT_SHELTER_WELCOME_MSG_TEXT = "Вас приветствует приют для кошек. Чем я могу Вам помочь?";
 
@@ -49,6 +49,27 @@ public class Constants {
     public  final static Shelter shelterDog=new Shelter("Dogs shelter",DOG_SHELTER,WORK_SCHEDULE_DOG,WORK_SCHEDULE_DOG,REGISTRATION_CAR_DOG);
     public final static String CREATE="Для регистрации в нашем приюте отправте контактые данные строго в формате:@Иван Иванов,21,89990001111,Москва Название улицы 9";
     public final static String CALLBACK="Наш волотер скоро с вами свяжется";
+
+    public final static String DOG_SHELTER_HELLO=":Добро пожаловать в мени питомника для собак";
+    public final static String CAT_SHELTER_HELLO="Добро пожаловать в мени питомника для кошек";
+
+
+
+    public final static String DOG_SHELTER_CALLBACK="DOG_SHELTER_CALLBACK";
+    public final static String CAT_SHELTER_CALLBACK="CAT_SHELTER_CALLBACK";
+    public final static String WORK_SCHEDULE="021_WORK_SCHEDULE";
+    public final static String REGISTRATION_CARCat="021_REGISTRATION_CAR";
+    public final static String SAFETYCat="021_SAFETY";
+    public final static String CREATECat="021_CREATE";
+    public final static String CALLCat="021_CALL";
+    public final static String WORK_SCHEDULEDog="022_WORK_SCHEDULE";
+    public final static String REGISTRATION_CARDog="022_REGISTRATION_CAR";
+    public final static String SAFETYDog="022_SAFETY";
+    public final static String CREATEDog="022_CREATE";
+    public final static String CALLDog="022_CALL";
+
+    public final static Long CHAT_ID=332L;
+
 
 
 

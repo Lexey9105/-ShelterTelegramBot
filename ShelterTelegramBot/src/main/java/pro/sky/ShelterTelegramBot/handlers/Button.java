@@ -3,6 +3,8 @@ package pro.sky.ShelterTelegramBot.handlers;
 import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
 import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 
+import static pro.sky.ShelterTelegramBot.constants.Constants.*;
+
 public class Button {
 
     public static InlineKeyboardMarkup animalSelectionButtons() {
@@ -10,9 +12,9 @@ public class Button {
         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
 
         InlineKeyboardButton catButton = new InlineKeyboardButton("Приют кошек").
-                callbackData("CAT_SHELTER_CALLBACK");
+                callbackData(CAT_SHELTER_CALLBACK);
         InlineKeyboardButton dogButton = new InlineKeyboardButton("Приют собак").
-                callbackData("DOG_SHELTER_CALLBACK");
+                callbackData(DOG_SHELTER_CALLBACK);
 
         markupInline.addRow(catButton);
         markupInline.addRow(dogButton);
@@ -23,15 +25,15 @@ public class Button {
     public static InlineKeyboardMarkup infoShelterCatButtons(){
         InlineKeyboardMarkup markupShelterCat = new InlineKeyboardMarkup();
         InlineKeyboardButton workScheduleButton = new InlineKeyboardButton("Расписание работы").
-                callbackData("021_WORK_SCHEDULE");
+                callbackData(WORK_SCHEDULE);
         InlineKeyboardButton carPassButton = new InlineKeyboardButton("Оформление пропуска на машину").
-                callbackData("021_REGISTRATION_CAR");
+                callbackData(REGISTRATION_CARCat);
         InlineKeyboardButton safetyButton = new InlineKeyboardButton("Техника безопасности на территории приюта").
-                callbackData("021_SAFETY");
+                callbackData(SAFETYCat);
         InlineKeyboardButton createButton = new InlineKeyboardButton("Отправить контактные данные").
-                callbackData("021_CREATE");
+                callbackData(CREATECat);
         InlineKeyboardButton callButton = new InlineKeyboardButton("Позвать волонтера").
-                callbackData("021_CALL");
+                callbackData(CALLCat);
         markupShelterCat.addRow(workScheduleButton);
         markupShelterCat.addRow(carPassButton);
         markupShelterCat.addRow(safetyButton);
@@ -45,15 +47,15 @@ public class Button {
     public static InlineKeyboardMarkup infoShelterDogButtons(){
         InlineKeyboardMarkup markupShelterDog = new InlineKeyboardMarkup();
         InlineKeyboardButton workScheduleButton = new InlineKeyboardButton("Расписание работы").
-                callbackData("022_WORK_SCHEDULE");
+                callbackData(WORK_SCHEDULEDog);
         InlineKeyboardButton carPassButton = new InlineKeyboardButton("Оформление пропуска на машину").
-                callbackData("022_REGISTRATION_CAR");
+                callbackData(REGISTRATION_CARDog);
         InlineKeyboardButton safetyButton = new InlineKeyboardButton("Техника безопасности на территории приюта").
-                callbackData("022_SAFETY");
+                callbackData(SAFETYDog);
         InlineKeyboardButton createButton = new InlineKeyboardButton("Отправить контактные данные").
-                callbackData("022_CREATE");
+                callbackData(CREATEDog);
         InlineKeyboardButton callButton = new InlineKeyboardButton("Позвать волонтера").
-                callbackData("022_CALL");
+                callbackData(CALLDog);
         markupShelterDog.addRow(workScheduleButton);
         markupShelterDog.addRow(carPassButton);
         markupShelterDog.addRow(safetyButton);

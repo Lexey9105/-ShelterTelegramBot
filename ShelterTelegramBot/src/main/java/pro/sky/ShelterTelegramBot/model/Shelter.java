@@ -20,17 +20,19 @@ public class Shelter {
 
     @OneToMany(mappedBy = "shelter")
     private List<Pet> pets;
-@OneToMany(mappedBy = "shelter")
+    @OneToMany(mappedBy = "shelter")
     private List<Client> clients;
 
-public Shelter (){}
-public Shelter (String name,ShelterType shelterType,String address,String openingHours,String contactDetails){
-    this.name=name;
-    this.shelterType=shelterType;
-    this.address=address;
-    this.openingHours=openingHours;
-    this.contactDetails=contactDetails;
-}
+    public Shelter() {
+    }
+
+    public Shelter(String name, ShelterType shelterType, String address, String openingHours, String contactDetails) {
+        this.name = name;
+        this.shelterType = shelterType;
+        this.address = address;
+        this.openingHours = openingHours;
+        this.contactDetails = contactDetails;
+    }
 
     public long getId() {
         return id;

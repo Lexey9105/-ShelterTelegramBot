@@ -32,23 +32,23 @@ public class InfoShelterCallbackQuery {
         CallbackQuery callbackQuery = update.callbackQuery();
         long chatId = callbackQuery.message().chat().id();
         switch (callbackQuery.data()) {
-            case "021_WORK_SCHEDULE":
+            case WORK_SCHEDULE:
                 SendMessage sendMessage = new SendMessage(chatId, shelterCat.getAddress());
                 SendResponse response = telegramBot.execute(sendMessage);
                 break;
-            case "021_REGISTRATION_CAR":
+            case REGISTRATION_CARCat:
                 SendMessage sendMessage2 = new SendMessage(chatId, shelterCat.getContactDetails());
                 SendResponse response2 = telegramBot.execute(sendMessage2);
                 break;
-            case "021_SAFETY":
+            case SAFETYCat:
                 SendMessage sendMessage3 = new SendMessage(chatId, DOWNLOAD_LINK + "01.docx");
                 SendResponse response3 = telegramBot.execute(sendMessage3);
                 break;
-            case "021_CREATE":
+            case CREATECat:
                 SendMessage sendMessage4 = new SendMessage(chatId, CREATE);
                 SendResponse response4 = telegramBot.execute(sendMessage4);
                 break;
-            case "021_CALL":
+            case CALLCat:
                 SendMessage sendMessage5 = new SendMessage(chatId, CALLBACK);
                 SendResponse response5 = telegramBot.execute(sendMessage5);
                 break;
@@ -65,23 +65,23 @@ public class InfoShelterCallbackQuery {
         CallbackQuery callbackQuery = update.callbackQuery();
         long chatId = callbackQuery.message().chat().id();
         switch (callbackQuery.data()) {
-            case "022_WORK_SCHEDULE":
+            case WORK_SCHEDULEDog:
                 SendMessage sendMessage = new SendMessage(chatId, shelterDog.getAddress());
                 SendResponse response = telegramBot.execute(sendMessage);
                 break;
-            case "022_REGISTRATION_CAR":
+            case REGISTRATION_CARDog:
                 SendMessage sendMessage2 = new SendMessage(chatId, shelterDog.getContactDetails());
                 SendResponse response2 = telegramBot.execute(sendMessage2);
                 break;
-            case "022_SAFETY":
+            case SAFETYDog:
                 SendMessage sendMessage3 = new SendMessage(chatId, DOWNLOAD_LINK + "01");
                 SendResponse response3 = telegramBot.execute(sendMessage3);
                 break;
-            case "022_CREATE":
+            case CREATEDog:
                 SendMessage sendMessage4 = new SendMessage(chatId, CREATE);
                 SendResponse response4 = telegramBot.execute(sendMessage4);
                 break;
-            case "022_CALL":
+            case CALLDog:
                 SendMessage sendMessage5 = new SendMessage(chatId, CALLBACK);
                 SendResponse response5 = telegramBot.execute(sendMessage5);
                 break;

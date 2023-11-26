@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import pro.sky.ShelterTelegramBot.handlers.CallbackQuery.InfoShelterCallbackQuery;
 import pro.sky.ShelterTelegramBot.model.Client;
 import pro.sky.ShelterTelegramBot.service.ClientService;
-
+import static pro.sky.ShelterTelegramBot.constants.Constants.DOG_SHELTER_CALLBACK;
 import static pro.sky.ShelterTelegramBot.constants.Constants.*;
 import static pro.sky.ShelterTelegramBot.handlers.Button.*;
 
@@ -138,14 +138,14 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         CallbackQuery callbackQuery = update.callbackQuery();
         long chatId = callbackQuery.message().chat().id();
         switch (callbackQuery.data()) {
-            case "DOG_SHELTER_CALLBACK":
+            case DOG_SHELTER_CALLBACK:
                 // Dog shelter selected
-                SendMessage message1 = new SendMessage(chatId, DOG_SHELTER_CALLBACK);
+                SendMessage message1 = new SendMessage(chatId, DOG_SHELTER_HELLO);
                 sendMessage(message1.replyMarkup(infoShelterDogButtons()));
                 break;
-            case "CAT_SHELTER_CALLBACK":
+            case CAT_SHELTER_CALLBACK:
                 // Cat shelter selected
-                SendMessage message2 = new SendMessage(chatId, CAT_SHELTER_CALLBACK);
+                SendMessage message2 = new SendMessage(chatId, CAT_SHELTER_HELLO);
                 sendMessage(message2.replyMarkup(infoShelterCatButtons()));
 
                 break;
