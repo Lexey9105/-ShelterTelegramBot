@@ -7,5 +7,4 @@ import pro.sky.ShelterTelegramBot.model.Attachment;
 @Repository
 public interface AttachmentRepository extends JpaRepository<Attachment, Long> {
 
-
 }

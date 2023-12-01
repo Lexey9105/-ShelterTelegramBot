@@ -47,8 +47,10 @@ public class Constants {
 
     public  final static Shelter shelterCat=new Shelter("Cats shelter",CAT_SHELTER,WORK_SCHEDULE_CAT,WORK_SCHEDULE_CAT,REGISTRATION_CAR_CAT);
     public  final static Shelter shelterDog=new Shelter("Dogs shelter",DOG_SHELTER,WORK_SCHEDULE_DOG,WORK_SCHEDULE_DOG,REGISTRATION_CAR_DOG);
-    public final static String CREATE="Для регистрации в нашем приюте отправте контактые данные строго в формате:@Иван Иванов,21,89990001111,Москва Название улицы 9";
-    public final static String CALLBACK="Наш волотер скоро с вами свяжется";
+    public final static String CREATE="Для регистрации в нашем приюте отправте контактые данные строго в формате:@Иван Иванов,21,999-000-11-11,Москва Название улицы 9";
+    public final static String CALLBACK="@lexpav21";
+
+    public final static String Close_Question="Close_Question";
 
     public final static String DOG_SHELTER_HELLO=":Добро пожаловать в мени питомника для собак";
     public final static String CAT_SHELTER_HELLO="Добро пожаловать в мени питомника для кошек";

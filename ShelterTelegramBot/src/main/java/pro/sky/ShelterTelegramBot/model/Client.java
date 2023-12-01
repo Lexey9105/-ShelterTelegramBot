@@ -19,13 +19,16 @@ public class Client {
     @Column(name="age")
     private int age;
     @Column(name="telephone", nullable = false)
-    private Long telephone;
+    private String telephone;
    @Column(name="address")
     private String address;
 
     @OneToOne
     @JoinColumn(name = "report_id")
     private Report report;
+    @OneToOne
+    @JoinColumn(name = "Client_Status_id")
+    private ClientStatus clientStatus;
     @OneToMany(mappedBy = "client")
     private List<Attachment> attachments;
     @ManyToOne
@@ -37,20 +40,28 @@ public class Client {
     public Client() {
     }
 
-    public Client(String name, int age, Long telephone, String address) {
+    public Client(String name, int age, String telephone, String address) {
         this.name = name;
         this.age = age;
         this.telephone = telephone;
         this.address = address;
 
     }
-    public Client(Long id,String name, int age, Long telephone, String address) {
+    public Client(Long id,String name, int age, String telephone, String address) {
         this.id=id;
         this.name = name;
         this.age = age;
         this.telephone = telephone;
         this.address = address;
 
+    }
+
+    public ClientStatus getClientStatus() {
+        return clientStatus;
+    }
+
+    public void setClientStatus(ClientStatus clientStatus) {
+        this.clientStatus = clientStatus;
     }
 
     public Long getId() {
@@ -77,11 +88,11 @@ public class Client {
         this.age = age;
     }
 
-    public Long getTelephone() {
+    public String getTelephone() {
         return telephone;
     }
 
-    public void setTelephone(Long telephone) {
+    public void setTelephone(String telephone) {
         this.telephone = telephone;
     }
 
@@ -113,11 +124,11 @@ public class Client {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Client client = (Client) o;
-        return age == client.age && Objects.equals(telephone, client.telephone) && Objects.equals(id, client.id) && Objects.equals(name, client.name) && Objects.equals(address, client.address);
+        return age == client.age &&Objects.equals(clientStatus, client.clientStatus)&& Objects.equals(telephone, client.telephone) && Objects.equals(id, client.id) && Objects.equals(name, client.name) && Objects.equals(address, client.address);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, age, telephone, address);
+        return Objects.hash(id, name, age, telephone, address,clientStatus);
     }
 }

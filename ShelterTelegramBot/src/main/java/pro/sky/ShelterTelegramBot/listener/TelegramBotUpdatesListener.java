@@ -16,12 +16,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import pro.sky.ShelterTelegramBot.handlers.CallbackQuery.InfoShelterCallbackQuery;
 import pro.sky.ShelterTelegramBot.model.Client;
+import pro.sky.ShelterTelegramBot.model.ClientStatus;
+import pro.sky.ShelterTelegramBot.model.Volunteer;
 import pro.sky.ShelterTelegramBot.service.ClientService;
+import pro.sky.ShelterTelegramBot.service.ClientStatusService;
+import pro.sky.ShelterTelegramBot.service.VolunteerService;
+
 import static pro.sky.ShelterTelegramBot.constants.Constants.DOG_SHELTER_CALLBACK;
 import static pro.sky.ShelterTelegramBot.constants.Constants.*;
 import static pro.sky.ShelterTelegramBot.handlers.Button.*;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Сервис отвечает за обработку и отправку сообщений в Telegram бота
@@ -30,18 +38,24 @@ import java.util.List;
 public class TelegramBotUpdatesListener implements UpdatesListener {
 
     private Logger logger = LoggerFactory.getLogger(TelegramBotUpdatesListener.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TelegramBotUpdatesListener.class);
 
     private final TelegramBot telegramBot;
     private final ClientService clientService;
+    private final ClientStatusService clientStatusService;
+    private final VolunteerService volunteerService;
     private final InfoShelterCallbackQuery infoShelterCallbackQuery;
 
 
     private static final String START_COMMAND = "/start";
     private static final String HELP_COMMAND = "/help";
+    Pattern pattern = Pattern.compile("\\d{3}-\\d{3}-\\d{2}-\\d{2}");
 
-    public TelegramBotUpdatesListener(TelegramBot telegramBot, ClientService clientService, InfoShelterCallbackQuery infoShelterCallbackQuery) {
+    public TelegramBotUpdatesListener(TelegramBot telegramBot, ClientService clientService,ClientStatusService clientStatusService,VolunteerService volunteerService, InfoShelterCallbackQuery infoShelterCallbackQuery) {
         this.telegramBot = telegramBot;
         this.clientService = clientService;
+        this.clientStatusService=clientStatusService;
+        this.volunteerService=volunteerService;
         this.infoShelterCallbackQuery = infoShelterCallbackQuery;
     }
 
@@ -64,7 +78,11 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 if (update.message() != null) {
                     processUpdate(update);
                 } else {
-                    responseButton(update);
+                    try {
+                        responseButton(update);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
 
                 }
             });
@@ -88,7 +106,9 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         String text = update.message().text();
         if (text.substring(0, 1).equals("@")) {
             saveClient(update);
-        } else {
+        } else if (text.substring(0, 1).equals("$")) {
+            saveVolunteer(update);}
+        else {
             String returnText = handleCommand(update, text);
             SendMessage sendMessage = new SendMessage(chatId, returnText);
             sendMessage(sendMessage);
@@ -124,7 +144,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
             case HELP_COMMAND:
                 return ASK_HELP;
             default:
-                return "Передаю вопрос волонтерам";
+                return "Если есть вопросы свяжитесь с волонтером с помощью кнопки вызова - Позвать волонтера";
         }
     }
 
@@ -134,7 +154,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
      * @param update
      * @return
      */
-    private void responseButton(Update update) {
+    private void responseButton(Update update) throws IOException {
         CallbackQuery callbackQuery = update.callbackQuery();
         long chatId = callbackQuery.message().chat().id();
         switch (callbackQuery.data()) {
@@ -178,14 +198,57 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         long chatId = update.message().chat().id();
         String text = update.message().text();
         String[] parts = text.split(",");
-        Client client = new Client(parts[0].substring(1), Integer.parseInt(parts[1]), Long.parseLong(parts[2]), parts[3]);
-        clientService.create(client);
-        String test = "контактные данные успешно полученны";
-        SendMessage sendMessage = new SendMessage(update.message().chat().id(), test);
-        sendMessage(sendMessage);
+        String nullName="zero";
+        Matcher matcher = pattern.matcher(parts[2]);
+        if (parts.length!=4){
+            String error = "Некоректный ввод данных для регистрации.";
+            SendMessage sendMessage = new SendMessage(update.message().chat().id(), error);
+            sendMessage(sendMessage);
+        }
+        else if(clientService.findByUserName(parts[0].substring(1)).getName().equals(parts[0].substring(1))){
+            String error = "Вы уже зарегистрированы.";
+            SendMessage sendMessage = new SendMessage(update.message().chat().id(), error);
+            sendMessage(sendMessage);
+        }
+
+        else if (matcher.matches()){
+            Client client = new Client(parts[0].substring(1), Integer.parseInt(parts[1]), "+7-"+parts[2], parts[3]);
+            clientService.create(client);
+            ClientStatus clientStatus=new ClientStatus(chatId,"Зарегистрирован",0,0);
+            clientStatusService.create(clientStatus);
+            clientService.updateWithClientStatus(client,clientStatus);
+            String test = "контактные данные успешно полученны";
+            SendMessage sendMessage = new SendMessage(update.message().chat().id(), test);
+            sendMessage(sendMessage);
+        }else{
+            String errorTel = "Некоректный формат телефона";
+            SendMessage sendMessage = new SendMessage(update.message().chat().id(), errorTel);
+            sendMessage(sendMessage);
+
+        }
+    }
+
+    private void saveVolunteer(Update update) {
+        String userName=update.message().from().username();
+        String nullName="zero";
+          if (volunteerService.findByUserName(userName).getUserName().equals(nullName)) {
+              Long id = volunteerService.getCount();
+              Volunteer volunteer = new Volunteer(id, userName, 0);
+              volunteerService.create(volunteer);
+              String welcome = "Вы успешно стали волонтером. Так как мы не реализовали функцию удления данных волонтера из приложения, Вы с нами надолго)))";
+              SendMessage sendMessage = new SendMessage(update.message().chat().id(), welcome);
+              sendMessage(sendMessage);
+          }
+
+       else {
+           String welcome = "Вы уже являетесь волонтером. P.S - функция удаления по прежнему отсуствует((.РАБотайте! ";
+           SendMessage sendMessage = new SendMessage(update.message().chat().id(), welcome);
+           sendMessage(sendMessage);}
+
+       }
     }
 
 
-}
+
 
 

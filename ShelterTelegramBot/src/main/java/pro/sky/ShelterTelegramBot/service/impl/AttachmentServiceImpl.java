@@ -75,5 +75,16 @@ public class AttachmentServiceImpl implements AttachmentService {
         Path filePath = fileStorageLocation.resolve(fileName).normalize();
         return new UrlResource(filePath.toUri());
     }
+@Override
+    public File loadFile (String fileName) throws IOException{
+    Path fileStorageLocation =
+            Paths.get(attachmentsDir.toAbsolutePath().toString()).toAbsolutePath().normalize();
+    Path filePath = fileStorageLocation.resolve(fileName).normalize();
+   String path=filePath.toString();
+    File f = new File(path);
+
+        return f;
+}
+
 
 }

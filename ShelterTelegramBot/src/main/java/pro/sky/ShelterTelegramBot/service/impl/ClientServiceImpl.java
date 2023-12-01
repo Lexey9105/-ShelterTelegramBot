@@ -6,7 +6,11 @@ import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import org.springframework.transaction.annotation.Transactional;
 import pro.sky.ShelterTelegramBot.model.Client;
+import pro.sky.ShelterTelegramBot.model.ClientStatus;
+import pro.sky.ShelterTelegramBot.model.Volunteer;
 import pro.sky.ShelterTelegramBot.repository.ClientRepository;
 import pro.sky.ShelterTelegramBot.service.ClientService;
 
@@ -79,5 +83,22 @@ public class ClientServiceImpl implements ClientService {
     public Collection<Client> findAll() {
         logger.info("findAllClient method has been invoked");
         return clientRepository.findAll();
+    }
+
+    @Override
+    public Client findByUserName(String userName) {
+        logger.info("findByStatus method has been invoked");
+        String nullName="zero";
+        return clientRepository.findAll().stream()
+                .filter(c->c.getName().equals(userName))
+                .findFirst().orElse(new Client(nullName,66,"666","4fff"));
+    }
+    @Override
+    @Transactional
+    public Client updateWithClientStatus(Client client, ClientStatus clientStatus) {
+        logger.info("createClient method has been invoked");
+clientStatus.setClient(client);
+client.setClientStatus(clientStatus);
+        return clientRepository.save(client);
     }
 }
