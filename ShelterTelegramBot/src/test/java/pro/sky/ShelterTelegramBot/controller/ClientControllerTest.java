@@ -27,15 +27,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-
-
-
 @WebMvcTest(ClientController.class)
 public class ClientControllerTest {
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     private MockMvc mockMvc;
-
 
 
     @MockBean
@@ -47,13 +43,11 @@ public class ClientControllerTest {
     private ClientController clientController;
 
 
-
-
     @Test
     public void createClient() throws Exception {
-         Long id=1L;
+        Long id = 1L;
 
-        Client client = new Client(id,"d",22,999L,"p");
+        Client client = new Client(id, "d", 22, "999", "p");
 
         JSONObject jsonClient = new JSONObject();
         when(clientRepository.save(any(Client.class))).thenReturn(client);
@@ -74,14 +68,14 @@ public class ClientControllerTest {
 
     @Test
     public void removeClient() throws Exception {
-        Long id=1L;
-        Client client = new Client(id,"d",22,999L,"p");
+        Long id = 1L;
+        Client client = new Client(id, "d", 22, "999", "p");
 
         when(clientRepository.findById(id)).thenReturn(Optional.of(client));
 
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/client/"+id)
+                        .delete("/client/" + id)
                         .content(id.toString())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -89,13 +83,13 @@ public class ClientControllerTest {
 
     @Test
     public void getClient() throws Exception {
-        Long id=1L;
-        Client client = new Client(id,"d",22,999L,"p");
+        Long id = 1L;
+        Client client = new Client(id, "d", 22, "999", "p");
 
         when(clientRepository.findById(id)).thenReturn(Optional.of(client));
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/client/"+id)
+                        .get("/client/" + id)
                         .content(id.toString())
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());

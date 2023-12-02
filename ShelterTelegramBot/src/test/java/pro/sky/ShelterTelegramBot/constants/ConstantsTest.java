@@ -1,16 +1,10 @@
 package pro.sky.ShelterTelegramBot.constants;
 
 import com.pengrad.telegrambot.model.Update;
-import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.stereotype.Service;
-import pro.sky.ShelterTelegramBot.model.Attachment;
-import pro.sky.ShelterTelegramBot.model.Client;
-import pro.sky.ShelterTelegramBot.model.Shelter;
-import pro.sky.ShelterTelegramBot.urils.BotTestUtils;
+import pro.sky.ShelterTelegramBot.utils.BotTestUtils;
 
 import static pro.sky.ShelterTelegramBot.constants.Constants.*;
-import static pro.sky.ShelterTelegramBot.constants.ShelterType.CAT_SHELTER;
-import static pro.sky.ShelterTelegramBot.constants.ShelterType.DOG_SHELTER;
 
 /**
  * Константы для тестирования

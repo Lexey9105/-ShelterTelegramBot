@@ -1,4 +1,4 @@
-package pro.sky.ShelterTelegramBot.urils;
+package pro.sky.ShelterTelegramBot.utils;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
@@ -7,8 +7,6 @@ import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import com.pengrad.telegrambot.response.SendResponse;
-import org.mockito.ArgumentCaptor;
 
 import java.util.List;
 
