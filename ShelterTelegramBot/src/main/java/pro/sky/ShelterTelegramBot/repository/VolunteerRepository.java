@@ -11,5 +11,6 @@ import java.util.Collection;
 public interface VolunteerRepository extends JpaRepository<Volunteer, Long> {
 
     Collection<Volunteer> findVolunteersByStatusBetween(int startStatus, int finalStatus);
-   Volunteer findVolunteerByUserName(String userName);
+
+    Volunteer findVolunteerByUserName(String userName);
 }

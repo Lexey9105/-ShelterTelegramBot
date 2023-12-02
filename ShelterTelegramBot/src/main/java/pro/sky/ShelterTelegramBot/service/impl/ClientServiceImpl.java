@@ -18,7 +18,6 @@ import java.util.Collection;
 import java.util.Optional;
 
 
-
 @Service
 public class ClientServiceImpl implements ClientService {
 
@@ -63,7 +62,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public Client get(Long id) {
-        logger.info("deleteClient method has been invoked");
+        logger.info("getClient method has been invoked");
         Optional<Client> client = clientRepository.findById(id);
         if (client.isPresent()) {
             return client.get();
@@ -88,17 +87,18 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public Client findByUserName(String userName) {
         logger.info("findByStatus method has been invoked");
-        String nullName="zero";
+        String nullName = "zero";
         return clientRepository.findAll().stream()
-                .filter(c->c.getName().equals(userName))
-                .findFirst().orElse(new Client(nullName,66,"666","4fff"));
+                .filter(c -> c.getName().equals(userName))
+                .findFirst().orElse(new Client(nullName, 66, "666", "4fff"));
     }
+
     @Override
     @Transactional
     public Client updateWithClientStatus(Client client, ClientStatus clientStatus) {
         logger.info("createClient method has been invoked");
-clientStatus.setClient(client);
-client.setClientStatus(clientStatus);
+        clientStatus.setClient(client);
+        client.setClientStatus(clientStatus);
         return clientRepository.save(client);
     }
 }

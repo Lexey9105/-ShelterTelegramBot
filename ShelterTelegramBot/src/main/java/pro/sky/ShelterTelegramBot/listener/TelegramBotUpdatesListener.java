@@ -51,11 +51,11 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private static final String HELP_COMMAND = "/help";
     Pattern pattern = Pattern.compile("\\d{3}-\\d{3}-\\d{2}-\\d{2}");
 
-    public TelegramBotUpdatesListener(TelegramBot telegramBot, ClientService clientService,ClientStatusService clientStatusService,VolunteerService volunteerService, InfoShelterCallbackQuery infoShelterCallbackQuery) {
+    public TelegramBotUpdatesListener(TelegramBot telegramBot, ClientService clientService, ClientStatusService clientStatusService, VolunteerService volunteerService, InfoShelterCallbackQuery infoShelterCallbackQuery) {
         this.telegramBot = telegramBot;
         this.clientService = clientService;
-        this.clientStatusService=clientStatusService;
-        this.volunteerService=volunteerService;
+        this.clientStatusService = clientStatusService;
+        this.volunteerService = volunteerService;
         this.infoShelterCallbackQuery = infoShelterCallbackQuery;
     }
 
@@ -107,8 +107,8 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         if (text.substring(0, 1).equals("@")) {
             saveClient(update);
         } else if (text.substring(0, 1).equals("$")) {
-            saveVolunteer(update);}
-        else {
+            saveVolunteer(update);
+        } else {
             String returnText = handleCommand(update, text);
             SendMessage sendMessage = new SendMessage(chatId, returnText);
             sendMessage(sendMessage);
@@ -198,29 +198,26 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         long chatId = update.message().chat().id();
         String text = update.message().text();
         String[] parts = text.split(",");
-        String nullName="zero";
+        String nullName = "zero";
         Matcher matcher = pattern.matcher(parts[2]);
-        if (parts.length!=4){
+        if (parts.length != 4) {
             String error = "Некоректный ввод данных для регистрации.";
             SendMessage sendMessage = new SendMessage(update.message().chat().id(), error);
             sendMessage(sendMessage);
-        }
-        else if(clientService.findByUserName(parts[0].substring(1)).getName().equals(parts[0].substring(1))){
+        } else if (clientService.findByUserName(parts[0].substring(1)).getName().equals(parts[0].substring(1))) {
             String error = "Вы уже зарегистрированы.";
             SendMessage sendMessage = new SendMessage(update.message().chat().id(), error);
             sendMessage(sendMessage);
-        }
-
-        else if (matcher.matches()){
-            Client client = new Client(parts[0].substring(1), Integer.parseInt(parts[1]), "+7-"+parts[2], parts[3]);
+        } else if (matcher.matches()) {
+            Client client = new Client(parts[0].substring(1), Integer.parseInt(parts[1]), "+7-" + parts[2], parts[3]);
             clientService.create(client);
-            ClientStatus clientStatus=new ClientStatus(chatId,"Зарегистрирован",0,0);
+            ClientStatus clientStatus = new ClientStatus(chatId, "Зарегистрирован", 0, 0);
             clientStatusService.create(clientStatus);
-            clientService.updateWithClientStatus(client,clientStatus);
+            clientService.updateWithClientStatus(client, clientStatus);
             String test = "контактные данные успешно полученны";
             SendMessage sendMessage = new SendMessage(update.message().chat().id(), test);
             sendMessage(sendMessage);
-        }else{
+        } else {
             String errorTel = "Некоректный формат телефона";
             SendMessage sendMessage = new SendMessage(update.message().chat().id(), errorTel);
             sendMessage(sendMessage);
@@ -229,24 +226,23 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     }
 
     private void saveVolunteer(Update update) {
-        String userName=update.message().from().username();
-        String nullName="zero";
-          if (volunteerService.findByUserName(userName).getUserName().equals(nullName)) {
-              Long id = volunteerService.getCount();
-              Volunteer volunteer = new Volunteer(id, userName, 0);
-              volunteerService.create(volunteer);
-              String welcome = "Вы успешно стали волонтером. Так как мы не реализовали функцию удления данных волонтера из приложения, Вы с нами надолго)))";
-              SendMessage sendMessage = new SendMessage(update.message().chat().id(), welcome);
-              sendMessage(sendMessage);
-          }
+        String userName = update.message().from().username();
+        String nullName = "zero";
+        if (volunteerService.findByUserName(userName).getUserName().equals(nullName)) {
+            Long id = volunteerService.getCount();
+            Volunteer volunteer = new Volunteer(id, userName, 0);
+            volunteerService.create(volunteer);
+            String welcome = "Вы успешно стали волонтером. Так как мы не реализовали функцию удления данных волонтера из приложения, Вы с нами надолго)))";
+            SendMessage sendMessage = new SendMessage(update.message().chat().id(), welcome);
+            sendMessage(sendMessage);
+        } else {
+            String welcome = "Вы уже являетесь волонтером. P.S - функция удаления по прежнему отсуствует((.РАБотайте! ";
+            SendMessage sendMessage = new SendMessage(update.message().chat().id(), welcome);
+            sendMessage(sendMessage);
+        }
 
-       else {
-           String welcome = "Вы уже являетесь волонтером. P.S - функция удаления по прежнему отсуствует((.РАБотайте! ";
-           SendMessage sendMessage = new SendMessage(update.message().chat().id(), welcome);
-           sendMessage(sendMessage);}
-
-       }
     }
+}
 
 
 

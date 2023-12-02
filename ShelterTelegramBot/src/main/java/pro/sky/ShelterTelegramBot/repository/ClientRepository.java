@@ -8,6 +8,6 @@ import pro.sky.ShelterTelegramBot.model.Volunteer;
 @Repository
 public interface ClientRepository extends JpaRepository<Client, Long> {
 
-    Client findVolunteerByName(String Name);
+    Client findUserByName(String Name);
 
 }

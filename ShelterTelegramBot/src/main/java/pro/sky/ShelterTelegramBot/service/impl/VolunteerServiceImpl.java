@@ -13,12 +13,13 @@ import pro.sky.ShelterTelegramBot.service.VolunteerService;
 
 import java.util.Collection;
 import java.util.Optional;
+
 @Service
 public class VolunteerServiceImpl implements VolunteerService {
 
     private Logger logger = LoggerFactory.getLogger(VolunteerService.class);
     private final VolunteerRepository volunteerRepository;
-    private Long count=1L;
+    private Long count = 1L;
 
     public VolunteerServiceImpl(VolunteerRepository volunteerRepository) {
         this.volunteerRepository = volunteerRepository;
@@ -37,7 +38,7 @@ public class VolunteerServiceImpl implements VolunteerService {
         return volunteerRepository.save(volunteer);
     }
 
-    public Long getCount(){
+    public Long getCount() {
         return count;
     }
 
@@ -84,29 +85,30 @@ public class VolunteerServiceImpl implements VolunteerService {
         logger.info("findAllClient method has been invoked");
         return volunteerRepository.findAll();
     }
+
     @Override
     public Volunteer findByStatus(int startStatus, int finalStatus) {
         logger.info("findByStatus method has been invoked");
-        Volunteer volunteer=volunteerRepository.findVolunteersByStatusBetween(0,2).stream().findFirst().get();
-       volunteer.setStatus(volunteer.getStatus()+1);
+        Volunteer volunteer = volunteerRepository.findVolunteersByStatusBetween(0, 2).stream().findFirst().get();
+        volunteer.setStatus(volunteer.getStatus() + 1);
         return volunteer;
     }
 
     @Override
     public Volunteer closeStatus(String userName) {
         logger.info("findByStatus method has been invoked");
-        Volunteer volunteer=volunteerRepository.findVolunteerByUserName(userName);
-        volunteer.setStatus(volunteer.getStatus()-1);
+        Volunteer volunteer = volunteerRepository.findVolunteerByUserName(userName);
+        volunteer.setStatus(volunteer.getStatus() - 1);
         return volunteer;
     }
 
     @Override
     public Volunteer findByUserName(String userName) {
         logger.info("findByStatus method has been invoked");
-        String nullName="zero";
+        String nullName = "zero";
         return volunteerRepository.findAll().stream()
-                .filter(v->v.getUserName().equals(userName))
-                .findFirst().orElse(new Volunteer(getCount(),nullName,0));
+                .filter(v -> v.getUserName().equals(userName))
+                .findFirst().orElse(new Volunteer(getCount(), nullName, 0));
     }
 
 }
