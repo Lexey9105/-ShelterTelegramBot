@@ -12,15 +12,16 @@ import java.util.Objects;
 public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name = "id")
     private Long id;
-    @Column(name="name", nullable = false)
+    private Long chatId;
+    @Column(name = "name", nullable = false)
     private String name;
-    @Column(name="age")
+    @Column(name = "age")
     private int age;
-    @Column(name="telephone", nullable = false)
+    @Column(name = "telephone", nullable = false)
     private String telephone;
-   @Column(name="address")
+    @Column(name = "address")
     private String address;
 
     @OneToOne
@@ -47,13 +48,22 @@ public class Client {
         this.address = address;
 
     }
-    public Client(Long id,String name, int age, String telephone, String address) {
-        this.id=id;
+
+    public Client(Long chatId, String name, int age, String telephone, String address) {
+        this.chatId = chatId;
         this.name = name;
         this.age = age;
         this.telephone = telephone;
         this.address = address;
 
+    }
+
+    public Long getChatId() {
+        return chatId;
+    }
+
+    public void setChatId(Long chatId) {
+        this.chatId = chatId;
     }
 
     public ClientStatus getClientStatus() {
@@ -105,9 +115,6 @@ public class Client {
     }
 
 
-
-
-
     @Override
     public String toString() {
         return "Client{" +
@@ -124,11 +131,11 @@ public class Client {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Client client = (Client) o;
-        return age == client.age &&Objects.equals(clientStatus, client.clientStatus)&& Objects.equals(telephone, client.telephone) && Objects.equals(id, client.id) && Objects.equals(name, client.name) && Objects.equals(address, client.address);
+        return age == client.age && Objects.equals(id, client.id) && Objects.equals(chatId, client.chatId) && Objects.equals(name, client.name) && Objects.equals(telephone, client.telephone) && Objects.equals(address, client.address) && Objects.equals(report, client.report) && Objects.equals(clientStatus, client.clientStatus) && Objects.equals(attachments, client.attachments) && Objects.equals(shelter, client.shelter) && Objects.equals(pet, client.pet);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, age, telephone, address,clientStatus);
+        return Objects.hash(id, chatId, name, age, telephone, address, report, clientStatus, attachments, shelter, pet);
     }
 }

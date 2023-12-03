@@ -12,10 +12,11 @@ public interface ClientStatusService {
     ClientStatus delete(Long id);
 
     ClientStatus get(Long id);
+    ClientStatus registration(Long id);
 
     Collection<ClientStatus> findAll();
 
-   // int clickCat(int click);
-   // int clickDog(int click);
+    int clickCat(Long id,int click);
+    int clickDog(Long id,int click);
    // String interest(ClientStatus clientStatus);
 }

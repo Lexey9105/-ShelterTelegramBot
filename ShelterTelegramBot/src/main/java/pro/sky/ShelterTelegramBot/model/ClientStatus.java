@@ -9,6 +9,7 @@ public class ClientStatus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Long chatId;
     private String clientStatus;
     private int clickCounterCat;
     private int clickCounterDog;
@@ -16,15 +17,19 @@ public class ClientStatus {
     private Client client;
     public ClientStatus(){};
 
-    public ClientStatus(String clientStatus, int clickCounterCat, int clickCounterDog) {
+    public ClientStatus(Long chatId,String clientStatus, int clickCounterCat, int clickCounterDog) {
+        this.chatId=chatId;
         this.clientStatus = clientStatus;
         this.clickCounterCat = clickCounterCat;
         this.clickCounterDog = clickCounterDog;
     }
-    public ClientStatus(Long id,String clientStatus, int clickCounterCat, int clickCounterDog) {
-        this.clientStatus = clientStatus;
-        this.clickCounterCat = clickCounterCat;
-        this.clickCounterDog = clickCounterDog;
+
+    public Long getChatId() {
+        return chatId;
+    }
+
+    public void setChatId(Long chatId) {
+        this.chatId = chatId;
     }
 
     public Client getClient() {
@@ -72,11 +77,11 @@ public class ClientStatus {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ClientStatus that = (ClientStatus) o;
-        return clickCounterCat == that.clickCounterCat && clickCounterDog == that.clickCounterDog &&Objects.equals(client, that.client)&& Objects.equals(id, that.id) && Objects.equals(clientStatus, that.clientStatus);
+        return clickCounterCat == that.clickCounterCat && clickCounterDog == that.clickCounterDog && Objects.equals(id, that.id) && Objects.equals(chatId, that.chatId) && Objects.equals(clientStatus, that.clientStatus) && Objects.equals(client, that.client);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, clientStatus, clickCounterCat, clickCounterDog,client);
+        return Objects.hash(id, chatId, clientStatus, clickCounterCat, clickCounterDog, client);
     }
 }

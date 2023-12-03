@@ -3,15 +3,13 @@ package pro.sky.ShelterTelegramBot.listener;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import pro.sky.ShelterTelegramBot.handlers.CallbackQuery.InfoShelterCallbackQuery;
+import pro.sky.ShelterTelegramBot.handlers.CallbackQuery.HandlerCallbackQuery;
 import pro.sky.ShelterTelegramBot.service.ClientService;
 import pro.sky.ShelterTelegramBot.urils.BotTestUtils;
 
@@ -27,7 +25,7 @@ public class TelegramBotUpdatesListenerTest {
     @MockBean
     private  TelegramBot telegramBot;
     @MockBean
-    private InfoShelterCallbackQuery infoShelterCallbackQuery;
+    private HandlerCallbackQuery handlerCallbackQuery;
     @MockBean
     private ClientService clientService;
 @Autowired

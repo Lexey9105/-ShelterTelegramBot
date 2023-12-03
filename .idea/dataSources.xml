@@ -8,7 +8,7 @@
       <jdbc-url>jdbc:postgresql://localhost:5432/ShelterTelegramBot_01</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="ShelterTelegramBot@localhost" uuid="8b2240bd-d49a-4bbe-90d5-001fe704a72c">
+    <data-source source="LOCAL" name="ShelterTelegramBot@localhost" uuid="f5c1b896-2df3-4e87-8b76-dbbd18d2bb42">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>

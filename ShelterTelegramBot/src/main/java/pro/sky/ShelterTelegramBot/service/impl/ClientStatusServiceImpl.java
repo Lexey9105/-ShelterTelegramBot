@@ -53,21 +53,35 @@ public class ClientStatusServiceImpl implements ClientStatusService {
             throw new EntityNotFoundException("Клиента с профайлом" + id + "id не существует");
         }
     }
+@Override
+    public ClientStatus registration(Long id){
+       String registrationStatus="Зарегистрирован";
+        ClientStatus clientStatus= clientStatusRepository.findClientStatusByChatId(id);
+         clientStatus.setClientStatus(registrationStatus);
+    clientStatusRepository.save(clientStatus);
+         return clientStatus;
+    }
 
     @Override
     public Collection<ClientStatus> findAll() {
         return clientStatusRepository.findAll();
     }
 
-   // @Override
-   // public int clickCat(int click) {
-       // return ;
-   // }
+    @Override
+    public int clickCat(Long id,int click) {
+        ClientStatus clientStatus= clientStatusRepository.findClientStatusByChatId(id);
+        clientStatus.setClickCounterCat(clientStatus.getClickCounterCat()+click);
+        clientStatusRepository.save(clientStatus);
+        return clientStatus.getClickCounterCat();
+    }
 
-   // @Override
-    //public int clickDog(int click) {
-       // return 0;
-    //}
+    @Override
+    public int clickDog(Long id,int click) {
+        ClientStatus clientStatus= clientStatusRepository.findClientStatusByChatId(id);
+        clientStatus.setClickCounterDog(clientStatus.getClickCounterDog()+click);
+        clientStatusRepository.save(clientStatus);
+        return clientStatus.getClickCounterDog();
+    }
 
     //@Override
     //public String interest(ClientStatus clientStatus) {
