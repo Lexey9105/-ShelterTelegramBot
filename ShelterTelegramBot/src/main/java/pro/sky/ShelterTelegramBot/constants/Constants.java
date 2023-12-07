@@ -35,10 +35,12 @@ public class Constants {
     public final static String CAT_SHELTER_WELCOME_MSG_TEXT = "Вас приветствует приют для кошек. Чем я могу Вам помочь?";
 
     //2-й уровень кнопок
-
+    public final static String CALL_MAIN_MENU_CAT="011";
+    public final static String CALL_MAIN_MENU_DOG="012";
     public final static String CALL_ID_SHELTER_INFORMATION_CAT_MENU="021";
     public final static String CALL_ID_SHELTER_INFORMATION_DOG_MENU="022";
-
+    public final static String CALL_Pet_MENU_CAT="031";
+    public final static String CALL_Pet_MENU_DOG="032";
     public final static String DOWNLOAD_LINK="Для скачивания файла перейдите по ссылке - http://localhost:8080/attachments/get/";
     public final static String WORK_SCHEDULE_CAT="Для получения информации по расположению и режиму работы перейдите по ссылке - https://yandex.ru/maps/org/murkosha/1807729764/?ll=37.151500%2C55.881819&source=serp_navig&z=9";
     public final static String REGISTRATION_CAR_CAT="Контакты охранника";
@@ -72,6 +74,46 @@ public class Constants {
 
     public final static Long CHAT_ID=332L;
 
+
+
+    public final static String  PetCatsList="031_PetCatsList";
+    public final static String  RulesDatingCat="031_RulesDatingCat";
+    public final static String  DocCat="031_DocCat";
+    public final static String  TransportOfCat="031_TransportOfCat";
+    public final static String  HomeCatsChild="031_HomeCatsChild";
+    public final static String  HomeCatsAdult="031_HomeCatsAdult";
+    public final static String  HomeCatsDisabilities="031_HomeCatsDisabilities";
+    public final static String  FailCats="031_FailCats";
+    public final static String CREATECats_31="031_CREATE";
+    public final static String CALLCats_31="031_CALL";
+
+
+
+    public final static String  PetDogList="032_PetDogList";
+    public final static String  RulesDatingDog="032_RulesDatingDog";
+    public final static String  DocDog="031_DocDog";
+    public final static String  TransportOfDog="032_TransportOfDog";
+    public final static String  HomeDogsChild="032_HomeDogsChild";
+    public final static String  HomeDogsAdult="032_HomeDogsAdult";
+    public final static String  HomeDogsDisabilities="032_HomeDogsDisabilities";
+    public final static String  DogHandlerFirstTime="032_DogHandlerFirstTime";
+    public final static String  DogHandlerRecommendation="032_DogHandlerRecommendation";
+    public final static String  FailDogs="032_FailDogs";
+    public final static String CREATEDogs_32="032_CREATE";
+    public final static String CALLDogs_32="032_CALL";
+
+
+    public final static String  DogShelterInfo="012_DogShelterInfo";
+    public final static String  DogsPetsInfo="012_DogsPetsInfo";
+    public final static String DogsControlService="012_DogsControlService";
+    public final static String CALLDogs_12="012_CALL";
+
+
+
+    public final static String  CatShelterInfo="011_CatShelterInfo";
+    public final static String  CatsPetsInfo="011_CatsPetsInfo";
+    public final static String CatsControlService="011_CatsControlService";
+    public final static String CALLCats_12="011_CALLCat";
 
 
 

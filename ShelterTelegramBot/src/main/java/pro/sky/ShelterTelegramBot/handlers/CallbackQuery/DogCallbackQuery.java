@@ -74,6 +74,81 @@ public class DogCallbackQuery {
                 SendMessage sendMessage5 = new SendMessage(chatId, volunteerName);
                 SendResponse response5 = telegramBot.execute(sendMessage5);
                 break;
+
+            case PetDogList:
+                //SendMessage sendMessage = new SendMessage(chatId, shelterCat.getAddress());
+                // SendResponse response = telegramBot.execute(sendMessage);
+                String forWork="Скоро тут будет красивый списочек с животными.Фотография животного, к ней прикреплен keyBoard(Будет создаваться для каждого питомца в методе класса petsService)";
+                SendMessage sendMessage6 = new SendMessage(chatId, forWork);
+                SendResponse response6 = telegramBot.execute(sendMessage6);
+                break;
+            case RulesDatingDog:
+                clientStatusService.clickDog(chatId,1);
+                SendDocument sendDoc2 =new SendDocument(chatId,attachmentService.loadFile("attach__021.docx"));
+                SendResponse response7 = telegramBot.execute(sendDoc2);
+                break;
+            case DocDog:
+                clientStatusService.clickDog(chatId,1);
+                SendDocument sendDoc3 =new SendDocument(chatId,attachmentService.loadFile("attach__022.docx"));
+                SendResponse response8 = telegramBot.execute(sendDoc3);
+                break;
+            case TransportOfDog:
+                clientStatusService.clickDog(chatId,1);
+                SendDocument sendDoc4 =new SendDocument(chatId,attachmentService.loadFile("attach__023.docx"));
+                SendResponse response9 = telegramBot.execute(sendDoc4);
+                break;
+
+            case HomeDogsChild:
+                clientStatusService.clickDog(chatId,1);
+                SendDocument sendDoc5 =new SendDocument(chatId,attachmentService.loadFile("attach__22_024.docx"));
+                SendResponse response10 = telegramBot.execute(sendDoc5);
+                break;
+            case HomeDogsAdult:
+                clientStatusService.clickDog(chatId,1);
+                SendDocument sendDoc6 =new SendDocument(chatId,attachmentService.loadFile("attach__22_025.docx"));
+                SendResponse response11 = telegramBot.execute(sendDoc6);
+                break;
+            case HomeDogsDisabilities:
+                clientStatusService.clickDog(chatId,1);
+                SendDocument sendDoc7 =new SendDocument(chatId,attachmentService.loadFile("attach__22_026.docx"));
+                SendResponse response12 = telegramBot.execute(sendDoc7);
+                break;
+            case DogHandlerFirstTime:
+                clientStatusService.clickDog(chatId,1);
+                SendDocument sendDoc8 =new SendDocument(chatId,attachmentService.loadFile("attach__22_027.docx"));
+                SendResponse response13 = telegramBot.execute(sendDoc8);
+                break;
+            case DogHandlerRecommendation:
+                clientStatusService.clickDog(chatId,1);
+                SendDocument sendDoc9 =new SendDocument(chatId,attachmentService.loadFile("attach__22_028.docx"));
+                SendResponse response14 = telegramBot.execute(sendDoc9);
+                break;
+            case FailDogs:
+                clientStatusService.clickDog(chatId,1);
+                SendDocument sendDoc10 =new SendDocument(chatId,attachmentService.loadFile("attach__22_029.docx"));
+                SendResponse response15 = telegramBot.execute(sendDoc10);
+                break;
+            case CREATEDogs_32:
+                clientStatusService.clickDog(chatId,4);
+                SendMessage sendMessage11 = new SendMessage(chatId, CREATE);
+                SendResponse response16 = telegramBot.execute(sendMessage11);
+                break;
+            case CALLDogs_32:
+                clientStatusService.clickDog(chatId,2);
+                Volunteer volunteer2= volunteerService.findByStatus(0,2);
+                String volunteerName2="@"+volunteer2.getUserName()+" -"+"ваш личный помошник. Готов помочь с любой проблемой)";
+                SendMessage sendMessage12 = new SendMessage(chatId, volunteerName2);
+                SendResponse response17 = telegramBot.execute(sendMessage12);
+                break;
+
+
+
+
+
+
+
+
+
         }
     }
 
