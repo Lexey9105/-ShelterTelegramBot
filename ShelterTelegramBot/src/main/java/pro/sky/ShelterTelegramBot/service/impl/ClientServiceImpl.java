@@ -8,13 +8,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
-import pro.sky.ShelterTelegramBot.model.Client;
-import pro.sky.ShelterTelegramBot.model.ClientStatus;
-import pro.sky.ShelterTelegramBot.model.Volunteer;
+import pro.sky.ShelterTelegramBot.model.*;
 import pro.sky.ShelterTelegramBot.repository.ClientRepository;
 import pro.sky.ShelterTelegramBot.service.ClientService;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -96,9 +96,46 @@ public class ClientServiceImpl implements ClientService {
     @Override
     @Transactional
     public Client updateWithClientStatus(Client client, ClientStatus clientStatus) {
-        logger.info("createClient method has been invoked");
+        logger.info("updateWithClientStatus method has been invoked");
 clientStatus.setClient(client);
 client.setClientStatus(clientStatus);
         return clientRepository.save(client);
     }
+    @Override
+    @Transactional
+    public Client updateWithReportStatus(Client client, ReportStatus reportStatus) {
+        logger.info("updateWithReportStatus method has been invoked");
+        reportStatus.setClient(client);
+        client.setReportStatus(reportStatus);
+        return clientRepository.save(client);
+    }
+    @Override
+    @Transactional
+    public Client createWithReport(Client client){
+        logger.info("createWithReport method has been invoked");
+        List<Report> reports=new ArrayList<>();
+        client.setReport(reports);
+        return clientRepository.save(client);
+    }
+    @Override
+    @Transactional
+    public Client updateWithReport(Client client, Report report) {
+        logger.info("updateWithReport method has been invoked");
+        client.getReport().add(report);
+        report.setClient(client);
+        client.setReport(client.getReport());
+        return clientRepository.save(client);
+    }
+    @Override
+    @Transactional
+    public Client updateWithReportBreach(Client client, ReportBreach reportBreach) {
+        logger.info("updateWithReportBreach method has been invoked");
+        reportBreach.setClient(client);
+        client.setReportBreach(reportBreach);
+        return clientRepository.save(client);
+    }
+
+
+
+
 }

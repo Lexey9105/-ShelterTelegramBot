@@ -1,5 +1,6 @@
 package pro.sky.ShelterTelegramBot.service.impl;
 
+
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,9 @@ import pro.sky.ShelterTelegramBot.service.VolunteerService;
 
 import java.util.Collection;
 import java.util.Optional;
+
+import static pro.sky.ShelterTelegramBot.constants.Constants.*;
+
 @Service
 public class ClientStatusServiceImpl implements ClientStatusService {
 
@@ -27,7 +31,15 @@ public class ClientStatusServiceImpl implements ClientStatusService {
 
 
     @Override
-    public ClientStatus create( ClientStatus clientStatus) {
+    public ClientStatus create( Long chatId) {
+        ClientStatus clientStatus=new ClientStatus(chatId,Guest_Status,0,0);
+        return clientStatusRepository.save(clientStatus);
+    }
+
+    @Override
+    public ClientStatus updateStatus(Long chatId,String status) {
+        ClientStatus clientStatus=clientStatusRepository.findClientStatusByChatId(chatId);
+        clientStatus.setClientStatus(status);
         return clientStatusRepository.save(clientStatus);
     }
 
@@ -53,18 +65,16 @@ public class ClientStatusServiceImpl implements ClientStatusService {
             throw new EntityNotFoundException("Клиента с профайлом" + id + "id не существует");
         }
     }
-@Override
-    public ClientStatus registration(Long id){
-       String registrationStatus="Зарегистрирован";
-        ClientStatus clientStatus= clientStatusRepository.findClientStatusByChatId(id);
-         clientStatus.setClientStatus(registrationStatus);
-    clientStatusRepository.save(clientStatus);
-         return clientStatus;
-    }
 
     @Override
     public Collection<ClientStatus> findAll() {
         return clientStatusRepository.findAll();
+    }
+
+    @Override
+    public ClientStatus findClient(Long chatId) {
+        ClientStatus clientStatus= clientStatusRepository.findClientStatusByChatId(chatId);
+        return clientStatus;
     }
 
     @Override

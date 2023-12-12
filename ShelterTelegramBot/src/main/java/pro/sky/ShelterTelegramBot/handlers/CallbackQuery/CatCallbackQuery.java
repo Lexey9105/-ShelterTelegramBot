@@ -11,9 +11,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import pro.sky.ShelterTelegramBot.listener.TelegramBotUpdatesListener;
+import pro.sky.ShelterTelegramBot.model.Client;
+import pro.sky.ShelterTelegramBot.model.Request;
 import pro.sky.ShelterTelegramBot.model.Volunteer;
 import pro.sky.ShelterTelegramBot.service.AttachmentService;
 import pro.sky.ShelterTelegramBot.service.ClientStatusService;
+import pro.sky.ShelterTelegramBot.service.RequestRepoService;
 import pro.sky.ShelterTelegramBot.service.VolunteerService;
 
 import java.io.IOException;
@@ -27,14 +30,16 @@ public class CatCallbackQuery {
     private final AttachmentService attachmentService;
     private final ClientStatusService clientStatusService;
     private final VolunteerService volunteerService;
+    private final RequestRepoService requestRepoService;
 
     private Logger logger = LoggerFactory.getLogger(TelegramBotUpdatesListener.class);
 
-    public CatCallbackQuery(TelegramBot telegramBot, AttachmentService attachmentService,ClientStatusService clientStatusService,VolunteerService volunteerService) {
+    public CatCallbackQuery(TelegramBot telegramBot, AttachmentService attachmentService,ClientStatusService clientStatusService,VolunteerService volunteerService,RequestRepoService requestRepoService) {
         this.telegramBot = telegramBot;
         this.attachmentService=attachmentService;
         this.clientStatusService=clientStatusService;
         this.volunteerService=volunteerService;
+        this.requestRepoService=requestRepoService;
     }
 
     /**
@@ -84,6 +89,10 @@ public class CatCallbackQuery {
             case PetCatsList:
                 //SendMessage sendMessage = new SendMessage(chatId, shelterCat.getAddress());
                 // SendResponse response = telegramBot.execute(sendMessage);
+                Client client=clientStatusService.findClient(chatId).getClient();
+                clientStatusService.updateStatus(chatId,Report_Status);
+                Request request=new Request(client.getName(),"заявка на усыновление");
+                requestRepoService.create(request);
                 String forWork="Скоро тут будет красивый списочек с животными.Фотография животного, к ней прикреплен keyBoard(Будет создаваться для каждого питомца в методе класса petsService)";
                 SendMessage sendMessage6 = new SendMessage(chatId, forWork);
                 SendResponse response6 = telegramBot.execute(sendMessage6);

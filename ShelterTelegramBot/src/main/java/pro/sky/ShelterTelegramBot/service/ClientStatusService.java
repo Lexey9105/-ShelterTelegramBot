@@ -1,20 +1,22 @@
 package pro.sky.ShelterTelegramBot.service;
 
-import ch.qos.logback.core.net.server.Client;
+
+import pro.sky.ShelterTelegramBot.model.Client;
 import pro.sky.ShelterTelegramBot.model.ClientStatus;
 
 import java.util.Collection;
 
 public interface ClientStatusService {
 
-    ClientStatus create(ClientStatus clientStatus);
+    ClientStatus create(Long chatId);
+    ClientStatus updateStatus(Long chatId,String status);
 
     ClientStatus delete(Long id);
 
     ClientStatus get(Long id);
-    ClientStatus registration(Long id);
 
     Collection<ClientStatus> findAll();
+    ClientStatus findClient(Long chatId);
 
     int clickCat(Long id,int click);
     int clickDog(Long id,int click);

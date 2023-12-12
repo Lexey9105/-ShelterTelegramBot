@@ -24,9 +24,14 @@ public class Client {
     @Column(name = "address")
     private String address;
 
+    @OneToMany(mappedBy = "client")
+    private List<Report> report;
     @OneToOne
-    @JoinColumn(name = "report_id")
-    private Report report;
+    @JoinColumn(name = "reportBreach_id")
+    private ReportBreach reportBreach;
+    @OneToOne
+    @JoinColumn(name = "reportStatus_id")
+    private ReportStatus reportStatus;
     @OneToOne
     @JoinColumn(name = "Client_Status_id")
     private ClientStatus clientStatus;
@@ -56,6 +61,55 @@ public class Client {
         this.telephone = telephone;
         this.address = address;
 
+    }
+
+
+    public List<Report> getReport() {
+        return report;
+    }
+
+    public void setReport(List<Report> report) {
+        this.report = report;
+    }
+
+    public ReportBreach getReportBreach() {
+        return reportBreach;
+    }
+
+    public void setReportBreach(ReportBreach reportBreach) {
+        this.reportBreach = reportBreach;
+    }
+
+    public ReportStatus getReportStatus() {
+        return reportStatus;
+    }
+
+    public void setReportStatus(ReportStatus reportStatus) {
+        this.reportStatus = reportStatus;
+    }
+
+    public List<Attachment> getAttachments() {
+        return attachments;
+    }
+
+    public void setAttachments(List<Attachment> attachments) {
+        this.attachments = attachments;
+    }
+
+    public Shelter getShelter() {
+        return shelter;
+    }
+
+    public void setShelter(Shelter shelter) {
+        this.shelter = shelter;
+    }
+
+    public List<Pet> getPet() {
+        return pet;
+    }
+
+    public void setPet(List<Pet> pet) {
+        this.pet = pet;
     }
 
     public Long getChatId() {
@@ -126,16 +180,5 @@ public class Client {
                 '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Client client = (Client) o;
-        return age == client.age && Objects.equals(id, client.id) && Objects.equals(chatId, client.chatId) && Objects.equals(name, client.name) && Objects.equals(telephone, client.telephone) && Objects.equals(address, client.address) && Objects.equals(report, client.report) && Objects.equals(clientStatus, client.clientStatus) && Objects.equals(attachments, client.attachments) && Objects.equals(shelter, client.shelter) && Objects.equals(pet, client.pet);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, chatId, name, age, telephone, address, report, clientStatus, attachments, shelter, pet);
-    }
 }

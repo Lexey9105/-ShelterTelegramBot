@@ -185,7 +185,17 @@ public class Button {
         return markupMenuCat;
     }
 
+    public static InlineKeyboardMarkup MenuVolunteerButtons() {
+        InlineKeyboardMarkup markupMenuCat = new InlineKeyboardMarkup();
+        InlineKeyboardButton VolunteerGetRequestButton = new InlineKeyboardButton("Получить запросы об усыновлении").
+                callbackData(Get_Request);
+        InlineKeyboardButton VolunteerGetReportButton = new InlineKeyboardButton("Получить отчеты об усыновлении").
+                callbackData(Get_Report);
+        markupMenuCat.addRow(VolunteerGetRequestButton);
+        markupMenuCat.addRow(VolunteerGetReportButton);
 
+        return markupMenuCat;
+    }
 
 
 }

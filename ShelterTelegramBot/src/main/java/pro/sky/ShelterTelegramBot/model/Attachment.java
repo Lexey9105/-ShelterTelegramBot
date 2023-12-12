@@ -21,11 +21,11 @@ public class Attachment {
     private String extension;
     @Column(name="DOWNLOAD_LINK")
     private String downloadLink;
-    @Column(name="QUEST",nullable = true)
-    private String quest;
     @ManyToOne()
     @JoinColumn(name = "client_id")
     private Client client;
+    @OneToOne(mappedBy = "attachment")
+    private Report report;
 
     public Attachment() {
     }
@@ -36,6 +36,22 @@ public class Attachment {
         this.uploadDate = uploadDate;
         this.extension = extension;
         this.downloadLink = downloadLink;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public Report getReport() {
+        return report;
+    }
+
+    public void setReport(Report report) {
+        this.report = report;
     }
 
     public Long getAttachId() {
@@ -94,11 +110,11 @@ public class Attachment {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Attachment that = (Attachment) o;
-        return Objects.equals(attachId, that.attachId) && Objects.equals(attachTitle, that.attachTitle) && Objects.equals(uploadDate, that.uploadDate) && Objects.equals(extension, that.extension) && Objects.equals(downloadLink, that.downloadLink);
+        return Objects.equals(attachId, that.attachId) && Objects.equals(attachTitle, that.attachTitle) && Objects.equals(uploadDate, that.uploadDate) && Objects.equals(extension, that.extension) && Objects.equals(downloadLink, that.downloadLink) && Objects.equals(client, that.client) && Objects.equals(report, that.report);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(attachId, attachTitle, uploadDate, extension, downloadLink);
+        return Objects.hash(attachId, attachTitle, uploadDate, extension, downloadLink, client, report);
     }
 }

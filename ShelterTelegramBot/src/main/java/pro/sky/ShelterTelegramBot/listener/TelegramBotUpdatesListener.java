@@ -20,6 +20,7 @@ import pro.sky.ShelterTelegramBot.model.Volunteer;
 import pro.sky.ShelterTelegramBot.service.ClientService;
 import pro.sky.ShelterTelegramBot.service.ClientStatusService;
 import pro.sky.ShelterTelegramBot.service.VolunteerService;
+import pro.sky.ShelterTelegramBot.utils.TelegramFileService;
 
 import static pro.sky.ShelterTelegramBot.constants.Constants.*;
 import static pro.sky.ShelterTelegramBot.handlers.Button.*;
@@ -41,6 +42,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private final TelegramBot telegramBot;
     private final MainMenuHandler mainMenuHandler;
     private final HandlerCallbackQuery handlerCallbackQuery;
+    private final TelegramFileService telegramFileService;
 
 
 
@@ -48,10 +50,11 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private static final String HELP_COMMAND = "/help";
     Pattern pattern = Pattern.compile("\\d{3}-\\d{3}-\\d{2}-\\d{2}");
 
-    public TelegramBotUpdatesListener(TelegramBot telegramBot,MainMenuHandler mainMenuHandler, HandlerCallbackQuery handlerCallbackQuery) {
+    public TelegramBotUpdatesListener(TelegramBot telegramBot,MainMenuHandler mainMenuHandler, HandlerCallbackQuery handlerCallbackQuery,TelegramFileService telegramFileService) {
         this.telegramBot = telegramBot;
         this.mainMenuHandler=mainMenuHandler;
         this.handlerCallbackQuery = handlerCallbackQuery;
+        this.telegramFileService=telegramFileService;
     }
 
     @PostConstruct
@@ -71,7 +74,11 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         try {
             updates.forEach(update -> {
                 if (update.message() != null) {
-                    mainMenuHandler.processUpdate(update);
+                    try {
+                        mainMenuHandler.processUpdate(update);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 } else {
                     try {
                         handlerCallbackQuery.responseButton(update);

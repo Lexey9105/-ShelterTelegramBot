@@ -21,6 +21,26 @@ public class Constants {
             "Кроме того, для тех кто заберет к себе домой животное, здесь нам будет удобно узнавать как поживает животное" +
             "Далее следуйте меню";
 
+    public static final String Guest_Status="Гость";
+    public static final String Registration_Status="Зарегистрирован";
+    public static final String Report_Status="На проверке";
+    public static final String ReadyToShip="готово к отправке";
+    public static final String NotPassed="Отчет не сдан";
+    public static final String Passed="Отчет  сдан";
+    public static final String Probation_Period_Status="На испытательном сроке";
+    public static final String Successfully_Status="Проверка пройдена";
+    public static final String Failed_Status="Проверка провалена";
+
+    public static final String Volunteer="000";
+    public static final String Request_CallBack="001";
+    public static final String Report_CallBack="002";
+
+
+    public static final String Get_Request="000_GetRequest";
+    public static final String Get_Report="000_GetReport";
+    public static final String Accept="Accept";
+    public static final String Deny="Deny";
+
 
     public static final String ASK_HELP = "Зовем волонтера";
 

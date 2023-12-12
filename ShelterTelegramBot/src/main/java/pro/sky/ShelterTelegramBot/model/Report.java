@@ -3,36 +3,31 @@ package pro.sky.ShelterTelegramBot.model;
 import jakarta.persistence.*;
 
 import java.util.Objects;
-
-
-/**
- * Хранение целочисленных данных по пропускам ещеждевного отчета в период 30 дней
- * totalPassesAttach и totalPassesQuest - общее колличество дней с отсуствующим отчетом
- * repoAttachDay-1,2,3 и repoQuestDay-1,2,3 -переменные для фиксации отсуствия отчета несколько дней подряд
- * attachDayRow и questDayRow - счетчики для фиксации отсуствия отчета несколько дней подряд
- */
 @Entity
 public class Report {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private int totalPassesAttach = 0;
-    private int totalPassesQuest = 0;
-    private int repoAttachDay1 = 0;
-    private int repoAttachDay2 = 0;
-    private int repoAttachDay3 = 0;
-    private int attachDayRow = 0;
-    private int repoQuestDay1 = 0;
-    private int repoQuestDay2 = 0;
-    private int repoQuestDay3 = 0;
-    private int questDayRow = 0;
+    private String LocalDateTime;
+    private int dayReport;
+    private String status;
+    private String textReport;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "report")
+    @ManyToOne
+    @JoinColumn(name="client_id")
     private Client client;
+    @OneToOne
+    @JoinColumn(name="attach_id")
+    private Attachment attachment;
 
-    public Report() {
+    public Report(){};
+
+    public Report(String localDateTime, int dayReport, String status) {
+        LocalDateTime = localDateTime;
+        this.dayReport = dayReport;
+        this.status = status;
     }
-
 
     public Long getId() {
         return id;
@@ -42,100 +37,64 @@ public class Report {
         this.id = id;
     }
 
-    public int getTotalPassesAttach() {
-        return totalPassesAttach;
+    public String getLocalDateTime() {
+        return LocalDateTime;
     }
 
-    public void setTotalPassesAttach(int totalPassesAttach) {
-        this.totalPassesAttach = totalPassesAttach;
+    public void setLocalDateTime(String localDateTime) {
+        LocalDateTime = localDateTime;
     }
 
-    public int getTotalPassesQuest() {
-        return totalPassesQuest;
+    public int getDayReport() {
+        return dayReport;
     }
 
-    public void setTotalPassesQuest(int totalPassesQuest) {
-        this.totalPassesQuest = totalPassesQuest;
+    public void setDayReport(int dayReport) {
+        this.dayReport = dayReport;
     }
 
-    public int getRepoAttachDay1() {
-        return repoAttachDay1;
+    public String getStatus() {
+        return status;
     }
 
-    public void setRepoAttachDay1(int repoAttachDay1) {
-        this.repoAttachDay1 = repoAttachDay1;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    public int getRepoAttachDay2() {
-        return repoAttachDay2;
+    public String getTextReport() {
+        return textReport;
     }
 
-    public void setRepoAttachDay2(int repoAttachDay2) {
-        this.repoAttachDay2 = repoAttachDay2;
+    public void setTextReport(String textReport) {
+        this.textReport = textReport;
     }
 
-    public int getRepoAttachDay3() {
-        return repoAttachDay3;
+    public Client getClient() {
+        return client;
     }
 
-    public void setRepoAttachDay3(int repoAttachDay3) {
-        this.repoAttachDay3 = repoAttachDay3;
+    public void setClient(Client client) {
+        this.client = client;
     }
 
-    public int getAttachDayRow() {
-        return attachDayRow;
+    public Attachment getAttachment() {
+        return attachment;
     }
 
-    public void setAttachDayRow(int attachDayRow) {
-        this.attachDayRow = attachDayRow;
-    }
-
-    public int getRepoQuestDay1() {
-        return repoQuestDay1;
-    }
-
-    public void setRepoQuestDay1(int repoQuestDay1) {
-        this.repoQuestDay1 = repoQuestDay1;
-    }
-
-    public int getRepoQuestDay2() {
-        return repoQuestDay2;
-    }
-
-    public void setRepoQuestDay2(int repoQuestDay2) {
-        this.repoQuestDay2 = repoQuestDay2;
-    }
-
-    public int getRepoQuestDay3() {
-        return repoQuestDay3;
-    }
-
-    public void setRepoQuestDay3(int repoQuestDay3) {
-        this.repoQuestDay3 = repoQuestDay3;
-    }
-
-    public int getQuestDayRow() {
-        return questDayRow;
-    }
-
-    public void setQuestDayRow(int questDayRow) {
-        this.questDayRow = questDayRow;
+    public void setAttachment(Attachment attachment) {
+        this.attachment = attachment;
     }
 
     @Override
     public String toString() {
         return "Report{" +
                 "id=" + id +
-                ", totalPassesAttach=" + totalPassesAttach +
-                ", totalPassesQuest=" + totalPassesQuest +
-                ", repoAttachDay1=" + repoAttachDay1 +
-                ", repoAttachDay2=" + repoAttachDay2 +
-                ", repoAttachDay3=" + repoAttachDay3 +
-                ", attachDayRow=" + attachDayRow +
-                ", repoQuestDay1=" + repoQuestDay1 +
-                ", repoQuestDay2=" + repoQuestDay2 +
-                ", repoQuestDay3=" + repoQuestDay3 +
-                ", QuestDayRow=" + questDayRow +
+                ", LocalDateTime='" + LocalDateTime + '\'' +
+                ", dayReport=" + dayReport +
+                ", status='" + status + '\'' +
+                ", textReport='" + textReport + '\'' +
+                ", clientRepo=" + client +
+                ", attachment=" + attachment +
                 '}';
     }
 
@@ -144,11 +103,11 @@ public class Report {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Report report = (Report) o;
-        return totalPassesAttach == report.totalPassesAttach && totalPassesQuest == report.totalPassesQuest && repoAttachDay1 == report.repoAttachDay1 && repoAttachDay2 == report.repoAttachDay2 && repoAttachDay3 == report.repoAttachDay3 && attachDayRow == report.attachDayRow && repoQuestDay1 == report.repoQuestDay1 && repoQuestDay2 == report.repoQuestDay2 && repoQuestDay3 == report.repoQuestDay3 && questDayRow == report.questDayRow && Objects.equals(id, report.id);
+        return dayReport == report.dayReport && Objects.equals(id, report.id) && Objects.equals(LocalDateTime, report.LocalDateTime) && Objects.equals(status, report.status) && Objects.equals(textReport, report.textReport) && Objects.equals(client, report.client) && Objects.equals(attachment, report.attachment);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, totalPassesAttach, totalPassesQuest, repoAttachDay1, repoAttachDay2, repoAttachDay3, attachDayRow, repoQuestDay1, repoQuestDay2, repoQuestDay3, questDayRow);
+        return Objects.hash(id, LocalDateTime, dayReport, status, textReport, client, attachment);
     }
 }
