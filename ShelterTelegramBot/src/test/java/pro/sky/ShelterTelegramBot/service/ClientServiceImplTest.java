@@ -89,10 +89,10 @@ public class ClientServiceImplTest {
         Client client = new Client(1L, "13333", 20, "9990001122", "fff");
 
 
-        Mockito.when(clientRepository.findUserByName(client.getName())).thenReturn(client);
+        Mockito.when(clientRepository.findClientByName(client.getName())).thenReturn(client);
 
 
-        Assert.assertEquals(client, clientRepository.findUserByName(client.getName()));
+        Assert.assertEquals(client, clientRepository.findClientByName(client.getName()));
     }
 
     @Test
@@ -105,7 +105,7 @@ public class ClientServiceImplTest {
     public void testUpdateWithClientStatus() {
         // Arrange
         Client client = new Client(1L, "13333", 20, "9990001122", "fff");
-        ClientStatus clientStatus = new ClientStatus("PPP",0,0);
+        ClientStatus clientStatus = new ClientStatus(1L,"PPP",0,0);
 
         when(clientRepository.save(client)).thenReturn(client);
 
