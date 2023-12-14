@@ -51,7 +51,6 @@ public class CatCallbackQuery {
         logger.info("method handlerCatButton is invoke");
         CallbackQuery callbackQuery = update.callbackQuery();
         long chatId = callbackQuery.message().chat().id();
-        String shelterAddress=attachmentService.loadFileAsResource("attach__00.jpg").getURL().toString();
 
         switch (callbackQuery.data()) {
             case WORK_SCHEDULE:
@@ -86,66 +85,76 @@ public class CatCallbackQuery {
                 SendResponse response5 = telegramBot.execute(sendMessage5);
                 break;
 
-            case PetCatsList:
-                //SendMessage sendMessage = new SendMessage(chatId, shelterCat.getAddress());
-                // SendResponse response = telegramBot.execute(sendMessage);
-                Client client=clientStatusService.findClient(chatId).getClient();
-                clientStatusService.updateStatus(chatId,Report_Status);
-                Request request=new Request(client.getName(),"заявка на усыновление");
-                requestRepoService.create(request);
-                String forWork="Скоро тут будет красивый списочек с животными.Фотография животного, к ней прикреплен keyBoard(Будет создаваться для каждого питомца в методе класса petsService)";
-                SendMessage sendMessage6 = new SendMessage(chatId, forWork);
-                SendResponse response6 = telegramBot.execute(sendMessage6);
-                break;
-            case RulesDatingCat:
-                clientStatusService.clickCat(chatId,1);
-                SendDocument sendDoc2 =new SendDocument(chatId,attachmentService.loadFile("attach__021.docx"));
-                SendResponse response7 = telegramBot.execute(sendDoc2);
-                break;
-            case DocCat:
-                clientStatusService.clickCat(chatId,1);
-                SendDocument sendDoc3 =new SendDocument(chatId,attachmentService.loadFile("attach__022.docx"));
-                SendResponse response8 = telegramBot.execute(sendDoc3);
-                break;
-            case TransportOfCat:
-                clientStatusService.clickCat(chatId,1);
-                SendDocument sendDoc4 =new SendDocument(chatId,attachmentService.loadFile("attach__023.docx"));
-                SendResponse response9 = telegramBot.execute(sendDoc4);
-                break;
-            case HomeCatsChild:
-                clientStatusService.clickCat(chatId,1);
-                SendDocument sendDoc5 =new SendDocument(chatId,attachmentService.loadFile("attach__21_024.docx"));
-                SendResponse response10 = telegramBot.execute(sendDoc5);
-                break;
-            case HomeCatsAdult:
-                clientStatusService.clickCat(chatId,1);
-                SendDocument sendDoc6 =new SendDocument(chatId,attachmentService.loadFile("attach__21_025.docx"));
-                SendResponse response11 = telegramBot.execute(sendDoc6);
-                break;
-            case HomeCatsDisabilities:
-                clientStatusService.clickCat(chatId,1);
-                SendDocument sendDoc7 =new SendDocument(chatId,attachmentService.loadFile("attach__21_026.docx"));
-                SendResponse response12 = telegramBot.execute(sendDoc7);
-                break;
-            case FailCats:
-                clientStatusService.clickCat(chatId,1);
-                SendDocument sendDoc8 =new SendDocument(chatId,attachmentService.loadFile("attach__21_027.docx"));
-                SendResponse response13 = telegramBot.execute(sendDoc8);
-                break;
-            case CREATECats_31:
-                clientStatusService.clickCat(chatId,4);
-                SendMessage sendMessage8 = new SendMessage(chatId, CREATE);
-                SendResponse response14 = telegramBot.execute(sendMessage8);
-                break;
-            case CALLCats_31:
-                clientStatusService.clickCat(chatId,2);
-                Volunteer volunteer2= volunteerService.findByStatus(0,2);
-                String volunteerName2="@"+volunteer2.getUserName()+" -"+"ваш личный помошник. Готов помочь с любой проблемой)";
-                SendMessage sendMessage9 = new SendMessage(chatId, volunteerName2);
-                SendResponse response15 = telegramBot.execute(sendMessage9);
-                break;
 
         }
+    }
+
+    public void infoPetsCatButton(Update update) throws IOException {
+        logger.info("method handlerCatButton is invoke");
+        CallbackQuery callbackQuery = update.callbackQuery();
+        long chatId = callbackQuery.message().chat().id();
+
+        switch (callbackQuery.data()) {
+
+        case PetCatsList:
+        //SendMessage sendMessage = new SendMessage(chatId, shelterCat.getAddress());
+        // SendResponse response = telegramBot.execute(sendMessage);
+        Client client = clientStatusService.findClient(chatId).getClient();
+        clientStatusService.updateStatus(chatId, Report_Status);
+        Request request = new Request(client.getName(), "заявка на усыновление");
+        requestRepoService.create(request);
+        String forWork = "Скоро тут будет красивый списочек с животными.Фотография животного, к ней прикреплен keyBoard(Будет создаваться для каждого питомца в методе класса petsService)";
+        SendMessage sendMessage6 = new SendMessage(chatId, forWork);
+        SendResponse response6 = telegramBot.execute(sendMessage6);
+        break;
+        case RulesDatingCat:
+        clientStatusService.clickCat(chatId, 1);
+        SendDocument sendDoc2 = new SendDocument(chatId, attachmentService.loadFile("attach__021.docx"));
+        SendResponse response7 = telegramBot.execute(sendDoc2);
+        break;
+        case DocCat:
+        clientStatusService.clickCat(chatId, 1);
+        SendDocument sendDoc3 = new SendDocument(chatId, attachmentService.loadFile("attach__022.docx"));
+        SendResponse response8 = telegramBot.execute(sendDoc3);
+        break;
+        case TransportOfCat:
+        clientStatusService.clickCat(chatId, 1);
+        SendDocument sendDoc4 = new SendDocument(chatId, attachmentService.loadFile("attach__023.docx"));
+        SendResponse response9 = telegramBot.execute(sendDoc4);
+        break;
+        case HomeCatsChild:
+        clientStatusService.clickCat(chatId, 1);
+        SendDocument sendDoc5 = new SendDocument(chatId, attachmentService.loadFile("attach__21_024.docx"));
+        SendResponse response10 = telegramBot.execute(sendDoc5);
+        break;
+        case HomeCatsAdult:
+        clientStatusService.clickCat(chatId, 1);
+        SendDocument sendDoc6 = new SendDocument(chatId, attachmentService.loadFile("attach__21_025.docx"));
+        SendResponse response11 = telegramBot.execute(sendDoc6);
+        break;
+        case HomeCatsDisabilities:
+        clientStatusService.clickCat(chatId, 1);
+        SendDocument sendDoc7 = new SendDocument(chatId, attachmentService.loadFile("attach__21_026.docx"));
+        SendResponse response12 = telegramBot.execute(sendDoc7);
+        break;
+        case FailCats:
+        clientStatusService.clickCat(chatId, 1);
+        SendDocument sendDoc8 = new SendDocument(chatId, attachmentService.loadFile("attach__21_027.docx"));
+        SendResponse response13 = telegramBot.execute(sendDoc8);
+        break;
+        case CREATECats_31:
+        clientStatusService.clickCat(chatId, 4);
+        SendMessage sendMessage8 = new SendMessage(chatId, CREATE);
+        SendResponse response14 = telegramBot.execute(sendMessage8);
+        break;
+        case CALLCats_31:
+        clientStatusService.clickCat(chatId, 2);
+        Volunteer volunteer2 = volunteerService.findByStatus(0, 2);
+        String volunteerName2 = "@" + volunteer2.getUserName() + " -" + "ваш личный помошник. Готов помочь с любой проблемой)";
+        SendMessage sendMessage9 = new SendMessage(chatId, volunteerName2);
+        SendResponse response15 = telegramBot.execute(sendMessage9);
+        break;
+    }
     }
 
 }

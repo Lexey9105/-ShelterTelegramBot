@@ -131,8 +131,7 @@ public class ControlServiceImpl implements ControlService {
                 return "Вы переведены на испытательный срок";
             } else if (reportBreach.getRepoAttachDay2() > 0 && report3.getStatus().equals(NotPassed) && reportStatus.getTotalDayReport() == 45) {
                 reportStatus.setMissingReportDays(reportStatus.getMissingReportDays() + Integer.toString(report.getDayReport()));
-                reportBreach.setRepoAttachDay1(0);
-                reportBreach.setRepoAttachDay2(0);
+                reportBreach.setRepoAttachDay3(1);
                 report.setStatus(NotPassed);
                 reportBreachService.update(reportBreach);
                 reportStatusService.update(reportStatus);
@@ -142,7 +141,8 @@ public class ControlServiceImpl implements ControlService {
                 return "Вы провалили проверку. К вам направлен волонтер для возвращения питомца на территорию приюта";
             } else if (reportBreach.getTotalPassesAttach() == 15 && reportStatus.getTotalDayReport() == 30) {
                 reportStatus.setMissingReportDays(reportStatus.getMissingReportDays() + Integer.toString(report.getDayReport()));
-                reportBreach.setRepoAttachDay3(1);
+                reportBreach.setRepoAttachDay1(0);
+                reportBreach.setRepoAttachDay2(0);
                 reportStatus.setTotalDayReport(reportStatus.getTotalDayReport() + 15);
                 report.setStatus(NotPassed);
                 reportBreachService.update(reportBreach);

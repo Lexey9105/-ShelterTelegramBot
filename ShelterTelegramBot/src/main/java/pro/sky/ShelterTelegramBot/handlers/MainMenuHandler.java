@@ -78,15 +78,15 @@ public class MainMenuHandler {
         String text = update.message().text();
 
        if(update.message().photo()!=null){telegramFileService.getLocalPathTelegramFile(update);}
-        else if (text.substring(0, 1).equals("@")) {
+        else if (text.charAt(0) == '@') {
             saveClient(update);
-        } else if (text.substring(0, 1).equals("$")) {
+        } else if (text.charAt(0) == '$') {
             saveVolunteer(update);}
        else if (text.equals(volunteerService.findByUserName(text).getUserName())) {
            String returnText = "Приятной работы "+text;
            SendMessage sendMessage = new SendMessage(chatId, returnText);
            send.sendMessage(sendMessage.replyMarkup(MenuVolunteerButtons()));
-           } else if (text.substring(0, 1).equals("&")) {
+           } else if (text.charAt(0) == '&') {
           String[] pars=text.split("_");
            controlService.hand(clientStatusService.findClient(chatId).getClient(),pars[1]);
 
