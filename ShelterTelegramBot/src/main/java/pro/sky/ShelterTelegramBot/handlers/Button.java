@@ -197,5 +197,21 @@ public class Button {
         return markupMenuCat;
     }
 
+    public static InlineKeyboardMarkup MenuReportButtons() {
+        InlineKeyboardMarkup markupMenuReport = new InlineKeyboardMarkup();
+        InlineKeyboardButton ReportInfoButton = new InlineKeyboardButton("Правила сдачи отчета").
+                callbackData(ReportInfo);
+        InlineKeyboardButton PetsPhotoButton = new InlineKeyboardButton("Отправить фото питмца").
+                callbackData(PetsPhoto);
+        InlineKeyboardButton ReportControlButton = new InlineKeyboardButton("Отправить отчет").
+                callbackData(ReportControl);
+        InlineKeyboardButton CALLButton = new InlineKeyboardButton("Позвать волонтера").
+                callbackData(CALL);
+        markupMenuReport.addRow(ReportInfoButton);
+        markupMenuReport.addRow(PetsPhotoButton);
+        markupMenuReport.addRow(ReportControlButton);
+        markupMenuReport.addRow(CALLButton);
 
+        return markupMenuReport;
+    }
 }

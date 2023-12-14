@@ -21,6 +21,12 @@ public class Constants {
             "Кроме того, для тех кто заберет к себе домой животное, здесь нам будет удобно узнавать как поживает животное" +
             "Далее следуйте меню";
 
+    public static final String ReportInfo="1984_ReportInfo";
+    public static final String PetsPhoto="1984_PetsPhoto";
+    public static final String ReportControl="1984_ReportControl";
+    public static final String CALL="1984_CALL";
+
+
     public static final String Guest_Status="Гость";
     public static final String Registration_Status="Зарегистрирован";
     public static final String Report_Status="На проверке";
@@ -69,7 +75,12 @@ public class Constants {
 
     public  final static Shelter shelterCat=new Shelter("Cats shelter",CAT_SHELTER,WORK_SCHEDULE_CAT,WORK_SCHEDULE_CAT,REGISTRATION_CAR_CAT);
     public  final static Shelter shelterDog=new Shelter("Dogs shelter",DOG_SHELTER,WORK_SCHEDULE_DOG,WORK_SCHEDULE_DOG,REGISTRATION_CAR_DOG);
-    public final static String CREATE="Для регистрации в нашем приюте отправте контактые данные строго в формате:@Иван Иванов,21,999-000-11-11,Москва Название улицы 9";
+    public final static String CREATE="Для регистрации в нашем приюте отправте контактые данные строго в формате:" +
+            "Иван Иванов,21,999-000-11-11,Москва Название улицы 9.Внимание если вы хотите отменить операцию, отправте боту сообщение -//zero.Иначе дальнейшая работа бота приведет к ошибке";
+    public final static String SendPhoto="Далее  отправьте фото боту стандартным способом, с прикрепленным сообщением -фото отчет.Внимание если вы хотите отменить операцию, отправте боту сообщение -//zero.Иначе дальнейшая работа бота приведет к ошибке";
+    public final static String SendReport="Далее  отправьте в сообщении боту текст с отчетом. Внимание если вы хотите отменить операцию, отправте боту сообщение -//zero.Иначе дальнейшая работа бота приведет к ошибке";
+    public final static String Zero_CallBack="//zero";
+    public final static String Zero_Massage="Операция отменена";
     public final static String CALLBACK="@lexpav21";
 
     public final static String Close_Question="Close_Question";

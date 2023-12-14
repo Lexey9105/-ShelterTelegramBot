@@ -11,13 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import pro.sky.ShelterTelegramBot.listener.TelegramBotUpdatesListener;
-import pro.sky.ShelterTelegramBot.model.Client;
-import pro.sky.ShelterTelegramBot.model.Request;
-import pro.sky.ShelterTelegramBot.model.Volunteer;
-import pro.sky.ShelterTelegramBot.service.AttachmentService;
-import pro.sky.ShelterTelegramBot.service.ClientStatusService;
-import pro.sky.ShelterTelegramBot.service.RequestRepoService;
-import pro.sky.ShelterTelegramBot.service.VolunteerService;
+import pro.sky.ShelterTelegramBot.model.*;
+import pro.sky.ShelterTelegramBot.service.*;
 
 import java.io.IOException;
 
@@ -31,15 +26,19 @@ public class CatCallbackQuery {
     private final ClientStatusService clientStatusService;
     private final VolunteerService volunteerService;
     private final RequestRepoService requestRepoService;
+    private final UserStatementService userStatementService;
 
     private Logger logger = LoggerFactory.getLogger(TelegramBotUpdatesListener.class);
 
-    public CatCallbackQuery(TelegramBot telegramBot, AttachmentService attachmentService,ClientStatusService clientStatusService,VolunteerService volunteerService,RequestRepoService requestRepoService) {
+    public CatCallbackQuery(TelegramBot telegramBot, AttachmentService attachmentService,
+                            ClientStatusService clientStatusService,VolunteerService volunteerService,
+                            RequestRepoService requestRepoService,UserStatementService userStatementService) {
         this.telegramBot = telegramBot;
         this.attachmentService=attachmentService;
         this.clientStatusService=clientStatusService;
         this.volunteerService=volunteerService;
         this.requestRepoService=requestRepoService;
+        this.userStatementService=userStatementService;
     }
 
     /**
@@ -74,6 +73,9 @@ public class CatCallbackQuery {
                 break;
             case CREATECat:
                 clientStatusService.clickCat(chatId,3);
+                UserStatement userStatement=clientStatusService.findClient(chatId).getUserStatement();
+                userStatement.setStatement("@");
+                userStatementService.update(userStatement);
                 SendMessage sendMessage4 = new SendMessage(chatId, CREATE);
                 SendResponse response4 = telegramBot.execute(sendMessage4);
                 break;
@@ -144,6 +146,9 @@ public class CatCallbackQuery {
         break;
         case CREATECats_31:
         clientStatusService.clickCat(chatId, 4);
+            UserStatement userStatement=clientStatusService.findClient(chatId).getUserStatement();
+            userStatement.setStatement("@");
+            userStatementService.update(userStatement);
         SendMessage sendMessage8 = new SendMessage(chatId, CREATE);
         SendResponse response14 = telegramBot.execute(sendMessage8);
         break;

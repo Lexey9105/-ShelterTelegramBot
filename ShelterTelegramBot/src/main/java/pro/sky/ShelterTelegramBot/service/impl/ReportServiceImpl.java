@@ -74,6 +74,11 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
+    public Report findReportByStatus(String status) {
+        return reportRepository.findReportByStatus(status);
+    }
+
+    @Override
     @Transactional
     public Report updateWithClient(Client client, Report report) {
         logger.info("updateWithReport method has been invoked");

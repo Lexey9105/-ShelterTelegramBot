@@ -11,4 +11,5 @@ import java.util.List;
 public interface ReportRepository extends JpaRepository<Report, Long> {
 
     List<Report> findReportsByClient(Client client);
+    Report findReportByStatus(String status);
 }

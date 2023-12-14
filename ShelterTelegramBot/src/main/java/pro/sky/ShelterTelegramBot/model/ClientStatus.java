@@ -11,10 +11,14 @@ public class ClientStatus {
     private Long id;
     private Long chatId;
     private String clientStatus;
+    private int dayReport=0;
     private int clickCounterCat;
     private int clickCounterDog;
 @OneToOne(mappedBy = "clientStatus")
     private Client client;
+    @OneToOne
+    @JoinColumn(name="user_Statement")
+    private UserStatement userStatement;
     public ClientStatus(){};
 
     public ClientStatus(Long chatId,String clientStatus, int clickCounterCat, int clickCounterDog) {
@@ -22,6 +26,22 @@ public class ClientStatus {
         this.clientStatus = clientStatus;
         this.clickCounterCat = clickCounterCat;
         this.clickCounterDog = clickCounterDog;
+    }
+
+    public UserStatement getUserStatement() {
+        return userStatement;
+    }
+
+    public void setUserStatement(UserStatement userStatement) {
+        this.userStatement = userStatement;
+    }
+
+    public int getDayReport() {
+        return dayReport;
+    }
+
+    public void setDayReport(int dayReport) {
+        this.dayReport = dayReport;
     }
 
     public Long getChatId() {
@@ -77,11 +97,11 @@ public class ClientStatus {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ClientStatus that = (ClientStatus) o;
-        return clickCounterCat == that.clickCounterCat && clickCounterDog == that.clickCounterDog && Objects.equals(id, that.id) && Objects.equals(chatId, that.chatId) && Objects.equals(clientStatus, that.clientStatus) && Objects.equals(client, that.client);
+        return dayReport == that.dayReport && clickCounterCat == that.clickCounterCat && clickCounterDog == that.clickCounterDog && Objects.equals(id, that.id) && Objects.equals(chatId, that.chatId) && Objects.equals(clientStatus, that.clientStatus) && Objects.equals(client, that.client) && Objects.equals(userStatement, that.userStatement);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, chatId, clientStatus, clickCounterCat, clickCounterDog, client);
+        return Objects.hash(id, chatId, clientStatus, dayReport, clickCounterCat, clickCounterDog, client, userStatement);
     }
 }

@@ -15,6 +15,7 @@ public interface ReportService {
     Report get(Long id);
    Collection <Report> getAll();
     List<Report> findReportsByClient(Client client);
+    Report findReportByStatus(String status);
     Report updateWithClient(Client client, Report report);
    Report updateWithReport(Attachment attachment, Report report);
 

@@ -11,9 +11,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import pro.sky.ShelterTelegramBot.listener.TelegramBotUpdatesListener;
+import pro.sky.ShelterTelegramBot.model.UserStatement;
 import pro.sky.ShelterTelegramBot.model.Volunteer;
 import pro.sky.ShelterTelegramBot.service.AttachmentService;
 import pro.sky.ShelterTelegramBot.service.ClientStatusService;
+import pro.sky.ShelterTelegramBot.service.UserStatementService;
 import pro.sky.ShelterTelegramBot.service.VolunteerService;
 
 import java.io.IOException;
@@ -26,14 +28,18 @@ public class DogCallbackQuery {
     private final AttachmentService attachmentService;
     private final ClientStatusService clientStatusService;
     private final VolunteerService volunteerService;
+    private final UserStatementService userStatementService;
 
     private Logger logger = LoggerFactory.getLogger(TelegramBotUpdatesListener.class);
 
-    public DogCallbackQuery(TelegramBot telegramBot, AttachmentService attachmentService,ClientStatusService clientStatusService,VolunteerService volunteerService) {
+    public DogCallbackQuery(TelegramBot telegramBot, AttachmentService attachmentService,
+                            ClientStatusService clientStatusService,
+                            VolunteerService volunteerService,UserStatementService userStatementService) {
         this.telegramBot = telegramBot;
         this.attachmentService=attachmentService;
         this.clientStatusService=clientStatusService;
         this.volunteerService=volunteerService;
+        this.userStatementService=userStatementService;
     }
 
     /**
@@ -64,6 +70,9 @@ public class DogCallbackQuery {
                 break;
             case CREATEDog:
                 clientStatusService.clickDog(chatId, 3);
+                UserStatement userStatement=clientStatusService.findClient(chatId).getUserStatement();
+                userStatement.setStatement("@");
+                userStatementService.update(userStatement);
                 SendMessage sendMessage4 = new SendMessage(chatId, CREATE);
                 SendResponse response4 = telegramBot.execute(sendMessage4);
                 break;
@@ -139,6 +148,9 @@ public class DogCallbackQuery {
         break;
         case CREATEDogs_32:
         clientStatusService.clickDog(chatId,4);
+            UserStatement userStatement=clientStatusService.findClient(chatId).getUserStatement();
+            userStatement.setStatement("@");
+            userStatementService.update(userStatement);
         SendMessage sendMessage11 = new SendMessage(chatId, CREATE);
         SendResponse response16 = telegramBot.execute(sendMessage11);
         break;

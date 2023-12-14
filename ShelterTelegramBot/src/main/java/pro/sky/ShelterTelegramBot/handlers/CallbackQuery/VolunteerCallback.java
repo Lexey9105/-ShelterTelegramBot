@@ -61,7 +61,7 @@ public class VolunteerCallback {
     }
 
     public  void VolunteerButton(Update update) throws IOException {
-
+        logger.info("VolunteerButton is invoke");
         CallbackQuery callbackQuery = update.callbackQuery();
         long chatId = callbackQuery.message().chat().id();
 
@@ -138,8 +138,10 @@ public class VolunteerCallback {
         switch (nameClient[3]) {
             case Accept:
                 // Client client2=clientStatusService.findClient(Long.parseLong(nameClient[1])).getClient();
-
                 clientStatusService.updateStatus(Long.parseLong(nameClient[1]), Report_Status);
+               //controlService.welcome(client);
+                        // clientStatusService.updateStatus(Long.parseLong(nameClient[1]), Report_Status);
+                clientStatusService.updateStatusWithReport(Long.parseLong(nameClient[1]));
                 ReportStatus reportStatus = new ReportStatus("", "");
                 reportStatus.setTotalDayReport(30);
                 ReportBreach reportBreach = new ReportBreach();

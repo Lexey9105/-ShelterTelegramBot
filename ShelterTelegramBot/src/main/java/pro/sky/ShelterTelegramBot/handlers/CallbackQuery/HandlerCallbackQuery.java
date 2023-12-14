@@ -40,6 +40,7 @@ public class HandlerCallbackQuery {
     private final TelegramFileService telegramFileService;
     private final VolunteerCallback volunteerCallback;
     private final Send send;
+    private final ControlCallbackQuery controlCallbackQuery;
     private final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
     private Logger logger = LoggerFactory.getLogger(TelegramBotUpdatesListener.class);
@@ -49,7 +50,7 @@ public class HandlerCallbackQuery {
                                 DogCallbackQuery dogCallbackQuery, CatCallbackQuery catCallbackQuery,
                                 VolunteerService volunteerService,
                                 TelegramFileService telegramFileService,
-                                VolunteerCallback volunteerCallback
+                                VolunteerCallback volunteerCallback,ControlCallbackQuery controlCallbackQuery
 
     ) {
         this.telegramBot = telegramBot;
@@ -60,6 +61,7 @@ public class HandlerCallbackQuery {
         this.clientStatusService=clientStatusService;
         this.telegramFileService=telegramFileService;
         this.volunteerCallback=volunteerCallback;
+        this.controlCallbackQuery=controlCallbackQuery;
     }
 
     /**
@@ -110,8 +112,8 @@ public class HandlerCallbackQuery {
                 //SendMessage sendMessage3 = new SendMessage(chatId, DOWNLOAD_LINK + "01.docx");
                 // SendResponse response3 = telegramBot.execute(sendMessage3);
                 clientStatusService.clickCat(chatId, 1);
-                SendMessage sendMessage3 = new SendMessage(chatId, "Тут вы будете отчитываться в скором времени");
-                SendResponse response3 = telegramBot.execute(sendMessage3);
+                SendMessage sendMessage3 = new SendMessage(chatId, "Меню отправки отчета приветствует Вас");
+                SendResponse response3 = telegramBot.execute(sendMessage3.replyMarkup(MenuReportButtons()));
                 break;
             case CALLCats_12:
                 clientStatusService.clickCat(chatId,1);
@@ -144,8 +146,8 @@ public class HandlerCallbackQuery {
                 //SendMessage sendMessage3 = new SendMessage(chatId, DOWNLOAD_LINK + "01.docx");
                 // SendResponse response3 = telegramBot.execute(sendMessage3);
                 clientStatusService.clickDog(chatId, 1);
-                SendMessage sendMessage3 = new SendMessage(chatId, "Тут вы будете отчитываться в скором времени");
-                SendResponse response3 = telegramBot.execute(sendMessage3);
+                SendMessage sendMessage3 = new SendMessage(chatId, "Меню отправки отчета приветствует Вас");
+                SendResponse response3 = telegramBot.execute(sendMessage3.replyMarkup(MenuReportButtons()));
                 break;
             case CALLDogs_12:
                 clientStatusService.clickDog(chatId,1);
@@ -169,7 +171,6 @@ public class HandlerCallbackQuery {
         CallbackQuery callbackQuery = update.callbackQuery();
         String a = callbackQuery.data().substring(0, 3);
         switch (a) {
-
             case Report_CallBack:
                 volunteerCallback.ReportButton(update);
                 break;
@@ -197,7 +198,7 @@ public class HandlerCallbackQuery {
             case CALL_Pet_MENU_DOG:
                 dogCallbackQuery.infoPetsDogButton(update);
                 break;
-            default:telegramFileService.getLocalPathTelegramFile(update);
+            default:controlCallbackQuery.ControlCallBack(update);
         }
     }
 

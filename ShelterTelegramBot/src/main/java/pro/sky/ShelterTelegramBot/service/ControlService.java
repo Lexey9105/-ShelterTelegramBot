@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ControlService {
 
-    String welcome(Client client);
+    Report welcome(Client client);
     void hand(Client client,String text);
     void accept(Client client);
     String refusal(Report report);

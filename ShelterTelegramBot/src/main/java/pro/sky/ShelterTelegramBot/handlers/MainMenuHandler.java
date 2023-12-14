@@ -12,11 +12,9 @@ import pro.sky.ShelterTelegramBot.handlers.CallbackQuery.HandlerCallbackQuery;
 import pro.sky.ShelterTelegramBot.listener.TelegramBotUpdatesListener;
 import pro.sky.ShelterTelegramBot.model.Client;
 import pro.sky.ShelterTelegramBot.model.ClientStatus;
+import pro.sky.ShelterTelegramBot.model.UserStatement;
 import pro.sky.ShelterTelegramBot.model.Volunteer;
-import pro.sky.ShelterTelegramBot.service.ClientService;
-import pro.sky.ShelterTelegramBot.service.ClientStatusService;
-import pro.sky.ShelterTelegramBot.service.ControlService;
-import pro.sky.ShelterTelegramBot.service.VolunteerService;
+import pro.sky.ShelterTelegramBot.service.*;
 import pro.sky.ShelterTelegramBot.utils.Send;
 import pro.sky.ShelterTelegramBot.utils.TelegramFileService;
 
@@ -45,25 +43,29 @@ public class MainMenuHandler {
     private final VolunteerService volunteerService;
     private final TelegramFileService telegramFileService;
     private final Send send;
-    private final HandlerCallbackQuery handlerCallbackQuery;
+    //private final HandlerCallbackQuery handlerCallbackQuery;
     private final ControlService controlService;
+    private final UserStatementService userStatementService;
 
 
 
     private static final String START_COMMAND = "/start";
     private static final String HELP_COMMAND = "/help";
-    Pattern pattern = Pattern.compile("\\d{3}-\\d{3}-\\d{2}-\\d{2}");
 
+//,HandlerCallbackQuery handlerCallbackQuery
 
-    public MainMenuHandler(TelegramBot telegramBot, Send send, ClientService clientService, ClientStatusService clientStatusService, VolunteerService volunteerService,TelegramFileService telegramFileService, HandlerCallbackQuery handlerCallbackQuery,ControlService controlService) {
+    public MainMenuHandler(TelegramBot telegramBot, Send send, ClientService clientService, ClientStatusService clientStatusService, VolunteerService volunteerService,TelegramFileService telegramFileService
+                          ,ControlService controlService,
+                     UserStatementService userStatementService) {
         this.telegramBot = telegramBot;
         this.clientService = clientService;
         this.clientStatusService=clientStatusService;
         this.volunteerService=volunteerService;
         this.telegramFileService=telegramFileService;
         this.send = send;
-        this.handlerCallbackQuery = handlerCallbackQuery;
+        //this.handlerCallbackQuery = handlerCallbackQuery;
         this.controlService=controlService;
+        this.userStatementService=userStatementService;
     }
 
     /**
@@ -77,24 +79,39 @@ public class MainMenuHandler {
         Long chatId = update.message().chat().id();
         String text = update.message().text();
 
-       if(update.message().photo()!=null){telegramFileService.getLocalPathTelegramFile(update);}
-        else if (text.charAt(0) == '@') {
-            saveClient(update);
-        } else if (text.charAt(0) == '$') {
-            saveVolunteer(update);}
-       else if (text.equals(volunteerService.findByUserName(text).getUserName())) {
-           String returnText = "Приятной работы "+text;
-           SendMessage sendMessage = new SendMessage(chatId, returnText);
-           send.sendMessage(sendMessage.replyMarkup(MenuVolunteerButtons()));
-           } else if (text.charAt(0) == '&') {
-          String[] pars=text.split("_");
-           controlService.hand(clientStatusService.findClient(chatId).getClient(),pars[1]);
+       if(update.message().photo()!=null){statementHandler(update);}
+        // if (clientStatus.getUserStatement().getStatement().equals(text)) {
 
-       }  else {
+        //}
+
+        //else if (text.charAt(0) == '$') {
+          //  saveVolunteer(update);}
+        else if(text.equals(START_COMMAND)){
             String returnText = handleCommand(update, text);
             SendMessage sendMessage = new SendMessage(chatId, returnText);
             send.sendMessage(sendMessage);
+        } else if (text.charAt(0) == '$') {
+            saveVolunteer(update);
+        } else if (text.equals(volunteerService.findByUserName(text).getUserName())) {
+           String returnText = "Приятной работы "+text;
+           SendMessage sendMessage = new SendMessage(chatId, returnText);
+           send.sendMessage(sendMessage.replyMarkup(MenuVolunteerButtons()));
+           }
+       //else if (text.charAt(0) == '&') {
+         // String[] pars=text.split("_");
+           //controlService.hand(clientStatusService.findClient(chatId).getClient(),pars[1]);
+       //}
+
+            else {
+            if (userStatementService.checkForHandler(update)) {
+                statementHandler(update);
+            } else {
+                String returnText = handleCommand(update, text);
+                SendMessage sendMessage = new SendMessage(chatId, returnText);
+                send.sendMessage(sendMessage);
+            }
         }
+
     }
 
 
@@ -105,17 +122,19 @@ public class MainMenuHandler {
      * @param command
      * @return
      */
-    private String handleCommand(Update update, String command)  {
+    private String handleCommand(Update update, String command) throws IOException {
         long chatId = update.message().chat().id();
         switch (command) {
             case START_COMMAND:
-                clientStatusService.create(update.message().chat().id());
+               ClientStatus clientStatus= clientStatusService.create(update.message().chat().id());
+                UserStatement userStatement=userStatementService.create();
+                clientStatusService.updateWithUserStatement(clientStatus,userStatement);
                 sendShelterTypeSelectMessage(update);
                 return SAY_HELLO;
             case HELP_COMMAND:
                 return ASK_HELP;
 
-            default: return "Позвать волонтера";
+            default: return "Данная комманда не поддерживается ботом";
         }
     }
 
@@ -132,44 +151,10 @@ public class MainMenuHandler {
         send.sendMessage(message.replyMarkup(animalSelectionButtons()));
     }
 
-
-    /**
-     * Метод для создания Client из сообщения update
-     *
-     * @param update
-     * @return
-     */
-    private void saveClient(Update update) {
-        long chatId = update.message().chat().id();
+    public void statementHandler(Update update) throws IOException {
+        Long chatId = update.message().chat().id();
         String text = update.message().text();
-        String[] parts = text.split(",");
-        String nullName="zero";
-        Matcher matcher = pattern.matcher(parts[2]);
-        if (parts.length!=4){
-            String error = "Некоректный ввод данных для регистрации.";
-            SendMessage sendMessage = new SendMessage(update.message().chat().id(), error);
-            send.sendMessage(sendMessage);
-        }
-        else if(clientService.findByUserName(parts[0].substring(1)).getName().equals(parts[0].substring(1))){
-            String error = "Вы уже зарегистрированы.";
-            SendMessage sendMessage = new SendMessage(update.message().chat().id(), error);
-            send.sendMessage(sendMessage);
-        }
-
-        else if (matcher.matches()){
-            Client client = new Client(chatId,parts[0].substring(1), Integer.parseInt(parts[1]), "+7-"+parts[2], parts[3]);
-            clientService.create(client);
-            ClientStatus clientStatus=clientStatusService.updateStatus(client.getChatId(),Registration_Status);
-            clientService.updateWithClientStatus(client,clientStatus);
-            String test = "контактные данные успешно полученны";
-            SendMessage sendMessage = new SendMessage(update.message().chat().id(), test);
-            send.sendMessage(sendMessage);
-        }else{
-            String errorTel = "Некоректный формат телефона";
-            SendMessage sendMessage = new SendMessage(update.message().chat().id(), errorTel);
-            send.sendMessage(sendMessage);
-
-        }
+            userStatementService.appoint(update,text);
     }
 
     private void saveVolunteer(Update update) {

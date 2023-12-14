@@ -1,7 +1,10 @@
 package pro.sky.ShelterTelegramBot.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pro.sky.ShelterTelegramBot.listener.TelegramBotUpdatesListener;
 import pro.sky.ShelterTelegramBot.model.*;
 import pro.sky.ShelterTelegramBot.service.*;
 
@@ -14,7 +17,7 @@ import static pro.sky.ShelterTelegramBot.constants.Constants.*;
 
 @Service
 public class ControlServiceImpl implements ControlService {
-
+    private Logger logger = LoggerFactory.getLogger(TelegramBotUpdatesListener.class);
 
     private final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy");
     private final ClientService clientService;
@@ -35,7 +38,8 @@ public class ControlServiceImpl implements ControlService {
 
     @Override
     @Transactional
-    public String welcome(Client client) {
+    public Report welcome(Client client) {
+        clientStatusService.updateStatusWithReport(client.getChatId());
         ReportStatus reportStatus = new ReportStatus("", "");
         reportStatus.setTotalDayReport(30);
         ReportBreach reportBreach = new ReportBreach();
@@ -47,10 +51,11 @@ public class ControlServiceImpl implements ControlService {
         clientService.updateWithReportBreach(client, reportBreach);
         clientService.createWithReport(client);
         reportService.updateWithClient(client,report);
-        return Report_Status;
+        return report;
     }
 
     public void createReport(Report report){
+        clientStatusService.updateStatusWithReport(report.getClient().getChatId());
         Report report2 = new Report(LocalDateTime.now().plusDays(1).format(FORMATTER), report.getDayReport()+1, Report_Status);
         clientService.createWithReport(report.getClient());
         reportService.create(report2);
@@ -73,8 +78,8 @@ public class ControlServiceImpl implements ControlService {
         List<Report>reports=reportService.findReportsByClient(client);
         ReportBreach reportBreach = client.getReportBreach();
         ReportStatus reportStatus=client.getReportStatus();
-        int index=reportService.findReportsByClient(client).size()-1;
-        Report report=reportService.findReportsByClient(client).get(index);
+        int index=reports.size()-1;
+        Report report=reportService.findReportByStatus(ReadyToShip);
        if(reportBreach.getRepoAttachDay2()>0||reportBreach.getRepoAttachDay1()>0) {
            reportStatus.setAvailableReportDays(reportStatus.getAvailableReportDays() + report.getDayReport());
            reportBreach.setRepoAttachDay1(0);
@@ -96,6 +101,7 @@ public class ControlServiceImpl implements ControlService {
 
     @Override
     public String refusal(Report report) {
+        logger.info("method refusal is invoke");
         Client client= report.getClient();
         List<Report>reports=reportService.findReportsByClient(client);
         String answer = "";
@@ -104,7 +110,7 @@ public class ControlServiceImpl implements ControlService {
         ReportStatus reportStatus = client.getReportStatus();
         ReportBreach reportBreach = client.getReportBreach();
         reportBreach.setTotalPassesAttach(reportBreach.getTotalPassesAttach() + 1);
-        if (reports.size()>1){
+        if (reports.size()>2){
             Report report2 = reportService.findReportsByClient(client).get(index - 1);
             Report report3 = reportService.findReportsByClient(client).get(index - 2);
             if (reportBreach.getRepoAttachDay1() > 0 && report2.getStatus().equals(NotPassed)) {
@@ -136,7 +142,6 @@ public class ControlServiceImpl implements ControlService {
                 reportBreachService.update(reportBreach);
                 reportStatusService.update(reportStatus);
                 reportService.update(report);
-                createReport(report);
                 clientStatusService.updateStatus(client.getChatId(),Failed_Status);
                 return "Вы провалили проверку. К вам направлен волонтер для возвращения питомца на территорию приюта";
             } else if (reportBreach.getTotalPassesAttach() == 15 && reportStatus.getTotalDayReport() == 30) {
@@ -158,7 +163,6 @@ public class ControlServiceImpl implements ControlService {
                 reportBreachService.update(reportBreach);
                 reportStatusService.update(reportStatus);
                 reportService.update(report);
-                createReport(report);
                 clientStatusService.updateStatus(client.getChatId(),Failed_Status);
                 return "Вы провалили проверку. К вам направлен волонтер для возвращения питомца на территорию приюта";
             }
@@ -180,6 +184,7 @@ public class ControlServiceImpl implements ControlService {
 
     @Override
     public List<Report> load() {
+        logger.info("method load() is invoke");
         List<Report>reports=new ArrayList<>();
         reportService.getAll().forEach(report -> {
             //if (report.getLocalDateTime().equals(LocalDateTime.now().format(FORMATTER))) {
@@ -192,8 +197,9 @@ public class ControlServiceImpl implements ControlService {
 
     @Override
     public void reject() {
+        logger.info("method reject() is invoke");
         reportService.getAll().forEach(report -> {
-            if (report.getLocalDateTime().equals(LocalDateTime.now().format(FORMATTER))) {
+            if (report.getLocalDateTime().equals(LocalDateTime.now().plusDays(1).format(FORMATTER))) {
                 if (report.getStatus().equals(Report_Status)) {
                     refusal(report);
                 }
