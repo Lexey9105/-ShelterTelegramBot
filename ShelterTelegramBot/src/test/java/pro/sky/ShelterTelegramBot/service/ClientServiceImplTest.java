@@ -9,6 +9,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import pro.sky.ShelterTelegramBot.model.Client;
+import pro.sky.ShelterTelegramBot.model.ClientStatus;
 import pro.sky.ShelterTelegramBot.repository.ClientRepository;
 import pro.sky.ShelterTelegramBot.service.impl.ClientServiceImpl;
 
@@ -20,6 +21,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -32,10 +34,9 @@ public class ClientServiceImplTest {
     private ClientServiceImpl clientService;
 
 
-
     @Test
     public void addTest() throws IOException {
-        Client client=new Client("13333",20,9990001122L,"fff");
+        Client client = new Client("13333", 20, "9990001122", "fff");
         when(clientRepository.save(client)).thenReturn(client);
         assertNotNull(clientService.create(client));
         assertEquals(client, clientService.create(client));
@@ -43,22 +44,22 @@ public class ClientServiceImplTest {
 
     @Test
     public void delTest() throws IOException {
-        Client client=new Client(1L,"13333",20,9990001122L,"fff");
+        Client client = new Client(1L, "13333", 20, "9990001122", "fff");
 
 
-       when(clientRepository.findById(1L)).thenReturn(Optional.of(client));
+        when(clientRepository.findById(1L)).thenReturn(Optional.of(client));
 
 
         clientService.delete(1L);
 
 
-        Mockito.verify(clientRepository, Mockito.times(1)).deleteById(1L);
+        verify(clientRepository, Mockito.times(1)).deleteById(1L);
     }
 
 
     @Test
     public void getTest() throws IOException {
-        Client client=new Client(1L,"13333",20,9990001122L,"fff");
+        Client client = new Client(1L, "13333", 20, "9990001122", "fff");
 
 
         when(clientRepository.findById(1L)).thenReturn(Optional.of(client));
@@ -69,14 +70,13 @@ public class ClientServiceImplTest {
 
     @Test
     void getAll() {
-        Client client=new Client(1L,"13333",20,9990001122L,"fff");
-        Client client2=new Client(2L,"1333333",24,999000122L,"fff");
-
+        Client client = new Client(1L, "13333", 20, "9990001122", "fff");
+        Client client2 = new Client(2L, "1333333", 24, "9990001122", "fff");
 
 
         List<Client> clients = Arrays.asList(client, client2);
 
-      Collection<Client> result = Arrays.asList(client, client2);
+        Collection<Client> result = Arrays.asList(client, client2);
 
         Mockito.when(clientRepository.findAll()).thenReturn(clients);
 
@@ -84,5 +84,39 @@ public class ClientServiceImplTest {
         Assert.assertEquals(clients, clientRepository.findAll());
     }
 
+    @Test
+    void getUserByNameTest() {
+        Client client = new Client(1L, "13333", 20, "9990001122", "fff");
+
+
+        Mockito.when(clientRepository.findClientByName(client.getName())).thenReturn(client);
+
+
+        Assert.assertEquals(client, clientRepository.findClientByName(client.getName()));
+    }
+
+    @Test
+    void updateWithClientStatusTest() {
+        Client client = new Client(1L, "13333", 20, "9990001122", "fff");
+
+    }
+
+    @Test
+    public void testUpdateWithClientStatus() {
+        // Arrange
+        Client client = new Client(1L, "13333", 20, "9990001122", "fff");
+        ClientStatus clientStatus = new ClientStatus(1L,"PPP",0,0);
+
+        when(clientRepository.save(client)).thenReturn(client);
+
+        // Act
+        Client result = clientService.updateWithClientStatus(client, clientStatus);
+
+        // Assert
+//        verify(clientStatus, Mockito.times(1)).setClient(client);
+//        verify(client).setClientStatus(clientStatus);
+//        verify(clientRepository, Mockito.times(1)).save(client);
+        assertEquals(client, result);
+    }
 
 }

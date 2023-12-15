@@ -11,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import pro.sky.ShelterTelegramBot.handlers.CallbackQuery.HandlerCallbackQuery;
 import pro.sky.ShelterTelegramBot.service.ClientService;
-import pro.sky.ShelterTelegramBot.urils.BotTestUtils;
+import pro.sky.ShelterTelegramBot.utils.BotTestUtils;
 
 import java.util.stream.Stream;
 

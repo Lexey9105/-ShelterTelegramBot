@@ -9,13 +9,13 @@ public class appProperties {
     @Value("${attachments.dir.path}")
     private static Path attachmentsDir;
 
-    private static String absolutePath=attachmentsDir.toAbsolutePath().toString();
+    private static String absolutePath = attachmentsDir.toAbsolutePath().toString();
 
-    public static String getUploadPath(){
+    public static String getUploadPath() {
         return absolutePath;
     }
 
-    public static Path getPath(){
+    public static Path getPath() {
         return attachmentsDir;
     }
 }
