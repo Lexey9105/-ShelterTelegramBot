@@ -10,11 +10,15 @@ public class UserStatement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    private String statement ="0";
+    private String statement = "0";
 
     @OneToOne(mappedBy = "userStatement")
     private ClientStatus clientStatus;
-    public UserStatement(){};
+
+    public UserStatement() {
+    }
+
+    ;
 
     public Long getId() {
         return id;

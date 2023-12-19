@@ -7,10 +7,16 @@ import java.util.List;
 
 public interface ControlService {
 
-    Report welcome(Client client);
-    void hand(Client client,String text);
-    void accept(Client client);
+    //  Report welcome(Client client);
+    void hand(Report report, String text);
+
+    void check(Report report);
+
+    void accept(Client client, Report report);
+
     String refusal(Report report);
+
     List<Report> load();
+
     void reject();
 }

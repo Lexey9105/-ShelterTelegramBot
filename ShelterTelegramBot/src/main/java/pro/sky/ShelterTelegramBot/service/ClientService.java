@@ -14,13 +14,23 @@ public interface ClientService {
     Client get(Long id);
 
     Collection<Client> findAll();
+
+    Pet getPet(Long id);
+
+    Client findClientByChatId(Long chatId);
+
     Client findByUserName(String userName);
+
     Client createWithReport(Client client);
+
     Client updateWithClientStatus(Client client, ClientStatus clientStatus);
-    Client updateWithReportStatus(Client client, ReportStatus reportStatus);
+
     @Transactional
     Client updateWithReport(Client client, Report report);
-    Client updateWithReportBreach(Client client, ReportBreach reportBreach);
+
+    Client createWithPets(Client client);
+
+    Client updateWithPet(Client client, Pet pet);
 
 
 }

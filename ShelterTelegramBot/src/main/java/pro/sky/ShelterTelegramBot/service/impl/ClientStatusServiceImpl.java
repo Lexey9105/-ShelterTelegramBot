@@ -19,6 +19,10 @@ import java.util.Optional;
 
 import static pro.sky.ShelterTelegramBot.constants.Constants.*;
 
+/**
+ * Класс для отслеживания статуса пользователя начиная с первого взаимодействия с ботом
+ * обработка статусов связаных с отчетносьть см ControlServiceImpl методы accept b refusal
+ */
 @Service
 public class ClientStatusServiceImpl implements ClientStatusService {
 
@@ -34,8 +38,16 @@ public class ClientStatusServiceImpl implements ClientStatusService {
 
     @Override
     public ClientStatus create(Long chatId) {
-        ClientStatus clientStatus = new ClientStatus(chatId, Guest_Status, 0, 0);
-        return clientStatusRepository.save(clientStatus);
+
+        Optional<ClientStatus> clientStatus1 = Optional.ofNullable(findClient(chatId));
+        if (clientStatus1.isPresent()) {
+            logger.info("Client already create with id: " + chatId);
+            return clientStatus1.get();
+        } else {
+            ClientStatus clientStatus = new ClientStatus(chatId, Guest_Status, 0, 0);
+            return clientStatusRepository.save(clientStatus);
+        }
+
     }
 
     @Override
@@ -44,10 +56,11 @@ public class ClientStatusServiceImpl implements ClientStatusService {
         clientStatus.setClientStatus(status);
         return clientStatusRepository.save(clientStatus);
     }
+
     @Override
     public ClientStatus updateStatusWithReport(Long chatId) {
         ClientStatus clientStatus = clientStatusRepository.findClientStatusByChatId(chatId);
-        clientStatus.setDayReport(clientStatus.getDayReport()+1);
+        clientStatus.setDayReport(clientStatus.getDayReport() + 1);
         return clientStatusRepository.save(clientStatus);
     }
 

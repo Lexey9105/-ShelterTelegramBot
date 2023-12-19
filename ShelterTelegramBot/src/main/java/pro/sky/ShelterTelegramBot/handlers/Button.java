@@ -6,6 +6,9 @@ import com.pengrad.telegrambot.model.request.InlineQueryResultPhoto;
 
 import static pro.sky.ShelterTelegramBot.constants.Constants.*;
 
+/**
+ * Класс для хранеия static методов с  InlineKeyboard
+ */
 public class Button {
 
     public static InlineKeyboardMarkup animalSelectionButtons() {
@@ -171,7 +174,7 @@ public class Button {
         InlineKeyboardMarkup markupMenuCat = new InlineKeyboardMarkup();
         InlineKeyboardButton CatShelterInfoButton = new InlineKeyboardButton("Общая информация о приюте").
                 callbackData(CatShelterInfo);
-        InlineKeyboardButton CatsPetsInfoButton = new InlineKeyboardButton("Как взять собаку из приюта").
+        InlineKeyboardButton CatsPetsInfoButton = new InlineKeyboardButton("Как взять кошку из приюта").
                 callbackData(CatsPetsInfo);
         InlineKeyboardButton CatsControlServiceButton = new InlineKeyboardButton("Отправить отчет").
                 callbackData(CatsControlService);
@@ -201,15 +204,21 @@ public class Button {
         InlineKeyboardMarkup markupMenuReport = new InlineKeyboardMarkup();
         InlineKeyboardButton ReportInfoButton = new InlineKeyboardButton("Правила сдачи отчета").
                 callbackData(ReportInfo);
+        InlineKeyboardButton GetReportNameButton = new InlineKeyboardButton("Получить название текущего отчета для отправки").
+                callbackData(GetReportName);
         InlineKeyboardButton PetsPhotoButton = new InlineKeyboardButton("Отправить фото питмца").
                 callbackData(PetsPhoto);
-        InlineKeyboardButton ReportControlButton = new InlineKeyboardButton("Отправить отчет").
+        InlineKeyboardButton ReportControlButton = new InlineKeyboardButton("Отправить текст").
                 callbackData(ReportControl);
+        InlineKeyboardButton PushReportButton = new InlineKeyboardButton("Отправить отчет").
+                callbackData(PushReport);
         InlineKeyboardButton CALLButton = new InlineKeyboardButton("Позвать волонтера").
                 callbackData(CALL);
         markupMenuReport.addRow(ReportInfoButton);
+        markupMenuReport.addRow(GetReportNameButton);
         markupMenuReport.addRow(PetsPhotoButton);
         markupMenuReport.addRow(ReportControlButton);
+        markupMenuReport.addRow(PushReportButton);
         markupMenuReport.addRow(CALLButton);
 
         return markupMenuReport;

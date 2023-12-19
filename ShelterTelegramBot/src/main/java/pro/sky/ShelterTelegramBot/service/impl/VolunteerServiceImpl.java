@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import pro.sky.ShelterTelegramBot.model.Client;
+import pro.sky.ShelterTelegramBot.model.Pet;
 import pro.sky.ShelterTelegramBot.model.Volunteer;
 import pro.sky.ShelterTelegramBot.repository.ClientRepository;
 import pro.sky.ShelterTelegramBot.repository.VolunteerRepository;
@@ -12,8 +13,14 @@ import pro.sky.ShelterTelegramBot.service.ClientService;
 import pro.sky.ShelterTelegramBot.service.VolunteerService;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
+/**
+ * Сервис управления моделью Volunteer
+ * (создание, получение,удаление,создание связи с другими сущностями,
+ * поиск совободного волонтера для консультации)
+ */
 @Service
 public class VolunteerServiceImpl implements VolunteerService {
 
@@ -72,6 +79,11 @@ public class VolunteerServiceImpl implements VolunteerService {
             logger.error("There is no client with id: " + id);
             throw new EntityNotFoundException("Клиента с " + id + "id не существует");
         }
+    }
+
+    @Override
+    public String[] getVolunteerAndPetName(String text) {
+        return text.split("_");
     }
 
     /**

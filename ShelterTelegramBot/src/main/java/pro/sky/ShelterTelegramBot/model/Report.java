@@ -3,30 +3,55 @@ package pro.sky.ShelterTelegramBot.model;
 import jakarta.persistence.*;
 
 import java.util.Objects;
+
 @Entity
 public class Report {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String name;
     private String LocalDateTime;
     private int dayReport;
     private String status;
     private String textReport;
 
     @ManyToOne
-    @JoinColumn(name="client_id")
+    @JoinColumn(name = "client_id")
     private Client client;
     @OneToOne
-    @JoinColumn(name="attach_id")
+    @JoinColumn(name = "attach_id")
     private Attachment attachment;
+    @ManyToOne
+    @JoinColumn(name = "pet_id")
+    private Pet pet;
 
-    public Report(){};
+    public Report() {
+    }
 
-    public Report(String localDateTime, int dayReport, String status) {
+    ;
+
+    public Report(String name, String localDateTime, int dayReport, String status) {
+        this.name = name;
         LocalDateTime = localDateTime;
         this.dayReport = dayReport;
         this.status = status;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Pet getPet() {
+        return pet;
+    }
+
+    public void setPet(Pet pet) {
+        this.pet = pet;
     }
 
     public Long getId() {
@@ -103,11 +128,11 @@ public class Report {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Report report = (Report) o;
-        return dayReport == report.dayReport && Objects.equals(id, report.id) && Objects.equals(LocalDateTime, report.LocalDateTime) && Objects.equals(status, report.status) && Objects.equals(textReport, report.textReport) && Objects.equals(client, report.client) && Objects.equals(attachment, report.attachment);
+        return dayReport == report.dayReport && Objects.equals(id, report.id) && Objects.equals(name, report.name) && Objects.equals(LocalDateTime, report.LocalDateTime) && Objects.equals(status, report.status) && Objects.equals(textReport, report.textReport) && Objects.equals(client, report.client) && Objects.equals(attachment, report.attachment) && Objects.equals(pet, report.pet);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, LocalDateTime, dayReport, status, textReport, client, attachment);
+        return Objects.hash(id, name, LocalDateTime, dayReport, status, textReport, client, attachment, pet);
     }
 }

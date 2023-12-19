@@ -3,6 +3,7 @@ package pro.sky.ShelterTelegramBot.model;
 import jakarta.persistence.*;
 
 import java.util.Objects;
+
 @Entity
 public class ReportStatus {
 
@@ -11,16 +12,28 @@ public class ReportStatus {
     private Long id;
     private String availableReportDays;
     private String missingReportDays;
-    private int totalDayReport=0;
+    private int totalDayReport = 0;
 
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "reportStatus")
-    private Client client;
+    private Pet pet;
 
-    public ReportStatus(){};
+    public ReportStatus() {
+    }
+
+    ;
+
     public ReportStatus(String availableReportDays, String missingReportDays) {
         this.availableReportDays = availableReportDays;
         this.missingReportDays = missingReportDays;
+    }
+
+    public Pet getPet() {
+        return pet;
+    }
+
+    public void setPet(Pet pet) {
+        this.pet = pet;
     }
 
     public Long getId() {
@@ -55,13 +68,6 @@ public class ReportStatus {
         this.totalDayReport = totalDayReport;
     }
 
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
-    }
 
     @Override
     public String toString() {
@@ -78,11 +84,11 @@ public class ReportStatus {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ReportStatus that = (ReportStatus) o;
-        return totalDayReport == that.totalDayReport && Objects.equals(id, that.id) && Objects.equals(availableReportDays, that.availableReportDays) && Objects.equals(missingReportDays, that.missingReportDays) && Objects.equals(client, that.client);
+        return totalDayReport == that.totalDayReport && Objects.equals(id, that.id) && Objects.equals(availableReportDays, that.availableReportDays) && Objects.equals(missingReportDays, that.missingReportDays) && Objects.equals(pet, that.pet);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, availableReportDays, missingReportDays, totalDayReport, client);
+        return Objects.hash(id, availableReportDays, missingReportDays, totalDayReport, pet);
     }
 }

@@ -13,6 +13,9 @@ import pro.sky.ShelterTelegramBot.listener.TelegramBotUpdatesListener;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * Сервис для отправки файлов и сообщение в chat  с пользователем
+ */
 @Service
 public class Send {
 
@@ -39,9 +42,9 @@ public class Send {
     }
 
     public void sendPhoto(String s, Update update) {
-        Path path= Paths.get(s);
-        SendPhoto sendPhoto=new SendPhoto(update.message().chat().id(),path.toFile());
-        SendResponse response=telegramBot.execute(sendPhoto);
+        Path path = Paths.get(s);
+        SendPhoto sendPhoto = new SendPhoto(update.message().chat().id(), path.toFile());
+        SendResponse response = telegramBot.execute(sendPhoto);
         if (!response.isOk()) {
             logger.error("Error during sending message: {}", response.description());
         }

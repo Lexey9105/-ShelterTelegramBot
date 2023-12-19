@@ -11,10 +11,15 @@ import java.util.Collection;
 public interface UserStatementService {
 
     UserStatement create();
-    UserStatement update (UserStatement userStatement);
-    UserStatement delete (Long id);
+
+    UserStatement update(UserStatement userStatement);
+
+    UserStatement delete(Long id);
+
     void zero(UserStatement userStatement);
+
     UserStatement get(Long id);
+
     Collection<UserStatement> getAll();
 
     boolean checkForHandler(Update update);

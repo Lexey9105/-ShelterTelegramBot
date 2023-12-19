@@ -2,10 +2,12 @@ package pro.sky.ShelterTelegramBot.listener;
 
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
+import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 
 
+import com.pengrad.telegrambot.response.SendResponse;
 import jakarta.annotation.PostConstruct;
 
 
@@ -27,6 +29,7 @@ import static pro.sky.ShelterTelegramBot.handlers.Button.*;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -42,19 +45,22 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private final TelegramBot telegramBot;
     private final MainMenuHandler mainMenuHandler;
     private final HandlerCallbackQuery handlerCallbackQuery;
+    private final ClientStatusService clientStatusService;
     private final TelegramFileService telegramFileService;
-
 
 
     private static final String START_COMMAND = "/start";
     private static final String HELP_COMMAND = "/help";
     Pattern pattern = Pattern.compile("\\d{3}-\\d{3}-\\d{2}-\\d{2}");
 
-    public TelegramBotUpdatesListener(TelegramBot telegramBot,MainMenuHandler mainMenuHandler, HandlerCallbackQuery handlerCallbackQuery,TelegramFileService telegramFileService) {
+    public TelegramBotUpdatesListener(TelegramBot telegramBot, MainMenuHandler mainMenuHandler,
+                                      HandlerCallbackQuery handlerCallbackQuery,
+                                      TelegramFileService telegramFileService, ClientStatusService clientStatusService) {
         this.telegramBot = telegramBot;
-        this.mainMenuHandler=mainMenuHandler;
+        this.mainMenuHandler = mainMenuHandler;
         this.handlerCallbackQuery = handlerCallbackQuery;
-        this.telegramFileService=telegramFileService;
+        this.telegramFileService = telegramFileService;
+        this.clientStatusService = clientStatusService;
     }
 
     @PostConstruct
@@ -73,6 +79,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     public int process(List<Update> updates) {
         try {
             updates.forEach(update -> {
+
                 if (update.message() != null) {
                     try {
                         mainMenuHandler.processUpdate(update);
@@ -80,6 +87,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                         throw new RuntimeException(e);
                     }
                 } else {
+
                     try {
                         handlerCallbackQuery.responseButton(update);
                     } catch (IOException e) {
@@ -95,7 +103,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
-    }
+}
 
 
 

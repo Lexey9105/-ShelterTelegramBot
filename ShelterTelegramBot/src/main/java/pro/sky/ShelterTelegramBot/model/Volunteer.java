@@ -7,24 +7,27 @@ import java.util.Objects;
 @Entity
 public class Volunteer {
 
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String userName;
     private int status;
 
 
-
-    public Volunteer(){};
-
-    public Volunteer(String userName,int status){
-        this.userName=userName;
-        this.status=status;
+    public Volunteer() {
     }
-    public Volunteer(Long id, String userName, int status){
+
+    ;
+
+    public Volunteer(String userName, int status) {
+        this.userName = userName;
+        this.status = status;
+    }
+
+    public Volunteer(Long id, String userName, int status) {
         this.id = id;
-        this.userName=userName;
-        this.status=status;
+        this.userName = userName;
+        this.status = status;
     }
 
     public Long getId() {

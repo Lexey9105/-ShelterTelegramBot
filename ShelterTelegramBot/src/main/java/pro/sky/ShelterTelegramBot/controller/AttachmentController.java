@@ -22,16 +22,14 @@ import pro.sky.ShelterTelegramBot.service.AttachmentService;
 import java.io.IOException;
 
 
-
-
 @Controller
 @RequestMapping("/attachments")
 public class AttachmentController {
 
     private final AttachmentService attachmentService;
 
-    public AttachmentController(AttachmentService attachmentService){
-        this.attachmentService=attachmentService;
+    public AttachmentController(AttachmentService attachmentService) {
+        this.attachmentService = attachmentService;
     }
 
 
@@ -60,7 +58,7 @@ public class AttachmentController {
             requestBody = @RequestBody(
                     description = "Ссылка для загрузки",
                     content = @Content(
-                            mediaType ="HttpServletRequest request",
+                            mediaType = "HttpServletRequest request",
                             schema = @Schema(implementation = HttpServletRequest.class)
                     )
             )

@@ -1,25 +1,28 @@
 package pro.sky.ShelterTelegramBot.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.Objects;
 
+@Entity
 public class Request {
 
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     private String userName;
     //private String petName;
-    private String result;
+
+    private String petName;
 
 
-    public Request(){}
-    public Request(String userName, String result) {
+    public Request() {
+    }
+
+    public Request(String userName, String petName) {
         this.userName = userName;
-        this.result = result;
+        this.petName = petName;
     }
 
     public int getId() {
@@ -38,12 +41,12 @@ public class Request {
         this.userName = userName;
     }
 
-    public String getResult() {
-        return result;
+    public String getPetName() {
+        return petName;
     }
 
-    public void setResult(String result) {
-        this.result = result;
+    public void setPetName(String petName) {
+        this.petName = petName;
     }
 
     @Override
@@ -51,7 +54,7 @@ public class Request {
         return "Request{" +
                 "id=" + id +
                 ", name='" + userName + '\'' +
-                ", result='" + result + '\'' +
+                ", result='" + petName + '\'' +
                 '}';
     }
 
@@ -60,11 +63,11 @@ public class Request {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Request request = (Request) o;
-        return id == request.id && Objects.equals(userName, request.userName) && Objects.equals(result, request.result);
+        return id == request.id && Objects.equals(userName, request.userName) && Objects.equals(petName, request.petName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userName, result);
+        return Objects.hash(id, userName, petName);
     }
 }

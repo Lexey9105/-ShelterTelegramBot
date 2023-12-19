@@ -6,8 +6,13 @@ import java.util.Collection;
 
 public interface RequestRepoService {
 
-    Request create ( Request  request);
-    String delete (int id);
-    Request get(int id);
+    Request create(Request request);
+
+    Request delete(Long id);
+
+    Request get(Long id);
+
+    Request findRequestByPetName(String petName);
+
     Collection<Request> getAll();
 }

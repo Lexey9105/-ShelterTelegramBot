@@ -1,7 +1,6 @@
 package pro.sky.ShelterTelegramBot.controller;
 
 
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -54,8 +53,8 @@ public class VolunteerController {
             }
     )
     @PostMapping()
-    public ResponseEntity<Volunteer> createVolunteer(@org.springframework.web.bind.annotation.RequestBody Volunteer volunteer)  {
-        return ResponseEntity.ok( volunteerService.create(volunteer));
+    public ResponseEntity<Volunteer> createVolunteer(@org.springframework.web.bind.annotation.RequestBody Volunteer volunteer) {
+        return ResponseEntity.ok(volunteerService.create(volunteer));
     }
 
 

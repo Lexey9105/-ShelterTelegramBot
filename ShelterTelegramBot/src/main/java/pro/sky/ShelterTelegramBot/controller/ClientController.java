@@ -1,8 +1,6 @@
 package pro.sky.ShelterTelegramBot.controller;
 
 
-
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -48,14 +46,14 @@ public class ClientController {
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema = @Schema(implementation = Client.class)
-                           )
+                            )
 
                     )
             }
     )
     @PostMapping()
-    public ResponseEntity<Client> createClient(@org.springframework.web.bind.annotation.RequestBody Client client)  {
-        return ResponseEntity.ok( clientService.create(client));
+    public ResponseEntity<Client> createClient(@org.springframework.web.bind.annotation.RequestBody Client client) {
+        return ResponseEntity.ok(clientService.create(client));
     }
 
 

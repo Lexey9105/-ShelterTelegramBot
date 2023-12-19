@@ -13,6 +13,11 @@ import pro.sky.ShelterTelegramBot.service.ReportService;
 
 import java.util.Collection;
 import java.util.Optional;
+
+/**
+ * Сервис управления (создание, получение,удаление)
+ * моделью с нарушениями при отправки отчетов
+ */
 @Service
 public class ReportBreachServiceImpl implements ReportBreachService {
     private Logger logger = LoggerFactory.getLogger(ReportService.class);
@@ -20,8 +25,8 @@ public class ReportBreachServiceImpl implements ReportBreachService {
     private ReportBreachRepository reportBreachRepository;
 
 
-    public ReportBreachServiceImpl(ReportBreachRepository reportBreachRepository){
-        this.reportBreachRepository =reportBreachRepository;
+    public ReportBreachServiceImpl(ReportBreachRepository reportBreachRepository) {
+        this.reportBreachRepository = reportBreachRepository;
     }
 
 
@@ -30,6 +35,7 @@ public class ReportBreachServiceImpl implements ReportBreachService {
         logger.info("createReportBreach method has been invoked");
         return reportBreachRepository.save(reportBreach);
     }
+
     @Override
     public ReportBreach update(ReportBreach reportBreach) {
         logger.info("createReport method has been invoked");
@@ -38,10 +44,10 @@ public class ReportBreachServiceImpl implements ReportBreachService {
 
     @Override
     public ReportBreach delete(Long id) {
-        Optional<ReportBreach> reportBreach= reportBreachRepository.findById(id);
-        if(reportBreach.isPresent()){
+        Optional<ReportBreach> reportBreach = reportBreachRepository.findById(id);
+        if (reportBreach.isPresent()) {
             reportBreachRepository.delete(reportBreach.get());
-        }else {
+        } else {
             logger.error("There is no report with id: " + id);
             throw new EntityNotFoundException("Репорта с " + id + "id не существует");
         }
@@ -50,10 +56,10 @@ public class ReportBreachServiceImpl implements ReportBreachService {
 
     @Override
     public ReportBreach get(Long id) {
-        Optional<ReportBreach> reportBreach= reportBreachRepository.findById(id);
-        if(reportBreach.isPresent()){
+        Optional<ReportBreach> reportBreach = reportBreachRepository.findById(id);
+        if (reportBreach.isPresent()) {
             return reportBreach.get();
-        }else {
+        } else {
             logger.error("There is no report with id: " + id);
             throw new EntityNotFoundException("Репорта с " + id + "id не существует");
         }

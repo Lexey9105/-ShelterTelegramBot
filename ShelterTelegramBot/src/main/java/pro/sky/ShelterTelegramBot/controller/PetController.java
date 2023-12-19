@@ -105,7 +105,7 @@ public class PetController {
             }
     )
     @GetMapping()
-    public ResponseEntity<Collection<Pet>> findAllbyShelter(Shelter shelter) {
-        return ResponseEntity.ok(petService.findAllFromShelter(shelter));
+    public ResponseEntity<Collection<Pet>> findAllbyShelter(String petType) {
+        return ResponseEntity.ok(petService.findAllByPetType(petType));
     }
 }

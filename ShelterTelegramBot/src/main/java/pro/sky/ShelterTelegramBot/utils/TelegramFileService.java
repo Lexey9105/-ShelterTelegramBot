@@ -32,13 +32,14 @@ import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+
 @Service
 public class TelegramFileService {
 
     @Value("${telegram.bot.token}")
     private String token;
     private Logger log = LoggerFactory.getLogger(TelegramBotUpdatesListener.class);
-    private final String FilePath="ShelterTelegramBot/attachments";
+    private final String FilePath = "ShelterTelegramBot/attachments";
 
     private final TelegramBot telegramBot;
     private final AttachmentService attachmentService;
@@ -48,22 +49,19 @@ public class TelegramFileService {
 
     private Logger logger = LoggerFactory.getLogger(TelegramBotUpdatesListener.class);
 
-    public TelegramFileService(TelegramBot telegramBot, ClientStatusService clientStatusService, AttachmentService attachmentService,Send send) {
+    public TelegramFileService(TelegramBot telegramBot, ClientStatusService clientStatusService, AttachmentService attachmentService, Send send) {
         this.telegramBot = telegramBot;
-        this.attachmentService=attachmentService;
-        this.clientStatusService=clientStatusService;
-        this.send=send;
+        this.attachmentService = attachmentService;
+        this.clientStatusService = clientStatusService;
+        this.send = send;
 
     }
 
     /**
      * Получение  ссылки на файл с сервера телеграм и вызов
      * меода для сохранения файла на диск
-     *
-     * @param update - событие на сервере
-     * @return String filePath - путь к файлу
      */
-    public void getLocalPathTelegramFile(Update update) throws IOException{
+    public void getLocalPathTelegramFile(Update update) throws IOException {
         String fileId = getTelegramFileId(update);
         if (fileId == null) {
             //return null;
@@ -72,16 +70,18 @@ public class TelegramFileService {
         File file = getFileResponse.file(); // com.pengrad.telegrambot.model.File
         FileApi fileApi = new FileApi(token);
         String fullFilePath = fileApi.getFullFilePath(file.filePath());
-        Path path= Paths.get(saveFile(fullFilePath, update));
-
-        send.sendPhoto(attachmentService.addAttachmentRepo(path.toFile(),update),update);
+        Path path = Paths.get(saveFile(fullFilePath, update));
+        if (update.message().caption().charAt(0) == '*') {
+            send.sendPhoto(attachmentService.addAttachmentRepo(path.toFile(), update), update);
+        } else {
+            send.sendPhoto(attachmentService.addAttachmentPet(path.toFile(), update), update);
+        }
         //return attachmentService.addAttachmentRepo(path.toFile(),update);
     }
 
     /**
      * Получение Id файла из события на сервере
      *
-     * @param update событие
      * @return String fileId
      */
     public String getTelegramFileId(Update update) {
@@ -102,11 +102,10 @@ public class TelegramFileService {
      * Сохранение файла не диск
      *
      * @param urlPath путь до файла на сервере
-     * @param update  событие на сервере
      * @return String filePath - путь к файлу на диске
      */
 
-    public String saveFile(String urlPath, Update update) throws IOException{
+    public String saveFile(String urlPath, Update update) throws IOException {
         // https://www.baeldung.com/java-download-file#using-nio
         String pathFile = getFullLocalPathFile(urlPath, update);
         log.debug("pathFile from saveFile,{}", pathFile);
@@ -131,12 +130,11 @@ public class TelegramFileService {
      * Создание директорий и названия файла на диске
      *
      * @param urlPath путь до файла на сервере
-     * @param update  событие на сервере
      * @return filePath путь к файлу на диске
      */
     public String getFullLocalPathFile(String urlPath, Update update) {
         String pathFile = "";
-        String fileExtension=getFileName(urlPath);
+        String fileExtension = getFileName(urlPath);
         int dotIndex = fileExtension.lastIndexOf(".");
         try {
             String separator = System.getProperties().getProperty("file.separator"); // берем какой слеш у системы
@@ -168,7 +166,6 @@ public class TelegramFileService {
         }
         return path.substring(path.lastIndexOf(separator) + 1);
     }
-
 
 
 }

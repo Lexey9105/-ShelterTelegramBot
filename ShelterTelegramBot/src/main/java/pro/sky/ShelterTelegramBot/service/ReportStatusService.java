@@ -6,9 +6,13 @@ import pro.sky.ShelterTelegramBot.model.ReportStatus;
 import java.util.Collection;
 
 public interface ReportStatusService {
-    ReportStatus create (ReportStatus reportStatus);
+    ReportStatus create(ReportStatus reportStatus);
+
     ReportStatus update(ReportStatus reportStatus);
-    ReportStatus delete (Long id);
+
+    ReportStatus delete(Long id);
+
     ReportStatus get(Long id);
+
     Collection<ReportStatus> getAll();
 }

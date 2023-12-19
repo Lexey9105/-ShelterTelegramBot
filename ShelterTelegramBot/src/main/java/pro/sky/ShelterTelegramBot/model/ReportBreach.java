@@ -23,9 +23,17 @@ public class ReportBreach {
 
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "reportBreach")
-    private Client client;
+    private Pet pet;
 
     public ReportBreach() {
+    }
+
+    public Pet getPet() {
+        return pet;
+    }
+
+    public void setPet(Pet pet) {
+        this.pet = pet;
     }
 
     public Long getId() {
@@ -68,13 +76,6 @@ public class ReportBreach {
         this.repoAttachDay3 = repoAttachDay3;
     }
 
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
-    }
 
     @Override
     public String toString() {
@@ -92,11 +93,11 @@ public class ReportBreach {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ReportBreach that = (ReportBreach) o;
-        return totalPassesAttach == that.totalPassesAttach && repoAttachDay1 == that.repoAttachDay1 && repoAttachDay2 == that.repoAttachDay2 && repoAttachDay3 == that.repoAttachDay3 && Objects.equals(id, that.id) && Objects.equals(client, that.client);
+        return totalPassesAttach == that.totalPassesAttach && repoAttachDay1 == that.repoAttachDay1 && repoAttachDay2 == that.repoAttachDay2 && repoAttachDay3 == that.repoAttachDay3 && Objects.equals(id, that.id) && Objects.equals(pet, that.pet);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, totalPassesAttach, repoAttachDay1, repoAttachDay2, repoAttachDay3, client);
+        return Objects.hash(id, totalPassesAttach, repoAttachDay1, repoAttachDay2, repoAttachDay3, pet);
     }
 }

@@ -33,36 +33,42 @@ public class UserStatementServiceImpl implements UserStatementService {
     private final ClientService clientService;
     private final Send send;
     private final ReportService reportService;
-   // private final MainMenuHandler mainMenuHandler;
+    // private final MainMenuHandler mainMenuHandler;
     private final ControlService controlService;
     private final VolunteerService volunteerService;
     private final TelegramFileService telegramFileService;
+    private final PetService petService;
     private Logger logger = LoggerFactory.getLogger(ReportService.class);
 
+    /**
+     * Дополнение к клавиатуре для захвата сообщений пользователя
+     */
     public UserStatementServiceImpl(UserStatementRepository userStatementRepository,
                                     ClientStatusService clientStatusService,
                                     ReportService reportService,
                                     //MainMenuHandler mainMenuHandler,
                                     ControlService controlService
-                             ,TelegramFileService telegramFileService,ClientService clientService,
-                                    VolunteerService volunteerService,Send send){
-        this.userStatementRepository=userStatementRepository;
-        this.clientStatusService=clientStatusService;
-        this.reportService=reportService;
+            , TelegramFileService telegramFileService, ClientService clientService,
+                                    VolunteerService volunteerService, Send send, PetService petService) {
+        this.userStatementRepository = userStatementRepository;
+        this.clientStatusService = clientStatusService;
+        this.reportService = reportService;
         //this.mainMenuHandler=mainMenuHandler;
-        this.controlService=controlService;
-        this.telegramFileService=telegramFileService;
-        this.clientService=clientService;
-        this.volunteerService=volunteerService;
-        this.send=send;
+        this.controlService = controlService;
+        this.telegramFileService = telegramFileService;
+        this.clientService = clientService;
+        this.volunteerService = volunteerService;
+        this.send = send;
+        this.petService = petService;
     }
 
     @Override
     public UserStatement create() {
         logger.info("createReport method has been invoked");
-        UserStatement userStatement=new UserStatement();
+        UserStatement userStatement = new UserStatement();
         return userStatementRepository.save(userStatement);
     }
+
     @Override
     public UserStatement update(UserStatement userStatement) {
         logger.info("createReport method has been invoked");
@@ -71,17 +77,18 @@ public class UserStatementServiceImpl implements UserStatementService {
 
     @Override
     public UserStatement delete(Long id) {
-        Optional<UserStatement> userStatement=userStatementRepository.findById(id);
-        if(userStatement.isPresent()){
+        Optional<UserStatement> userStatement = userStatementRepository.findById(id);
+        if (userStatement.isPresent()) {
             userStatementRepository.delete(userStatement.get());
-        }else {
+        } else {
             logger.error("There is no report with id: " + id);
             throw new EntityNotFoundException("Репорта с " + id + "id не существует");
         }
         return userStatement.get();
     }
+
     @Override
-    public void zero(UserStatement userStatement){
+    public void zero(UserStatement userStatement) {
         logger.info("zero method has been invoked");
         userStatement.setStatement("");
         update(userStatement);
@@ -90,10 +97,10 @@ public class UserStatementServiceImpl implements UserStatementService {
 
     @Override
     public UserStatement get(Long id) {
-        Optional<UserStatement> userStatement=userStatementRepository.findById(id);
-        if(userStatement.isPresent()){
+        Optional<UserStatement> userStatement = userStatementRepository.findById(id);
+        if (userStatement.isPresent()) {
             return userStatement.get();
-        }else {
+        } else {
             logger.error("There is no report with id: " + id);
             throw new EntityNotFoundException("Репорта с " + id + "id не существует");
         }
@@ -107,38 +114,52 @@ public class UserStatementServiceImpl implements UserStatementService {
 
     @Override
     public boolean checkForHandler(Update update) {
-        ClientStatus clientStatus=clientStatusService.findClient(update.message().chat().id());
-        if (!clientStatus.getUserStatement().getStatement().equals("")){
+        ClientStatus clientStatus = clientStatusService.findClient(update.message().chat().id());
+        if (clientStatus.getUserStatement().getStatement().equals("@")
+                || clientStatus.getUserStatement().getStatement().equals("&") ||
+                clientStatus.getUserStatement().getStatement().equals("#") ||
+                clientStatus.getUserStatement().getStatement().equals("=")) {
             return true;
-        }else{
-        return false;}
+        } else {
+            return false;
+        }
     }
 
     @Override
     public void appoint(Update update, String text) throws IOException {
-        ClientStatus clientStatus=clientStatusService.findClient(update.message().chat().id());
-        if (clientStatus.getUserStatement().getStatement().equals("@")){
+        ClientStatus clientStatus = clientStatusService.findClient(update.message().chat().id());
+        if (clientStatus.getUserStatement().getStatement().equals("@")) {
             saveClient(update);
             zero(clientStatus.getUserStatement());
-        }
-        else if (clientStatus.getUserStatement().getStatement().equals("&")||clientStatus.getUserStatement().getStatement().equals("фото отчет")) {
-           Report report= reportService.findReportsByClient(clientStatus.getClient()).stream()
-                   .filter(report1 -> report1.getDayReport()==clientStatus.getDayReport())
-                   .findFirst().orElse(new Report("",0,""));
-            if (clientStatus.getUserStatement().getStatement().equals("&")){
-                controlService.hand(clientStatus.getClient(),text);
-                zero(clientStatus.getUserStatement());
-            }
-            else if (update.message().photo()!=null&&clientStatus.getUserStatement().getStatement().equals("фото отчет")){
+        } else if (update.message().photo() != null && clientStatus.getUserStatement().getStatement().equals("фото отчет")) {
+            Optional<Report> report = Optional.ofNullable(reportService.findReportByName(update.message().caption()));
+            if (report.isPresent()) {
                 telegramFileService.getLocalPathTelegramFile(update);
                 zero(clientStatus.getUserStatement());
-            } else if (update.message().text().equals(Zero_CallBack)) {
+            } else {
                 zero(clientStatus.getUserStatement());
-            } else{
-                throw new RuntimeException();
             }
+        } else if (clientStatus.getUserStatement().getStatement().equals("&")) {
+            String parts[] = update.message().text().split(",");
+            Report report = reportService.findReportByName(parts[0]);
+            controlService.hand(report, parts[1]);
+            zero(clientStatus.getUserStatement());
+        } else if (clientStatus.getUserStatement().getStatement().equals("#")) {
+            Pet pet = petService.findPetByName(update.message().text());
+            String reportName = pet.getName() + "_" + pet.getDayInFamily();
+            SendMessage sendMessage = new SendMessage(update.message().chat().id(), reportName);
+            send.sendMessage(sendMessage);
+            zero(clientStatus.getUserStatement());
+        } else if (clientStatus.getUserStatement().getStatement().equals("=")) {
+            Report report = reportService.findReportByName(update.message().text());
+            controlService.check(report);
+        } else if (update.message().text().equals(Zero_CallBack)) {
+            zero(clientStatus.getUserStatement());
+        } else {
+            zero(clientStatus.getUserStatement());
         }
     }
+
 
     /**
      * Метод для создания Client из сообщения update
@@ -150,28 +171,26 @@ public class UserStatementServiceImpl implements UserStatementService {
         long chatId = update.message().chat().id();
         String text = update.message().text();
         String[] parts = text.split(",");
+        ClientStatus clientStatusCheck = clientStatusService.findClient(chatId);
         //String nullName="zero";
         Matcher matcher = pattern.matcher(parts[2]);
-        if (parts.length!=4){
+        if (parts.length != 4) {
             String error = "Некоректный ввод данных для регистрации.";
             SendMessage sendMessage = new SendMessage(update.message().chat().id(), error);
             send.sendMessage(sendMessage);
-        }
-        else if(clientService.findByUserName(parts[0]).getName().equals(parts[0])){
+        } else if (clientStatusCheck.getClientStatus().equals(Registration_Status)) {
             String error = "Вы уже зарегистрированы.";
             SendMessage sendMessage = new SendMessage(update.message().chat().id(), error);
             send.sendMessage(sendMessage);
-        }
-
-        else if (matcher.matches()){
-            Client client = new Client(chatId,parts[0], Integer.parseInt(parts[1]), "+7-"+parts[2], parts[3]);
+        } else if (matcher.matches()) {
+            Client client = new Client(chatId, parts[0], Integer.parseInt(parts[1]), "+7-" + parts[2], parts[3]);
             clientService.create(client);
-            ClientStatus clientStatus=clientStatusService.updateStatus(client.getChatId(),Registration_Status);
-            clientService.updateWithClientStatus(client,clientStatus);
+            ClientStatus clientStatus = clientStatusService.updateStatus(client.getChatId(), Registration_Status);
+            clientService.updateWithClientStatus(client, clientStatus);
             String test = "контактные данные успешно полученны";
             SendMessage sendMessage = new SendMessage(update.message().chat().id(), test);
             send.sendMessage(sendMessage);
-        }else{
+        } else {
             String errorTel = "Некоректный формат телефона";
             SendMessage sendMessage = new SendMessage(update.message().chat().id(), errorTel);
             send.sendMessage(sendMessage);

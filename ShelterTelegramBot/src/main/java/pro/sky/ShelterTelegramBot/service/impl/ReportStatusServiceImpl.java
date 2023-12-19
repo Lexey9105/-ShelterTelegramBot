@@ -13,6 +13,11 @@ import pro.sky.ShelterTelegramBot.service.ReportStatusService;
 
 import java.util.Collection;
 import java.util.Optional;
+
+/**
+ * Сервис управления (создание, получение,удаление)
+ * моделью с историей отправки отчетов
+ */
 @Service
 public class ReportStatusServiceImpl implements ReportStatusService {
 
@@ -21,8 +26,8 @@ public class ReportStatusServiceImpl implements ReportStatusService {
     private final ReportStatusRepository reportStatusRepository;
 
 
-    public ReportStatusServiceImpl(ReportStatusRepository reportStatusRepository){
-        this.reportStatusRepository=reportStatusRepository;
+    public ReportStatusServiceImpl(ReportStatusRepository reportStatusRepository) {
+        this.reportStatusRepository = reportStatusRepository;
     }
 
 
@@ -31,6 +36,7 @@ public class ReportStatusServiceImpl implements ReportStatusService {
         logger.info("createReportStatus method has been invoked");
         return reportStatusRepository.save(reportStatus);
     }
+
     @Override
     public ReportStatus update(ReportStatus reportStatus) {
         logger.info("createReport method has been invoked");
@@ -39,10 +45,10 @@ public class ReportStatusServiceImpl implements ReportStatusService {
 
     @Override
     public ReportStatus delete(Long id) {
-        Optional<ReportStatus> reportStatus=reportStatusRepository.findById(id);
-        if(reportStatus.isPresent()){
+        Optional<ReportStatus> reportStatus = reportStatusRepository.findById(id);
+        if (reportStatus.isPresent()) {
             reportStatusRepository.delete(reportStatus.get());
-        }else {
+        } else {
             logger.error("There is no report with id: " + id);
             throw new EntityNotFoundException("Репорта с " + id + "id не существует");
         }
@@ -51,10 +57,10 @@ public class ReportStatusServiceImpl implements ReportStatusService {
 
     @Override
     public ReportStatus get(Long id) {
-        Optional<ReportStatus> report=reportStatusRepository.findById(id);
-        if(report.isPresent()){
+        Optional<ReportStatus> report = reportStatusRepository.findById(id);
+        if (report.isPresent()) {
             return report.get();
-        }else {
+        } else {
             logger.error("There is no report with id: " + id);
             throw new EntityNotFoundException("Репорта с " + id + "id не существует");
         }

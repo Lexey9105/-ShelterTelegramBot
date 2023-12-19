@@ -16,8 +16,13 @@ public interface AttachmentService {
 
 
     Attachment addAttachment(MultipartFile file) throws IOException;
+
     String addAttachmentRepo(File file, Update update) throws IOException;
-    Resource loadFileAsResource( String fileName) throws MalformedURLException;
-    File loadFile (String fileName) throws IOException;
+
+    Resource loadFileAsResource(String fileName) throws MalformedURLException;
+
+    File loadFile(String fileName) throws IOException;
+
+    String addAttachmentPet(File file, Update update) throws IOException;
 
 }

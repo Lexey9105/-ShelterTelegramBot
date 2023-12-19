@@ -3,12 +3,11 @@ package pro.sky.ShelterTelegramBot.model;
 import jakarta.persistence.*;
 
 
-
 import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name="Client")
+@Table(name = "Client")
 public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,12 +25,7 @@ public class Client {
 
     @OneToMany(mappedBy = "client")
     private List<Report> report;
-    @OneToOne
-    @JoinColumn(name = "reportBreach_id")
-    private ReportBreach reportBreach;
-    @OneToOne
-    @JoinColumn(name = "reportStatus_id")
-    private ReportStatus reportStatus;
+
     @OneToOne
     @JoinColumn(name = "Client_Status_id")
     private ClientStatus clientStatus;
@@ -65,29 +59,12 @@ public class Client {
     }
 
 
-
     public List<Report> getReport() {
         return report;
     }
 
     public void setReport(List<Report> report) {
         this.report = report;
-    }
-
-    public ReportBreach getReportBreach() {
-        return reportBreach;
-    }
-
-    public void setReportBreach(ReportBreach reportBreach) {
-        this.reportBreach = reportBreach;
-    }
-
-    public ReportStatus getReportStatus() {
-        return reportStatus;
-    }
-
-    public void setReportStatus(ReportStatus reportStatus) {
-        this.reportStatus = reportStatus;
     }
 
     public List<Attachment> getAttachments() {
@@ -187,11 +164,11 @@ public class Client {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Client client = (Client) o;
-        return age == client.age && Objects.equals(id, client.id) && Objects.equals(chatId, client.chatId) && Objects.equals(name, client.name) && Objects.equals(telephone, client.telephone) && Objects.equals(address, client.address) && Objects.equals(report, client.report) && Objects.equals(reportBreach, client.reportBreach) && Objects.equals(reportStatus, client.reportStatus) && Objects.equals(clientStatus, client.clientStatus) && Objects.equals(attachments, client.attachments) && Objects.equals(shelter, client.shelter) && Objects.equals(pet, client.pet);
+        return age == client.age && Objects.equals(id, client.id) && Objects.equals(chatId, client.chatId) && Objects.equals(name, client.name) && Objects.equals(telephone, client.telephone) && Objects.equals(address, client.address) && Objects.equals(report, client.report) && Objects.equals(clientStatus, client.clientStatus) && Objects.equals(attachments, client.attachments) && Objects.equals(shelter, client.shelter) && Objects.equals(pet, client.pet);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, chatId, name, age, telephone, address, report, reportBreach, reportStatus, clientStatus, attachments, shelter, pet);
+        return Objects.hash(id, chatId, name, age, telephone, address, report, clientStatus, attachments, shelter, pet);
     }
 }

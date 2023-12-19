@@ -8,9 +8,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
+import pro.sky.ShelterTelegramBot.constants.ShelterType;
 import pro.sky.ShelterTelegramBot.model.*;
 import pro.sky.ShelterTelegramBot.repository.ClientRepository;
 import pro.sky.ShelterTelegramBot.service.ClientService;
+import pro.sky.ShelterTelegramBot.service.ClientStatusService;
+import pro.sky.ShelterTelegramBot.service.ShelterService;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,12 +21,12 @@ import java.util.List;
 import java.util.Optional;
 
 
-
 @Service
 public class ClientServiceImpl implements ClientService {
 
     private Logger logger = LoggerFactory.getLogger(ClientService.class);
     private final ClientRepository clientRepository;
+
 
     public ClientServiceImpl(ClientRepository clientRepository) {
         this.clientRepository = clientRepository;
@@ -86,37 +89,49 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    public Pet getPet(Long id) {
+        logger.info("deleteClient method has been invoked");
+        Optional<Client> client1 = Optional.ofNullable(findClientByChatId(id));
+        if (client1.isPresent()) {
+            Pet pet = client1.get().getPet().get(0);
+            return pet;
+        } else {
+            logger.error("There is no client with id: " + id);
+            throw new EntityNotFoundException("Клиента с " + id + "id не существует");
+        }
+    }
+
+    public Client findClientByChatId(Long chatId) {
+        return clientRepository.findClientByChatId(chatId);
+    }
+
+    @Override
     public Client findByUserName(String userName) {
         logger.info("findByStatus method has been invoked");
-        String nullName="zero";
+        String nullName = "zero";
         return clientRepository.findAll().stream()
-                .filter(c->c.getName().equals(userName))
-                .findFirst().orElse(new Client(nullName,66,"666","4fff"));
+                .filter(c -> c.getName().equals(userName))
+                .findFirst().orElse(new Client(nullName, 66, "666", "4fff"));
     }
+
     @Override
     @Transactional
     public Client updateWithClientStatus(Client client, ClientStatus clientStatus) {
         logger.info("updateWithClientStatus method has been invoked");
-clientStatus.setClient(client);
-client.setClientStatus(clientStatus);
+        clientStatus.setClient(client);
+        client.setClientStatus(clientStatus);
         return clientRepository.save(client);
     }
+
     @Override
     @Transactional
-    public Client updateWithReportStatus(Client client, ReportStatus reportStatus) {
-        logger.info("updateWithReportStatus method has been invoked");
-        reportStatus.setClient(client);
-        client.setReportStatus(reportStatus);
-        return clientRepository.save(client);
-    }
-    @Override
-    @Transactional
-    public Client createWithReport(Client client){
+    public Client createWithReport(Client client) {
         logger.info("createWithReport method has been invoked");
-        List<Report> reports=new ArrayList<>();
+        List<Report> reports = new ArrayList<>();
         client.setReport(reports);
         return clientRepository.save(client);
     }
+
     @Override
     @Transactional
     public Client updateWithReport(Client client, Report report) {
@@ -126,16 +141,26 @@ client.setClientStatus(clientStatus);
         client.setReport(client.getReport());
         return clientRepository.save(client);
     }
+
+
     @Override
     @Transactional
-    public Client updateWithReportBreach(Client client, ReportBreach reportBreach) {
-        logger.info("updateWithReportBreach method has been invoked");
-        reportBreach.setClient(client);
-        client.setReportBreach(reportBreach);
+    public Client createWithPets(Client client) {
+        logger.info("createWithReport method has been invoked");
+        List<Pet> Pets = new ArrayList<>();
+        client.setPet(Pets);
         return clientRepository.save(client);
     }
 
-
+    @Override
+    @Transactional
+    public Client updateWithPet(Client client, Pet pet) {
+        logger.info("updateWithReport method has been invoked");
+        client.getPet().add(pet);
+        pet.setClient(client);
+        client.setPet(client.getPet());
+        return clientRepository.save(client);
+    }
 
 
 }

@@ -9,20 +9,29 @@ public class ClientStatus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private Long chatId;
+
     private String clientStatus;
-    private int dayReport=0;
+
+    private int dayReport = 1;
+
     private int clickCounterCat;
+
     private int clickCounterDog;
-@OneToOne(mappedBy = "clientStatus")
+    @OneToOne(mappedBy = "clientStatus")
     private Client client;
     @OneToOne
-    @JoinColumn(name="user_Statement")
+    @JoinColumn(name = "user_Statement")
     private UserStatement userStatement;
-    public ClientStatus(){};
 
-    public ClientStatus(Long chatId,String clientStatus, int clickCounterCat, int clickCounterDog) {
-        this.chatId=chatId;
+    public ClientStatus() {
+    }
+
+    ;
+
+    public ClientStatus(Long chatId, String clientStatus, int clickCounterCat, int clickCounterDog) {
+        this.chatId = chatId;
         this.clientStatus = clientStatus;
         this.clickCounterCat = clickCounterCat;
         this.clickCounterDog = clickCounterDog;
