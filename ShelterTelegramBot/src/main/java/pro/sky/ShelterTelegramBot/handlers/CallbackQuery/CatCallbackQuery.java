@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import pro.sky.ShelterTelegramBot.listener.TelegramBotUpdatesListener;
 import pro.sky.ShelterTelegramBot.model.*;
 import pro.sky.ShelterTelegramBot.service.*;
+import pro.sky.ShelterTelegramBot.utils.Send;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -34,13 +35,14 @@ public class CatCallbackQuery {
     private final UserStatementService userStatementService;
     private final PetService petService;
     private final ShelterService shelterService;
+    private final Send send;
 
     private Logger logger = LoggerFactory.getLogger(TelegramBotUpdatesListener.class);
 
     public CatCallbackQuery(TelegramBot telegramBot, AttachmentService attachmentService,
                             ClientStatusService clientStatusService, VolunteerService volunteerService,
                             RequestRepoService requestRepoService, UserStatementService userStatementService,
-                            PetService petService, ShelterService shelterService) {
+                            PetService petService, ShelterService shelterService,Send send) {
         this.telegramBot = telegramBot;
         this.attachmentService = attachmentService;
         this.clientStatusService = clientStatusService;
@@ -49,6 +51,7 @@ public class CatCallbackQuery {
         this.userStatementService = userStatementService;
         this.petService = petService;
         this.shelterService = shelterService;
+        this.send=send;
     }
 
     /**
@@ -101,7 +104,8 @@ public class CatCallbackQuery {
         logger.info("method infoPetsCatButton is invoke");
         CallbackQuery callbackQuery = update.callbackQuery();
         long chatId = callbackQuery.message().chat().id();
-        Client client = clientStatusService.findClient(chatId).getClient();
+        clientStatusService.clickCat(chatId, 2);
+        //Client client = clientStatusService.findClient(chatId).getClient();
         switch (callbackQuery.data()) {
 
             case PetCatsList:
@@ -123,8 +127,7 @@ public class CatCallbackQuery {
                     }
                     SendMessage sendMessage = new SendMessage(chatId, pet.getName());
                     SendResponse sendResponse = telegramBot.execute(sendMessage.replyMarkup(keyboardMarkup));
-
-
+//                    send.sendMessageReturn(sendMessage.replyMarkup(keyboardMarkup));
                 });
                 break;
             case RulesDatingCat:

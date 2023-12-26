@@ -8,6 +8,7 @@ import java.util.List;
 public interface ControlService {
 
     //  Report welcome(Client client);
+    void createReport(Report report);
     void hand(Report report, String text);
 
     void check(Report report);

@@ -57,6 +57,15 @@ public class Client {
         this.address = address;
 
     }
+    public Client(Long id,Long chatId, String name, int age, String telephone, String address) {
+        this.id=id;
+        this.chatId = chatId;
+        this.name = name;
+        this.age = age;
+        this.telephone = telephone;
+        this.address = address;
+
+    }
 
 
     public List<Report> getReport() {

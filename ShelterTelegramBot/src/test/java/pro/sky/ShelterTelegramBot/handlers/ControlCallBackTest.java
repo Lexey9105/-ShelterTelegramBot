@@ -5,67 +5,62 @@ import com.pengrad.telegrambot.model.CallbackQuery;
 import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
-import jakarta.persistence.Id;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pro.sky.ShelterTelegramBot.handlers.CallbackQuery.CatCallbackQuery;
-import pro.sky.ShelterTelegramBot.handlers.CallbackQuery.DogCallbackQuery;
-import pro.sky.ShelterTelegramBot.handlers.CallbackQuery.HandlerCallbackQuery;
-import pro.sky.ShelterTelegramBot.model.Pet;
-import pro.sky.ShelterTelegramBot.service.AttachmentService;
+import pro.sky.ShelterTelegramBot.handlers.CallbackQuery.ControlCallbackQuery;
+import pro.sky.ShelterTelegramBot.model.ClientStatus;
+import pro.sky.ShelterTelegramBot.model.UserStatement;
 import pro.sky.ShelterTelegramBot.service.ClientStatusService;
-import pro.sky.ShelterTelegramBot.service.VolunteerService;
-import pro.sky.ShelterTelegramBot.utils.Send;
+import pro.sky.ShelterTelegramBot.service.ControlService;
+import pro.sky.ShelterTelegramBot.service.UserStatementService;
 
-import javax.xml.crypto.Data;
 import java.io.IOException;
-import java.util.Date;
 
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class HandlerCallbackQueryTest {
+public class ControlCallBackTest {
+
     @Mock
-    private TelegramBot telegramBot;
+    private ControlService controlService;
     @Mock
-    private AttachmentService attachmentService;
-    @Mock
-    private VolunteerService volunteerService;
+    private UserStatementService userStatementService;
     @Mock
     private ClientStatusService clientStatusService;
     @Mock
-    private DogCallbackQuery dogCallbackQuery;
-    @Mock
-    private CatCallbackQuery catCallbackQuery;
-    @Mock
-    private Send send;
+    private TelegramBot telegramBot;
 
     @InjectMocks
-    private HandlerCallbackQuery handlerCallbackQuery;
-
+    private ControlCallbackQuery controlCallbackQuery;
     @Test
-    public void handlerMenuCatButtonTest() throws IOException {
+    public void ControlCallbackTest() throws IOException {
+        Long chatId = 1L;
         Update update = Mockito.mock(Update.class);
         CallbackQuery callbackQuery = Mockito.mock(CallbackQuery.class);
         Message message = Mockito.mock(Message.class);
         Chat chat = Mockito.mock(Chat.class);
+        ClientStatus clientStatus=Mockito.mock(ClientStatus.class);
+        UserStatement userStatement2=new UserStatement();
+        clientStatus.setUserStatement(userStatement2);
+        userStatement2.setStatement("&");
 
 
         when(update.callbackQuery()).thenReturn(callbackQuery);
         when(callbackQuery.message()).thenReturn(message);
         when(message.chat()).thenReturn(chat);
         when(chat.id()).thenReturn(1L);
-        when(callbackQuery.data()).thenReturn("011_CatShelterInfo");
+        when(callbackQuery.data()).thenReturn("1984_ReportControl");
+        when(clientStatusService.findClient(chatId)).thenReturn(clientStatus);
+        when(userStatementService.update(userStatement2)).thenReturn(userStatement2);
+        when(clientStatus.getUserStatement()).thenReturn(userStatement2);
 
-        handlerCallbackQuery.handlerMenuCatButton(update);
+        controlCallbackQuery.ControlCallBack(update);
 
-        verify(clientStatusService).clickCat(1L, 1);
+
+
     }
-
-
 }

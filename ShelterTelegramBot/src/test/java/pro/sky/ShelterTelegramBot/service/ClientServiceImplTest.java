@@ -10,14 +10,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import pro.sky.ShelterTelegramBot.model.Client;
 import pro.sky.ShelterTelegramBot.model.ClientStatus;
+import pro.sky.ShelterTelegramBot.model.Report;
 import pro.sky.ShelterTelegramBot.repository.ClientRepository;
 import pro.sky.ShelterTelegramBot.service.impl.ClientServiceImpl;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -37,6 +35,7 @@ public class ClientServiceImplTest {
     @Test
     public void addTest() throws IOException {
         Client client = new Client("13333", 20, "9990001122", "fff");
+
         when(clientRepository.save(client)).thenReturn(client);
         assertNotNull(clientService.create(client));
         assertEquals(client, clientService.create(client));
@@ -87,19 +86,17 @@ public class ClientServiceImplTest {
     @Test
     void getUserByNameTest() {
         Client client = new Client(1L, "13333", 20, "9990001122", "fff");
+        String clientName= client.getName();
+        List<Client> clients=new ArrayList<>();
+        clients.add(client);
+
+        Mockito.when(clientRepository.findAll()).thenReturn(clients);
 
 
-        Mockito.when(clientRepository.findClientByName(client.getName())).thenReturn(client);
-
-
-        Assert.assertEquals(client, clientRepository.findClientByName(client.getName()));
+        Assert.assertEquals(client, clientService.findByUserName(clientName));
     }
 
-    @Test
-    void updateWithClientStatusTest() {
-        Client client = new Client(1L, "13333", 20, "9990001122", "fff");
 
-    }
 
     @Test
     public void testUpdateWithClientStatus() {
@@ -117,6 +114,21 @@ public class ClientServiceImplTest {
 //        verify(client).setClientStatus(clientStatus);
 //        verify(clientRepository, Mockito.times(1)).save(client);
         assertEquals(client, result);
+    }
+@Test
+    public  void updateClientStatusTest(){
+        Client client = new Client(1L, "13333", 20, "9990001122", "fff");
+        ClientStatus clientStatus=new ClientStatus(1L,"Зареган",1,1);
+        client.setClientStatus(clientStatus);
+        when(clientRepository.save(client)).thenReturn(client);
+        assertEquals(client, clientService.updateWithClientStatus(client,clientStatus));
+
+    }
+@Test
+    public void createWithReport(){
+        Client client = new Client(1L, "13333", 20, "9990001122", "fff");
+        when(clientRepository.save(client)).thenReturn(client);
+        assertEquals(client, clientService.createWithReport(client));
     }
 
 }

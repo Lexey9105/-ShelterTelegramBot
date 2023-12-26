@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import pro.sky.ShelterTelegramBot.model.Attachment;
 import pro.sky.ShelterTelegramBot.repository.AttachmentRepository;
 ;
+import pro.sky.ShelterTelegramBot.service.*;
 import pro.sky.ShelterTelegramBot.service.impl.AttachmentServiceImpl;
 
 import java.nio.file.Path;
@@ -39,6 +40,18 @@ public class AttachmentControllerTest {
 
     @MockBean
     private AttachmentRepository attachmentRepository;
+    @MockBean
+    private ClientStatusService clientStatusService;
+    @MockBean
+    private  ClientService clientService;
+    @MockBean
+    private  ReportService reportService;
+    @MockBean
+    private  ReportStatusService reportStatusService;
+    @MockBean
+    private  ReportBreachService reportBreachService;
+    @MockBean
+    private PetService petService;
     @SpyBean
     private AttachmentServiceImpl attachmentService;
     @InjectMocks

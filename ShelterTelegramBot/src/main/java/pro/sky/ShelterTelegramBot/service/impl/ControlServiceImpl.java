@@ -69,6 +69,7 @@ public class ControlServiceImpl implements ControlService {
     /**
      * создание нового отчета после одобрения или отказа по предыдущему отчету
      */
+    @Override
     public void createReport(Report report) {
         clientStatusService.updateStatusWithReport(report.getClient().getChatId());
         String[] parts = report.getName().split("_");

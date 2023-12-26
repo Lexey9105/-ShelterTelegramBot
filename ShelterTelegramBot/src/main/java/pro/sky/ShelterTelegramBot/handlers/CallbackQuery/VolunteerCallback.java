@@ -153,6 +153,7 @@ public class VolunteerCallback {
         long chatId = callbackQuery.message().chat().id();
         String[] nameClient = callbackQuery.data().split("_");
         Client client = clientStatusService.findClient(Long.parseLong(nameClient[1])).getClient();
+        long chatId2 = Long.parseLong(nameClient[1]);
         Optional<Request> request = Optional.of(requestRepoService.get(Long.parseLong(nameClient[2])));
         switch (nameClient[3]) {
             case Accept:
@@ -185,7 +186,7 @@ public class VolunteerCallback {
                     reportService.updateWithPet(report, pet);
                     reportService.updateWithClient(client, report);
                     requestRepoService.delete(Long.parseLong(nameClient[2]));
-                    SendMessage sendMessage1 = new SendMessage(client.getChatId(), "Вам одобрили усыновление  питомца. С сегодняшнего дня в должны присылать отчет");
+                    SendMessage sendMessage1 = new SendMessage(chatId2, "Вам одобрили усыновление  питомца. С сегодняшнего дня в должны присылать отчет");
                     SendResponse response1 = telegramBot.execute(sendMessage1);
                     break;
                 } else {
